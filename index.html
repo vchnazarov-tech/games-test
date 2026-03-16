@@ -571,6 +571,7 @@
   let hint, hintCls, successMsg;
   let tLeft, tInterval;
   let used;
+  let flashing = false;
   let demoTimeouts = [];
 
   // phase: 'select_cell' | 'draw_word' | 'game_over'
@@ -641,6 +642,7 @@
 
   // ── Actions ──
   function onCellClick(r, c) {
+    if (flashing) return;
     if (phase === 'draw_word' && newPos && path.length === 0) {
       grid[newPos.r][newPos.c] = '';
       newPos = null; phase = 'select_cell';
@@ -676,7 +678,7 @@
   }
 
   function onCellMouseDown(r, c, e) {
-    if (phase !== 'draw_word' || !grid[r][c]) return;
+    if (flashing || phase !== 'draw_word' || !grid[r][c]) return;
     e.preventDefault();
     drawing = true;
     path    = [{r, c}];
@@ -745,7 +747,9 @@
     successMsg = `+${pts} ${pluralScore(pts)} — «${word.toUpperCase()}»`;
     const sp = [...path];
     path    = [];
+    flashing = true;
     flashPath(sp, 'flash-ok', () => {
+      flashing = false;
       turn++;
       newPos  = null;
       successMsg = '';
