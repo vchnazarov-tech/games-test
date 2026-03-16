@@ -566,6 +566,21 @@
   const START_WORDS = ['норма','лампа','стена','карта','школа','парус','замок','число','волна','песня','гроза','мечта','книга','рынок','место','кошка','город','голос','образ','порог','забор','завод','берег','доска','ветер','весна','осень','пламя','крыша','башня','свеча','буква','лента','мираж','пирог','север','якорь','каток','пятно','проза','танец','плита','рыбак','крест','центр'];
   const TIMER_MAX = 60;
 
+  // ── Scoring ──
+  const LETTER_VAL = (() => {
+    const v = {};
+    'оеаинтсрвлкм'.split('').forEach(c => v[c] = 1);
+    'дпуяыьгзбчй'.split('').forEach(c => v[c] = 2);
+    'хжшюцщэфъё'.split('').forEach(c => v[c] = 5);
+    return v;
+  })();
+  const LEN_MULT = [0, 0, 0, 1, 1, 2, 3, 4, 5, 7];
+  function calcScore(word) {
+    const base = word.split('').reduce((s, c) => s + (LETTER_VAL[c] || 1), 0);
+    const mult = word.length < LEN_MULT.length ? LEN_MULT[word.length] : 7;
+    return base * mult;
+  }
+
   // ── State ──
   let grid, score, turn, phase;
   let selCell, newPos;
@@ -734,7 +749,7 @@
     }
 
     // ── Success ──
-    const pts = path.length * path.length;
+    const pts = calcScore(pathWord());
     // Float +N above grid
     const gw = root.querySelector('.slv-grid-wrap');
     if (gw) {
@@ -1141,6 +1156,19 @@
   // ── Global mouseup ──
   document.addEventListener('mouseup', onMouseUp);
   document.addEventListener('touchend', onMouseUp);
+
+  const QWERTY_RU = {
+    'q':'й','w':'ц','e':'у','r':'к','t':'е','y':'н','u':'г','i':'ш','o':'щ','p':'з',
+    '[':'х',']':'ъ','a':'ф','s':'ы','d':'в','f':'а','g':'п','h':'р','j':'о','k':'л',
+    'l':'д',';':'ж',"'":'э','z':'я','x':'ч','c':'с','v':'м','b':'и','n':'т','m':'ь',
+    ',':'б','.':'ю'
+  };
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    const key = e.key.toLowerCase();
+    const ru = QWERTY_RU[key] || (key.length === 1 && /[а-яё]/.test(key) ? key : null);
+    if (ru) onKeyPress(ru.toUpperCase());
+  });
 
   // ── Start ──
   initGame();
