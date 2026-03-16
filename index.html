@@ -341,7 +341,7 @@
   .slv-cell.sel     { background:rgba(55,48,163,0.07); border-color:#3730a3; border-style:solid; cursor:pointer; color:#3730a3; animation:slv-pulse 1.4s ease-in-out infinite; }
   .slv-cell.new-letter { background:#fef3c7; border-color:#b45309; color:#92400e; box-shadow:0 1px 4px rgba(180,83,9,0.15); }
   .slv-cell.in-path { background:#ede9fe; border-color:rgba(55,48,163,0.35); color:#3730a3; box-shadow:0 1px 4px rgba(55,48,163,0.1); animation:slv-cellin .18s ease; }
-  .slv-cell.in-path.latest { animation:slv-cellin .18s ease, slv-bounce .35s ease-out; }
+  .slv-cell.in-path.latest { animation:slv-cellin .18s ease, slv-bounce .2s ease-out; }
   .slv-cell.in-path.new-letter { background:#fef3c7; border-color:#b45309; color:#92400e; }
   .slv-cell.flash-ok  { background:#E5F7E7; border-color:#30B03D; color:#0f766e; box-shadow:none; animation:slv-flashin .2s ease; }
   .slv-cell.flash-err { background:#fef2f2; border-color:#dc2626; color:#b91c1c; box-shadow:none; animation:slv-flashin .2s ease; }
@@ -742,7 +742,7 @@
     }
     used.add(word);
     score += pts;
-    successMsg = `+${pts} очков — «${word.toUpperCase()}»`;
+    successMsg = `+${pts} ${pluralScore(pts)} — «${word.toUpperCase()}»`;
     const sp = [...path];
     path    = [];
     flashPath(sp, 'flash-ok', () => {
@@ -929,7 +929,7 @@
     const hdr = el('div', 'slv-header');
     hdr.innerHTML = `
       <div class="slv-score-block">
-        <div class="slv-score">${score} очков</div>
+        <div class="slv-score">${score} ${pluralScore(score)}</div>
       </div>
       <div class="slv-timer-block">
         ${turn >= 2
@@ -1039,8 +1039,8 @@
 
     // Placeholder same height as header + bar-wrap to prevent layout jump
     const ph = el('div', '');
-    ph.style.height = '48px';
-    ph.style.flexShrink = '0';
+    ph.style.cssText = 'height:48px; flex-shrink:0; display:flex; align-items:end; justify-content:center;';
+    ph.innerHTML = `<span style="font-size:17px; color:#000;">Лучший результат дня — <span style="color:#3730a3; font-weight:500;">122 ${pluralScore(122)}</span></span>`;
     root.appendChild(ph);
 
     const msgEl = el('div', 'slv-success-msg');
@@ -1075,14 +1075,10 @@
   }
 
   function renderOver() {
-    const n = score;
-    const pts = (n % 10 === 1 && n % 100 !== 11) ? 'балл'
-              : ([2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100)) ? 'балла'
-              : 'баллов';
     const d = el('div', 'slv-over');
     const card = el('div', 'slv-over-card');
     card.innerHTML = `
-      <div class="slv-over-title">Вы набрали ${score} ${pts}</div>
+      <div class="slv-over-title">Вы набрали ${score} ${pluralScore(score)}</div>
       <div class="slv-over-stats">
         <div class="slv-over-stat"><span class="slv-stat-up">▲1</span> 194 место в сезоне</div>
         <div class="slv-over-stat"><span class="slv-stat-down">▼1</span> 1245 место за все время</div>
@@ -1096,6 +1092,12 @@
     if (n % 10 === 1 && n % 100 !== 11) return 'ход';
     if ([2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100)) return 'хода';
     return 'ходов';
+  }
+
+  function pluralScore(n) {
+    if (n % 10 === 1 && n % 100 !== 11) return 'очко';
+    if ([2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100)) return 'очка';
+    return 'очков';
   }
 
   function el(tag, cls) {
