@@ -390,8 +390,8 @@
   .slv-over-title { font-size:22px; font-weight:500; color:#1c1208; text-align:center; }
   .slv-over-stats { display:flex; gap:32px; align-items:center; justify-content:center; flex-wrap:wrap; }
   .slv-over-stat { font-size:15px; font-weight:400; color:#595959; }
-  .slv-stat-up { color:#166534; font-weight:500; }
-  .slv-stat-down { color:#b91c1c; font-weight:500; }
+  .slv-stat-up { color:#166534; font-weight:500; margin-right:6px; }
+  .slv-stat-down { color:#b91c1c; font-weight:500; margin-right:6px; }
   .slv-restart { font-family:Roboto,sans-serif; font-size:14px; font-weight:500; color:#fff; background:#3730a3; border:none; border-radius:10px; padding:12px 40px; cursor:pointer; transition:background .15s, transform .1s, box-shadow .15s; margin-top:12px; box-shadow:0 2px 10px rgba(55,48,163,0.28); }
   .slv-restart:hover { background:#4338ca; }
   .slv-start-btn { font-family:Roboto,sans-serif; font-size:14px; font-weight:500; color:#fff; background:#3730a3; border:none; border-radius:10px; padding:12px 40px; cursor:pointer; transition:background .15s, transform .1s, box-shadow .15s; margin-top:16px; box-shadow:0 2px 10px rgba(55,48,163,0.28); }
@@ -662,6 +662,8 @@
     render();
   }
 
+  const vib = (p) => navigator.vibrate && navigator.vibrate(p);
+
   function onKeyPress(letter) {
     if (phase === 'draw_word' && newPos && path.length === 0) {
       grid[newPos.r][newPos.c] = letter.toLowerCase();
@@ -669,6 +671,7 @@
       return;
     }
     if (phase !== 'select_cell' || !selCell) return;
+    vib(10);
     const {r, c} = selCell;
     grid[r][c] = letter.toLowerCase();
     newPos   = {r, c};
@@ -723,17 +726,20 @@
     if (!DICT.has(word)) {
       hint    = `«${word.toUpperCase()}» — нет в словаре`;
       hintCls = 'err';
+      vib(50);
       flashPath([...path], 'flash-err', () => { path = []; render(); });
       return;
     }
     if (used.has(word)) {
       hint    = `«${word.toUpperCase()}» — уже использовано`;
       hintCls = 'err';
+      vib(50);
       flashPath([...path], 'flash-err', () => { path = []; render(); });
       return;
     }
 
     // ── Success ──
+    vib([15, 50, 15]);
     const pts = path.length * path.length;
     // Float +N above grid
     const gw = root.querySelector('.slv-grid-wrap');
