@@ -563,7 +563,7 @@
     ['Ф','Ы','В','А','П','Р','О','Л','Д','Ж','Э'],
     ['Я','Ч','С','М','И','Т','Ь','Б','Ю'],
   ];
-  const START_WORDS = ['норма','лампа','стена','карта','школа','парус','замок','земля','число','ствол','волна','песня','гроза','мечта','книга','почта','рынок','место','кошка','город','голос','номер','образ','порог','забор','завод','берег','доска','маска','ветер'];
+  const START_WORDS = ['норма','лампа','стена','карта','школа','парус','замок','число','волна','песня','гроза','мечта','книга','рынок','место','кошка','город','голос','образ','порог','забор','завод','берег','доска','ветер','весна','осень','пламя','крыша','башня','свеча','буква','лента','мираж','пирог','север','якорь','каток','пятно','проза','танец','плита','рыбак','крест','центр'];
   const TIMER_MAX = 60;
 
   // ── State ──
@@ -662,8 +662,6 @@
     render();
   }
 
-  const vib = (p) => navigator.vibrate && navigator.vibrate(p);
-
   function onKeyPress(letter) {
     if (phase === 'draw_word' && newPos && path.length === 0) {
       grid[newPos.r][newPos.c] = letter.toLowerCase();
@@ -671,7 +669,6 @@
       return;
     }
     if (phase !== 'select_cell' || !selCell) return;
-    vib(10);
     const {r, c} = selCell;
     grid[r][c] = letter.toLowerCase();
     newPos   = {r, c};
@@ -726,20 +723,17 @@
     if (!DICT.has(word)) {
       hint    = `«${word.toUpperCase()}» — нет в словаре`;
       hintCls = 'err';
-      vib(50);
       flashPath([...path], 'flash-err', () => { path = []; render(); });
       return;
     }
     if (used.has(word)) {
       hint    = `«${word.toUpperCase()}» — уже использовано`;
       hintCls = 'err';
-      vib(50);
       flashPath([...path], 'flash-err', () => { path = []; render(); });
       return;
     }
 
     // ── Success ──
-    vib([15, 50, 15]);
     const pts = path.length * path.length;
     // Float +N above grid
     const gw = root.querySelector('.slv-grid-wrap');
