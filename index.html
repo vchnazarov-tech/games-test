@@ -1031,6 +1031,7 @@
         const btn = el('button', 'slv-key');
         btn.textContent = letter;
         btn.addEventListener('mousedown', e => { e.preventDefault(); onKeyPress(letter); });
+        btn.addEventListener('touchstart', e => { e.preventDefault(); onKeyPress(letter); }, { passive: false });
         rowEl.appendChild(btn);
       });
       kbEl.appendChild(rowEl);
