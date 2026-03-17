@@ -287,9 +287,6 @@
       width: 100%;
       height: auto;
       min-height: 400px;
-      border-radius: 0;
-      border-left: none;
-      border-right: none;
     }
   }
 </style>
@@ -311,27 +308,30 @@
     background: #f7f3ee !important;
   }
   /* HEADER */
-  .slv-header { width:100%; display:flex; align-items:center; justify-content:space-between; padding:0 24px; height:48px; flex-shrink:0; }
-  .slv-word-preview { display:flex; align-items:center; gap:3px; }
+  .slv-header { width:100%; display:grid; grid-template-columns:1fr auto 1fr; align-items:baseline; padding:20px 24px 10px; height:auto; flex-shrink:0; }
+  .slv-word-preview { display:flex; align-items:center; justify-content:center; gap:3px; min-height:20px; }
+  .slv-word-preview-mob { display:none; }
   .slv-wl { font-size:17px; font-weight:500; color:#3730a3; }
   .slv-wl.err { color:#b91c1c; }
   .slv-word-preview.err { animation:slv-wl-err .25s ease-in-out; }
   @keyframes slv-wl-err { 0%{transform:scale(1)} 40%{transform:scale(1.2)} 70%{transform:scale(.9)} 100%{transform:scale(1)} }
   .slv-success-inline { font-size:17px; font-weight:500; color:#0f766e; }
-  .slv-hint-inline { font-size:17px; font-weight:400; color:#000; }
+  .slv-hint-inline { font-size:17px; font-weight:400; color:#000; text-align:center; }
   .slv-err-inline  { font-size:17px; font-weight:400; color:#b91c1c; }
-  .slv-score-block { display:flex; align-items:baseline; gap:6px; flex:1; }
-  .slv-score { font-size:17px; font-weight:400; color:#1c1208; line-height:1; }
-  .slv-timer-block { display:flex; align-items:baseline; min-width:64px; justify-content:flex-end; flex:1; }
-  .slv-timer-num { font-size:17px; font-weight:400; color:#1c1208; line-height:1; transition:color .3s; }
-  .slv-timer-num.danger { color:#b91c1c; }
+  .slv-score-block { display:flex; align-items:center; }
+  .slv-score { font-size:14px; font-weight:500; color:#3730a3; line-height:1;
+    background:rgba(55,48,163,0.08); border-radius:80px; padding:5px 12px; white-space:nowrap; }
+  .slv-timer-block { display:flex; align-items:center; justify-content:flex-end; }
+  .slv-timer-num { font-size:14px; font-weight:500; color:#1c1208; line-height:1;
+    background:rgba(0,0,0,0.06); border-radius:80px; padding:5px 12px; transition:color .3s, background .3s; white-space:nowrap; }
+  .slv-timer-num.danger { color:#b91c1c; background:rgba(185,28,28,0.08); }
   /* TIMER BAR */
   .slv-bar-wrap { width:calc(100% - 48px); height:2px; background:rgba(0,0,0,0.08); border-radius:1px; margin:2px 24px 8px; overflow:hidden; flex-shrink:0; }
   .slv-bar { height:100%; background:#0f766e; border-radius:1px; transition:width .9s linear, background .3s; }
   .slv-bar.warn { background:#c2410c; }
   .slv-bar.danger { background:#b91c1c; }
   /* GRID */
-  .slv-grid-wrap { background:#ede8df; border-radius:16px; padding:var(--slv-pad); flex-shrink:0; box-shadow:inset 0 1px 4px rgba(0,0,0,0.07); }
+  .slv-grid-wrap { background:#ede8df; border-radius:16px; padding:var(--slv-pad); flex-shrink:0; }
   .slv-grid { display:grid; grid-template-columns:repeat(5,var(--slv-size)); grid-template-rows:repeat(5,var(--slv-size)); gap:var(--slv-gap); }
   .slv-cell {
     width:var(--slv-size); height:var(--slv-size); border-radius:10px; position:relative;
@@ -412,14 +412,18 @@
     :root {
       --slv-kb-gap: 2px;
       --slv-size: clamp(32px, calc((100vw - 70px) / 5), 56px);
-      --slv-key-w: clamp(16px, calc((100vw - 54px) / 12), 38px);
+      --slv-key-w: clamp(16px, calc((100vw - 70px) / 12), 38px);
       --slv-key-h: calc(var(--slv-key-w) * 1.5);
     }
     .post-inner { padding: 0 16px; }
-    .post-content#game-root { min-height: 400px; }
-    .slv-header { padding: 0 16px; }
+    .post-content#game-root { width: 100%; height: 592px; min-height: unset; }
+    .slv-header { grid-template-columns:1fr 1fr; grid-template-rows:auto; align-items:center; position:static; gap:0; padding:20px 16px 0; height:auto; }
+    .slv-score-block { grid-column:1; grid-row:1; }
+    .slv-timer-block { grid-column:2; grid-row:1; }
+    .slv-header .slv-word-preview { display:none; }
+    .slv-word-preview-mob { display:flex; align-items:center; justify-content:center; gap:3px; width:100%; min-height:30px; padding:6px 16px 8px; }
     .slv-bar-wrap { width: calc(100% - 32px); margin-left: 16px; margin-right: 16px; }
-    .slv-keyboard { gap: 3px; }
+    .slv-keyboard { gap: 3px; padding: 0 8px; }
   }
 </style>
 
@@ -551,14 +555,15 @@
 
   // ── Override post-content styles ──
   const forceStyles = () => {
-    root.style.setProperty('display',          'flex',         'important');
-    root.style.setProperty('flex-direction',   'column',       'important');
-    root.style.setProperty('align-items',      'center',       'important');
-    root.style.setProperty('justify-content',  'flex-start',   'important');
-    root.style.setProperty('color',            'inherit',      'important');
-    root.style.setProperty('font-size',        'inherit',      'important');
-    root.style.setProperty('padding',          '14px 0 12px',  'important');
-    root.style.setProperty('overflow',         'hidden',       'important');
+    const mobile = window.innerWidth <= 640;
+    root.style.setProperty('display',          'flex',                              'important');
+    root.style.setProperty('flex-direction',   'column',                            'important');
+    root.style.setProperty('align-items',      'center',                            'important');
+    root.style.setProperty('justify-content',  'flex-start',                        'important');
+    root.style.setProperty('color',            'inherit',                           'important');
+    root.style.setProperty('font-size',        'inherit',                           'important');
+    root.style.setProperty('padding',          mobile ? '0 0 20px' : '14px 0 12px', 'important');
+    root.style.setProperty('overflow',         'hidden',                            'important');
   };
 
   const DICT = new Set(document.getElementById('slv-dict').textContent.split('|').filter(Boolean));
@@ -1029,6 +1034,10 @@
     msgEl.textContent = '';
     root.appendChild(msgEl);
 
+    const wpMob = el('div', 'slv-word-preview-mob slv-word-preview' + (flashCls === 'flash-err' ? ' err' : ''));
+    wpMob.innerHTML = wordPreview;
+    root.appendChild(wpMob);
+
     const gridWrap = el('div', 'slv-grid-wrap');
     const gridEl = el('div', 'slv-grid');
     for (let r = 0; r < ROWS; r++) {
@@ -1097,7 +1106,7 @@
     // Word preview
     // Keyboard
     const kbEl = el('div', 'slv-keyboard');
-    kbEl.style.marginTop = '36px';
+    kbEl.style.marginTop = window.innerWidth <= 640 ? 'auto' : '36px';
     KB.forEach(row => {
       const rowEl = el('div', 'slv-kb-row');
       row.forEach(letter => {
@@ -1115,15 +1124,23 @@
   function renderStart() {
     clearDemo();
 
-    // Placeholder same height as header + bar-wrap to prevent layout jump
-    const ph = el('div', '');
-    ph.style.cssText = 'height:48px; flex-shrink:0; display:flex; align-items:center; justify-content:center;';
-    ph.innerHTML = `<span style="font-size:17px; color:#000;">Лучший результат дня — <span style="color:#3730a3; font-weight:500;">122 ${pluralScore(122)}</span></span>`;
+    // Placeholder — same structure as game header to prevent layout jump
+    const ph = el('div', 'slv-header');
+    ph.innerHTML = `
+      <div class="slv-score-block"><div class="slv-score" style="visibility:hidden">0 ${pluralScore(0)}</div></div>
+      <div class="slv-word-preview">
+        <span style="font-size:17px; color:#1c1208;">Лучший результат дня — <span style="color:#3730a3; font-weight:500;">122 ${pluralScore(122)}</span></span>
+      </div>
+      <div class="slv-timer-block"><div class="slv-timer-num" style="visibility:hidden">01:30</div></div>`;
     root.appendChild(ph);
 
     const msgEl = el('div', 'slv-success-msg');
     msgEl.textContent = successMsg || '';
     root.appendChild(msgEl);
+
+    const wpMobStart = el('div', 'slv-word-preview-mob');
+    wpMobStart.innerHTML = `<span style="font-size:17px; color:#1c1208;">Лучший результат дня — <span style="color:#3730a3; font-weight:500;">122 ${pluralScore(122)}</span></span>`;
+    root.appendChild(wpMobStart);
 
     const gridWrap = el('div', 'slv-grid-wrap');
     const gridEl = el('div', 'slv-grid');
@@ -1140,7 +1157,7 @@
 
     const startBtn = el('button', 'slv-restart');
     startBtn.textContent = 'Начать игру';
-    startBtn.style.marginTop = '48px';
+    startBtn.style.marginTop = window.innerWidth <= 640 ? '32px' : '48px';
     startBtn.addEventListener('click', () => {
       clearDemo();
       phase = 'select_cell';
