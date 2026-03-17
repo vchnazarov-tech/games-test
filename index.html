@@ -312,11 +312,16 @@
   }
   /* HEADER */
   .slv-header { width:100%; display:flex; align-items:center; justify-content:space-between; padding:0 24px; height:48px; flex-shrink:0; }
+  .slv-word-preview { display:flex; align-items:center; gap:3px; }
+  .slv-wl { font-size:17px; font-weight:500; color:#3730a3; }
+  .slv-wl.err { color:#b91c1c; }
+  .slv-word-preview.err { animation:slv-wl-err .25s ease-in-out; }
+  @keyframes slv-wl-err { 0%{transform:scale(1)} 40%{transform:scale(1.2)} 70%{transform:scale(.9)} 100%{transform:scale(1)} }
+  .slv-success-inline { font-size:17px; font-weight:400; color:#0f766e; }
   .slv-score-block { display:flex; align-items:baseline; gap:6px; }
   .slv-score { font-size:17px; font-weight:400; color:#1c1208; line-height:1; }
   .slv-timer-block { display:flex; align-items:baseline; min-width:64px; justify-content:flex-end; }
-  .slv-timer-num { font-size:17px; font-weight:400; color:#0f766e; line-height:1; transition:color .3s; }
-  .slv-timer-num.warn { color:#c2410c; }
+  .slv-timer-num { font-size:17px; font-weight:400; color:#1c1208; line-height:1; transition:color .3s; }
   .slv-timer-num.danger { color:#b91c1c; }
   /* TIMER BAR */
   .slv-bar-wrap { width:calc(100% - 48px); height:2px; background:rgba(0,0,0,0.08); border-radius:1px; margin:2px 24px 8px; overflow:hidden; flex-shrink:0; }
@@ -564,7 +569,7 @@
     ['Я','Ч','С','М','И','Т','Ь','Б','Ю'],
   ];
   const START_WORDS = ['норма','лампа','стена','карта','школа','парус','замок','число','волна','песня','гроза','мечта','книга','рынок','место','кошка','город','голос','образ','порог','забор','завод','берег','доска','ветер','весна','осень','пламя','крыша','башня','свеча','буква','лента','мираж','пирог','север','якорь','каток','пятно','проза','танец','плита','рыбак','крест','центр'];
-  const TIMER_MAX = 60;
+  const TIMER_MAX = 90;
 
   // ── Scoring ──
   const LETTER_VAL = (() => {
@@ -589,6 +594,7 @@
   let tLeft, tInterval;
   let used;
   let flashing = false;
+  let prevScore = 0;
   let demoTimeouts = [];
 
   // phase: 'select_cell' | 'draw_word' | 'game_over'
@@ -649,7 +655,7 @@
     const barEl = document.getElementById('slv-bar');
     if (numEl) {
       numEl.textContent = String(Math.floor(tLeft / 60)).padStart(2,'0') + ':' + String(tLeft % 60).padStart(2,'0');
-      numEl.className = 'slv-timer-num' + (tLeft <= 15 ? ' danger' : tLeft <= 30 ? ' warn' : '');
+      numEl.className = 'slv-timer-num' + (tLeft <= 15 ? ' danger' : '');
     }
     if (barEl) {
       barEl.style.width = (tLeft / TIMER_MAX * 100) + '%';
@@ -760,8 +766,9 @@
       gw.appendChild(fl);
     }
     used.add(word);
+    prevScore = score;
     score += pts;
-    successMsg = `+${pts} ${pluralScore(pts)} — «${word.toUpperCase()}»`;
+    successMsg = `+${pts} ${pluralScore(pts)}`;
     const sp = [...path];
     path    = [];
     flashing = true;
@@ -972,10 +979,18 @@
 
     // Header
     const hdr = el('div', 'slv-header');
+    const wordPreview = successMsg
+      ? `<span class="slv-success-inline">${successMsg}</span>`
+      : phase === 'draw_word' && path.length > 0
+        ? pathWord().toUpperCase().split('').map(ch =>
+            `<span class="slv-wl${flashCls === 'flash-err' ? ' err' : ''}">${ch}</span>`
+          ).join('')
+        : '';
     hdr.innerHTML = `
       <div class="slv-score-block">
-        <div class="slv-score">${score} ${pluralScore(score)}</div>
+        <div class="slv-score">${successMsg ? prevScore : score} ${pluralScore(successMsg ? prevScore : score)}</div>
       </div>
+      <div class="slv-word-preview${flashCls === 'flash-err' ? ' err' : ''}">${wordPreview}</div>
       <div class="slv-timer-block">
         ${turn >= 2
           ? `<div class="slv-timer-num" id="slv-tnum">${String(Math.floor(tLeft/60)).padStart(2,'0')+':'+String(tLeft%60).padStart(2,'0')}</div>`
@@ -983,10 +998,19 @@
       </div>`;
     root.appendChild(hdr);
 
+    if (!successMsg && !flashCells && prevScore < score) {
+      const scoreEl = hdr.querySelector('.slv-score');
+      let cur = prevScore;
+      const iv = setInterval(() => {
+        cur++;
+        scoreEl.textContent = `${cur} ${pluralScore(cur)}`;
+        if (cur >= score) { clearInterval(iv); prevScore = score; }
+      }, 50);
+    }
 
     // Grid
     const msgEl = el('div', 'slv-success-msg');
-    msgEl.textContent = successMsg || '';
+    msgEl.textContent = '';
     root.appendChild(msgEl);
 
     const gridWrap = el('div', 'slv-grid-wrap');
