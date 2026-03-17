@@ -317,10 +317,12 @@
   .slv-wl.err { color:#b91c1c; }
   .slv-word-preview.err { animation:slv-wl-err .25s ease-in-out; }
   @keyframes slv-wl-err { 0%{transform:scale(1)} 40%{transform:scale(1.2)} 70%{transform:scale(.9)} 100%{transform:scale(1)} }
-  .slv-success-inline { font-size:17px; font-weight:400; color:#0f766e; }
-  .slv-score-block { display:flex; align-items:baseline; gap:6px; }
+  .slv-success-inline { font-size:17px; font-weight:500; color:#0f766e; }
+  .slv-hint-inline { font-size:17px; font-weight:400; color:#000; }
+  .slv-err-inline  { font-size:17px; font-weight:400; color:#b91c1c; }
+  .slv-score-block { display:flex; align-items:baseline; gap:6px; flex:1; }
   .slv-score { font-size:17px; font-weight:400; color:#1c1208; line-height:1; }
-  .slv-timer-block { display:flex; align-items:baseline; min-width:64px; justify-content:flex-end; }
+  .slv-timer-block { display:flex; align-items:baseline; min-width:64px; justify-content:flex-end; flex:1; }
   .slv-timer-num { font-size:17px; font-weight:400; color:#1c1208; line-height:1; transition:color .3s; }
   .slv-timer-num.danger { color:#b91c1c; }
   /* TIMER BAR */
@@ -394,7 +396,7 @@
   @keyframes slv-popin { from{opacity:0;transform:scale(.92)} to{opacity:1;transform:scale(1)} }
   .slv-over-title { font-size:22px; font-weight:500; color:#1c1208; text-align:center; }
   .slv-over-stats { display:flex; gap:32px; align-items:center; justify-content:center; flex-wrap:wrap; }
-  .slv-over-stat { font-size:15px; font-weight:400; color:#595959; }
+  .slv-over-stat { font-size:15px; font-weight:400; color:#000; }
   .slv-stat-up { color:#166534; font-weight:500; margin-right:6px; }
   .slv-stat-down { color:#b91c1c; font-weight:500; margin-right:6px; }
   .slv-restart { font-family:Roboto,sans-serif; font-size:14px; font-weight:500; color:#fff; background:#3730a3; border:none; border-radius:10px; padding:12px 40px; cursor:pointer; transition:background .15s, transform .1s, box-shadow .15s; margin-top:12px; box-shadow:0 2px 10px rgba(55,48,163,0.28); }
@@ -590,7 +592,7 @@
   let grid, score, turn, phase;
   let selCell, newPos;
   let drawing, path;
-  let hint, hintCls, successMsg;
+  let hint, hintCls, successMsg, usedWordMsg;
   let tLeft, tInterval;
   let used;
   let flashing = false;
@@ -610,8 +612,9 @@
     path       = [];
     hint       = 'Выберите пустую клетку и добавьте букву';
     hintCls    = '';
-    successMsg = '';
-    tLeft      = TIMER_MAX;
+    successMsg  = '';
+    usedWordMsg = '';
+    tLeft       = TIMER_MAX;
     clearInterval(tInterval);
     tInterval  = null;
 
@@ -703,8 +706,9 @@
   function onCellMouseDown(r, c, e) {
     if (flashing || phase !== 'draw_word' || !grid[r][c]) return;
     e.preventDefault();
-    drawing = true;
-    path    = [{r, c}];
+    drawing     = true;
+    path        = [{r, c}];
+    usedWordMsg = '';
     render();
   }
 
@@ -748,9 +752,9 @@
       return;
     }
     if (used.has(word)) {
-      hint    = `«${word.toUpperCase()}» — уже использовано`;
-      hintCls = 'err';
-      flashPath([...path], 'flash-err', () => { path = []; render(); });
+      usedWordMsg = `«${word.toUpperCase()}» уже использовано`;
+      path = [];
+      render();
       return;
     }
 
@@ -979,22 +983,34 @@
 
     // Header
     const hdr = el('div', 'slv-header');
+    const turnOneHint = turn === 1 && !successMsg && !(phase === 'draw_word' && path.length > 0)
+      ? (phase === 'select_cell'
+          ? (selCell ? 'Введите букву' : 'Выберите клетку для новой буквы')
+          : (phase === 'draw_word' ? 'Соедините буквы в новое слово' : null))
+      : null;
+    const turnTwoHint = turn === 2 && !successMsg && phase === 'select_cell' && !selCell
+      ? 'Наберите как можно больше очков!'
+      : null;
     const wordPreview = successMsg
       ? `<span class="slv-success-inline">${successMsg}</span>`
       : phase === 'draw_word' && path.length > 0
         ? pathWord().toUpperCase().split('').map(ch =>
             `<span class="slv-wl${flashCls === 'flash-err' ? ' err' : ''}">${ch}</span>`
           ).join('')
-        : '';
+        : usedWordMsg
+          ? `<span class="slv-err-inline">${usedWordMsg}</span>`
+          : turnOneHint
+            ? `<span class="slv-hint-inline">${turnOneHint}</span>`
+            : turnTwoHint
+              ? `<span class="slv-hint-inline">${turnTwoHint}</span>`
+              : '';
     hdr.innerHTML = `
       <div class="slv-score-block">
         <div class="slv-score">${successMsg ? prevScore : score} ${pluralScore(successMsg ? prevScore : score)}</div>
       </div>
       <div class="slv-word-preview${flashCls === 'flash-err' ? ' err' : ''}">${wordPreview}</div>
       <div class="slv-timer-block">
-        ${turn >= 2
-          ? `<div class="slv-timer-num" id="slv-tnum">${String(Math.floor(tLeft/60)).padStart(2,'0')+':'+String(tLeft%60).padStart(2,'0')}</div>`
-          : ''}
+        <div class="slv-timer-num" id="slv-tnum" style="${turn < 2 ? 'visibility:hidden' : ''}">${String(Math.floor(tLeft/60)).padStart(2,'0')+':'+String(tLeft%60).padStart(2,'0')}</div>
       </div>`;
     root.appendChild(hdr);
 
@@ -1005,7 +1021,7 @@
         cur++;
         scoreEl.textContent = `${cur} ${pluralScore(cur)}`;
         if (cur >= score) { clearInterval(iv); prevScore = score; }
-      }, 50);
+      }, 25);
     }
 
     // Grid
@@ -1079,15 +1095,6 @@
     gridWrap.appendChild(gridEl); root.appendChild(gridWrap);
 
     // Word preview
-    const wp = el('div', 'slv-wordprev');
-    if (phase === 'draw_word') {
-      if (path.length > 0) {
-        wp.textContent = path.map(p => grid[p.r][p.c].toUpperCase()).join(' · ');
-      } else {
-        wp.classList.add('muted');
-        wp.textContent = '← начните с любой буквы';
-      }
-    }
     // Keyboard
     const kbEl = el('div', 'slv-keyboard');
     kbEl.style.marginTop = '36px';
@@ -1110,7 +1117,7 @@
 
     // Placeholder same height as header + bar-wrap to prevent layout jump
     const ph = el('div', '');
-    ph.style.cssText = 'height:48px; flex-shrink:0; display:flex; align-items:end; justify-content:center;';
+    ph.style.cssText = 'height:48px; flex-shrink:0; display:flex; align-items:center; justify-content:center;';
     ph.innerHTML = `<span style="font-size:17px; color:#000;">Лучший результат дня — <span style="color:#3730a3; font-weight:500;">122 ${pluralScore(122)}</span></span>`;
     root.appendChild(ph);
 
