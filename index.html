@@ -349,7 +349,7 @@
   .slv-bar.warn { background:#c2410c; }
   .slv-bar.danger { background:#b91c1c; }
   /* GRID */
-  .slv-grid-wrap { background:#ede8df; border-radius:16px; padding:var(--slv-pad); flex-shrink:0; }
+  .slv-grid-wrap { background:rgba(237,232,223,0.55); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.4); border-radius:16px; padding:var(--slv-pad); flex-shrink:0; }
   .slv-grid { display:grid; grid-template-columns:repeat(5,var(--slv-size)); grid-template-rows:repeat(5,var(--slv-size)); gap:var(--slv-gap); }
   .slv-cell {
     width:var(--slv-size); height:var(--slv-size); border-radius:10px; position:relative;
@@ -439,7 +439,11 @@
     .slv-score-block { grid-column:1; grid-row:1; }
     .slv-timer-block { grid-column:2; grid-row:1; }
     .slv-header .slv-word-preview { display:none; }
-    .slv-word-preview-mob { display:flex; align-items:center; justify-content:center; gap:3px; width:100%; min-height:30px; padding:6px 16px 8px; }
+    .slv-word-preview-mob { display:flex; align-items:center; justify-content:center; gap:3px; width:100%; min-height:40px; padding:0 16px; }
+    .slv-word-preview-mob .slv-wl,
+    .slv-word-preview-mob .slv-hint-inline,
+    .slv-word-preview-mob .slv-success-inline,
+    .slv-word-preview-mob .slv-err-inline { font-size:15px; }
     .slv-bar-wrap { width: calc(100% - 32px); margin-left: 16px; margin-right: 16px; }
     .slv-keyboard { gap: 3px; padding: 0 8px; }
   }
@@ -1140,6 +1144,7 @@
   }
 
   function renderStart() {
+    forceStyles();
     clearDemo();
 
     // Placeholder — same structure as game header to prevent layout jump
@@ -1157,7 +1162,7 @@
     root.appendChild(msgEl);
 
     const wpMobStart = el('div', 'slv-word-preview-mob');
-    wpMobStart.innerHTML = `<span style="font-size:17px; color:#1c1208;">Лучший результат дня — <span style="color:#3730a3; font-weight:500;">122 ${pluralScore(122)}</span></span>`;
+    wpMobStart.innerHTML = `<span style="font-size:15px; color:#1c1208;">Лучший результат дня — <span style="color:#3730a3; font-weight:500;">122 ${pluralScore(122)}</span></span>`;
     root.appendChild(wpMobStart);
 
     const gridWrap = el('div', 'slv-grid-wrap');
