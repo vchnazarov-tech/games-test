@@ -335,11 +335,11 @@
   .slv-hint-inline { font-size:17px; font-weight:400; color:#000; text-align:center; }
   .slv-err-inline  { font-size:17px; font-weight:400; color:#b91c1c; }
   .slv-score-block { display:flex; align-items:center; }
-  .slv-score { font-size:14px; font-weight:500; color:#3730a3; line-height:1;
+  .slv-score { font-size:13px; font-weight:500; color:#3730a3; line-height:1;
     background:rgba(255,255,255,0.55); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
     border:1px solid rgba(255,255,255,0.35); border-radius:80px; padding:5px 12px; white-space:nowrap; }
   .slv-timer-block { display:flex; align-items:center; justify-content:flex-end; }
-  .slv-timer-num { font-size:14px; font-weight:500; color:#1c1208; line-height:1;
+  .slv-timer-num { font-size:13px; font-weight:500; color:#000000; line-height:1;
     background:rgba(255,255,255,0.55); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
     border:1px solid rgba(255,255,255,0.35); border-radius:80px; padding:5px 12px; transition:color .3s, background .3s, border-color .3s; white-space:nowrap; }
   .slv-timer-num.danger { color:#b91c1c; background:rgba(255,235,235,0.6); border-color:rgba(185,28,28,0.15); }
@@ -349,7 +349,7 @@
   .slv-bar.warn { background:#c2410c; }
   .slv-bar.danger { background:#b91c1c; }
   /* GRID */
-  .slv-grid-wrap { background:rgba(237,232,223,0.55); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.4); border-radius:16px; padding:var(--slv-pad); flex-shrink:0; }
+  .slv-grid-wrap { background:rgba(237,232,223,0.55); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.65); border-radius:18px; padding:var(--slv-pad); flex-shrink:0; }
   .slv-grid { display:grid; grid-template-columns:repeat(5,var(--slv-size)); grid-template-rows:repeat(5,var(--slv-size)); gap:var(--slv-gap); }
   .slv-cell {
     width:var(--slv-size); height:var(--slv-size); border-radius:10px; position:relative;
@@ -365,12 +365,16 @@
   .slv-cell.drawable { cursor:pointer; }
   .slv-cell.avail:hover { background:rgba(55,48,163,0.1); border-style:solid; border-color:#3730a3; color:#3730a3; }
   .slv-cell.sel     { background:rgba(55,48,163,0.07); border-color:#3730a3; border-style:solid; cursor:pointer; color:#3730a3; animation:slv-pulse 1.4s ease-in-out infinite; }
+  @keyframes slv-letterpop { 0%{transform:scale(0.3);opacity:0} 65%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
   .slv-cell.new-letter { background:#fef3c7; border-color:#b45309; color:#92400e; box-shadow:0 1px 4px rgba(180,83,9,0.15); }
+  .slv-letter-pop { display:inline-block; animation:slv-letterpop .25s cubic-bezier(.34,1.56,.64,1); }
   .slv-cell.in-path { background:#ede9fe; border-color:rgba(55,48,163,0.35); color:#3730a3; box-shadow:0 1px 4px rgba(55,48,163,0.1); animation:slv-cellin .18s ease; }
   .slv-cell.in-path.latest { animation:slv-cellin .18s ease, slv-bounce .2s ease-out; }
   .slv-cell.in-path.new-letter { background:#fef3c7; border-color:#b45309; color:#92400e; }
-  .slv-cell.flash-ok  { background:#E5F7E7; border-color:#30B03D; color:#0f766e; box-shadow:none; animation:slv-flashin .2s ease; }
-  .slv-cell.flash-err { background:#fef2f2; border-color:#dc2626; color:#b91c1c; box-shadow:none; animation:slv-flashin .2s ease; }
+  @keyframes slv-cellpop { 0%{transform:scale(1)} 50%{transform:scale(1.08)} 100%{transform:scale(1)} }
+  .slv-cell.flash-ok  { background:#E5F7E7; border-color:#30B03D; color:#0f766e; box-shadow:none; animation:slv-flashin .2s ease, slv-cellpop .3s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes slv-shake { 0%{transform:translateX(0)} 20%{transform:translateX(-4px)} 40%{transform:translateX(4px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} 100%{transform:translateX(0)} }
+  .slv-cell.flash-err { background:#fef2f2; border-color:#dc2626; color:#b91c1c; box-shadow:none; animation:slv-flashin .2s ease, slv-shake .35s ease; }
   @keyframes slv-cellin  { from{background:#fff; border-color:rgba(0,0,0,0.11); color:#1c1208;} }
   @keyframes slv-flashin { from{background:#ede9fe; border-color:rgba(55,48,163,0.35);} }
   @keyframes slv-bounce  { 0%{box-shadow:0 0 0 0 rgba(55,48,163,0.28)} 100%{box-shadow:0 0 0 5px rgba(55,48,163,0)} }
@@ -439,11 +443,11 @@
     }
     .post-inner { padding: 0 16px; }
     .post-content#game-root { width: 100%; height: 592px; min-height: unset; }
-    .slv-header { grid-template-columns:1fr 1fr; grid-template-rows:auto; align-items:center; position:static; gap:0; padding:20px 16px 0; height:auto; }
+    .slv-header { grid-template-columns:1fr 1fr; grid-template-rows:auto; align-items:center; position:static; gap:0; padding:16px 16px 0; height:auto; }
     .slv-score-block { grid-column:1; grid-row:1; }
     .slv-timer-block { grid-column:2; grid-row:1; }
     .slv-header .slv-word-preview { display:none; }
-    .slv-word-preview-mob { display:flex; align-items:center; justify-content:center; gap:3px; width:100%; min-height:40px; padding:0 16px; }
+    .slv-word-preview-mob { display:flex; align-items:normal; justify-content:center; gap:3px; width:100%; min-height:40px; padding:4px 16px 0 16px; }
     .slv-word-preview-mob .slv-wl,
     .slv-word-preview-mob .slv-hint-inline,
     .slv-word-preview-mob .slv-success-inline,
@@ -1177,7 +1181,13 @@
         cell.dataset.r = r; cell.dataset.c = c;
         if (letter) {
           const pi = path.findIndex(p => p.r === r && p.c === c);
-          cell.textContent = letter.toUpperCase();
+          if (isNew && !isInP && !isFlash && path.length === 0) {
+            const span = el('span', 'slv-letter-pop');
+            span.textContent = letter.toUpperCase();
+            cell.appendChild(span);
+          } else {
+            cell.textContent = letter.toUpperCase();
+          }
           if (pi >= 0 && !flashCells) {
             const pidx = el('span', 'slv-pidx');
             pidx.textContent = pi + 1;
@@ -1266,7 +1276,7 @@
 
     const startBtn = el('button', 'slv-restart');
     startBtn.textContent = 'Начать игру';
-    startBtn.style.marginTop = window.innerWidth <= 640 ? '32px' : '48px';
+    startBtn.style.marginTop = window.innerWidth <= 640 ? '48px' : '48px';
     startBtn.addEventListener('click', () => {
       clearDemo();
       phase = 'select_cell';
