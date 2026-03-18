@@ -1122,7 +1122,7 @@
               : '';
     hdr.innerHTML = `
       <div class="slv-score-block">
-        <div class="slv-score">${successMsg ? prevScore : score} ${pluralScore(successMsg ? prevScore : score)}</div>
+        <div class="slv-score" style="${turn < 2 ? 'visibility:hidden' : ''}">${successMsg ? prevScore : score} ${pluralScore(successMsg ? prevScore : score)}</div>
       </div>
       <div class="slv-word-preview${flashCls === 'flash-err' ? ' err' : ''}">${wordPreview}</div>
       <div class="slv-timer-block">
