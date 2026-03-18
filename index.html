@@ -344,10 +344,6 @@
     border:1px solid rgba(255,255,255,0.35); border-radius:80px; padding:5px 12px; transition:color .3s, background .3s, border-color .3s; white-space:nowrap; }
   .slv-timer-num.danger { color:#b91c1c; background:rgba(255,235,235,0.6); border-color:rgba(185,28,28,0.15); }
   /* TIMER BAR */
-  .slv-bar-wrap { width:calc(100% - 48px); height:2px; background:rgba(0,0,0,0.08); border-radius:1px; margin:2px 24px 8px; overflow:hidden; flex-shrink:0; }
-  .slv-bar { height:100%; background:#0f766e; border-radius:1px; transition:width .9s linear, background .3s; }
-  .slv-bar.warn { background:#c2410c; }
-  .slv-bar.danger { background:#b91c1c; }
   /* GRID */
   .slv-grid-wrap { background:rgba(237,232,223,0.55); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.65); border-radius:18px; padding:var(--slv-pad); flex-shrink:0; }
   .slv-grid { display:grid; grid-template-columns:repeat(5,var(--slv-size)); grid-template-rows:repeat(5,var(--slv-size)); gap:var(--slv-gap); }
@@ -365,7 +361,7 @@
   .slv-cell.drawable { cursor:pointer; }
   .slv-cell.avail:hover { background:rgba(55,48,163,0.1); border-style:solid; border-color:#3730a3; color:#3730a3; }
   .slv-cell.sel     { background:rgba(55,48,163,0.07); border-color:#3730a3; border-style:solid; cursor:pointer; color:#3730a3; animation:slv-pulse 1.4s ease-in-out infinite; }
-  @keyframes slv-letterpop { 0%{transform:scale(0.3);opacity:0} 65%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
+  @keyframes slv-letterpop { 0%{transform:scale(0.3);opacity:0} 65%{transform:scale(1.13)} 100%{transform:scale(1);opacity:1} }
   .slv-cell.new-letter { background:#fef3c7; border-color:#b45309; color:#92400e; box-shadow:0 1px 4px rgba(180,83,9,0.15); }
   .slv-letter-pop { display:inline-block; animation:slv-letterpop .25s cubic-bezier(.34,1.56,.64,1); }
   .slv-cell.in-path { background:#ede9fe; border-color:rgba(55,48,163,0.35); color:#3730a3; box-shadow:0 1px 4px rgba(55,48,163,0.1); animation:slv-cellin .18s ease; }
@@ -453,7 +449,6 @@
     .slv-word-preview-mob .slv-success-inline,
     .slv-word-preview-mob .slv-err-inline,
     .slv-word-preview-mob .slv-bestday-label { font-size:15px; }
-    .slv-bar-wrap { width: calc(100% - 32px); margin-left: 16px; margin-right: 16px; }
     .slv-keyboard { gap: 3px; padding: 0 8px; }
   }
 
@@ -713,6 +708,7 @@
   let tLeft, tInterval;
   let used;
   let flashing = false;
+  let animateNewLetter = false;
   let prevScore = 0;
   let demoTimeouts = [];
 
@@ -772,14 +768,9 @@
 
   function updateTimerDOM() {
     const numEl = document.getElementById('slv-tnum');
-    const barEl = document.getElementById('slv-bar');
     if (numEl) {
       numEl.textContent = String(Math.floor(tLeft / 60)).padStart(2,'0') + ':' + String(tLeft % 60).padStart(2,'0');
       numEl.className = 'slv-timer-num' + (tLeft <= 15 ? ' danger' : '');
-    }
-    if (barEl) {
-      barEl.style.width = (tLeft / TIMER_MAX * 100) + '%';
-      barEl.className = 'slv-bar' + (tLeft <= 15 ? ' danger' : tLeft <= 30 ? ' warn' : '');
     }
   }
 
@@ -806,6 +797,7 @@
   function onKeyPress(letter) {
     if (phase === 'draw_word' && newPos && path.length === 0) {
       grid[newPos.r][newPos.c] = letter.toLowerCase();
+      animateNewLetter = true;
       render();
       return;
     }
@@ -817,6 +809,7 @@
     phase    = 'draw_word';
     hint     = 'Проведите по буквам, чтобы составить слово';
     hintCls  = '';
+    animateNewLetter = true;
     render();
   }
 
@@ -826,6 +819,7 @@
     drawing     = true;
     path        = [{r, c}];
     usedWordMsg = '';
+    hint        = '';
     render();
   }
 
@@ -854,22 +848,21 @@
       return;
     }
     if (!pathHasNew()) {
-      const nl = grid[newPos.r][newPos.c].toUpperCase();
-      hint    = `Слово должно содержать новую букву «${nl}»`;
-      hintCls = 'err';
+      hint    = '';
+      hintCls = '';
       path    = [];
       render();
       return;
     }
     const word = pathWord();
     if (!DICT.has(word)) {
-      hint    = `«${word.toUpperCase()}» — нет в словаре`;
+      hint    = `<span style="font-weight:500">${word.toUpperCase()}</span> — нет в словаре`;
       hintCls = 'err';
       flashPath([...path], 'flash-err', () => { path = []; render(); });
       return;
     }
     if (used.has(word)) {
-      usedWordMsg = `«${word.toUpperCase()}» уже использовано`;
+      usedWordMsg = `<span style="font-weight:500">${word.toUpperCase()}</span> уже использовано`;
       path = [];
       render();
       return;
@@ -1116,6 +1109,8 @@
           ).join('')
         : usedWordMsg
           ? `<span class="slv-err-inline">${usedWordMsg}</span>`
+          : hint && hintCls === 'err'
+            ? `<span class="slv-err-inline">${hint}</span>`
           : turnOneHint
             ? `<span class="slv-hint-inline">${turnOneHint}</span>`
             : turnTwoHint
@@ -1181,7 +1176,8 @@
         cell.dataset.r = r; cell.dataset.c = c;
         if (letter) {
           const pi = path.findIndex(p => p.r === r && p.c === c);
-          if (isNew && !isInP && !isFlash && path.length === 0) {
+          if (isNew && !isInP && !isFlash && animateNewLetter) {
+            animateNewLetter = false;
             const span = el('span', 'slv-letter-pop');
             span.textContent = letter.toUpperCase();
             cell.appendChild(span);
