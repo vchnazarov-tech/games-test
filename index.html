@@ -707,7 +707,7 @@
   let selCell, newPos;
   let drawing, path;
   let hint, hintCls, successMsg, usedWordMsg;
-  let tLeft, tInterval;
+  let tLeft, tInterval, tDeadline;
   let used;
   let flashing = false;
   let animateNewLetter = false;
@@ -756,16 +756,20 @@
   // ── Timer ──
   function startTimer() {
     clearInterval(tInterval);
+    tDeadline = Date.now() + TIMER_MAX * 1000;
     tLeft = TIMER_MAX;
     tInterval = setInterval(() => {
-      tLeft--;
-      updateTimerDOM();
+      tLeft = Math.ceil((tDeadline - Date.now()) / 1000);
       if (tLeft <= 0) {
+        tLeft = 0;
         clearInterval(tInterval);
+        updateTimerDOM();
         phase = 'game_over';
         render();
+        return;
       }
-    }, 1000);
+      updateTimerDOM();
+    }, 500);
   }
 
   function updateTimerDOM() {
@@ -843,9 +847,7 @@
     drawing = false;
 
     if (path.length < 3) {
-      hint    = 'Слово должно быть минимум 3 буквы';
-      hintCls = 'err';
-      path    = [];
+      path = [];
       render();
       return;
     }
