@@ -367,8 +367,8 @@
   .slv-cell.in-path { background:#ede9fe; border-color:rgba(55,48,163,0.35); color:#3730a3; box-shadow:0 1px 4px rgba(55,48,163,0.1); animation:slv-cellin .18s ease; }
   .slv-cell.in-path.latest { animation:slv-cellin .18s ease, slv-bounce .2s ease-out; }
   .slv-cell.in-path.new-letter { background:#fef3c7; border-color:#b45309; color:#92400e; }
-  @keyframes slv-cellpop { 0%{transform:scale(1)} 50%{transform:scale(1.08)} 100%{transform:scale(1)} }
-  .slv-cell.flash-ok  { background:#E5F7E7; border-color:#30B03D; color:#0f766e; box-shadow:none; animation:slv-flashin .2s ease, slv-cellpop .3s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes slv-cellpop { 0%{transform:scale(1)} 35%{transform:scale(1.1)} 65%{transform:scale(0.95)} 82%{transform:scale(1.04)} 100%{transform:scale(1)} }
+  .slv-cell.flash-ok  { background:#E5F7E7; border-color:#30B03D; color:#0f766e; box-shadow:none; animation:slv-flashin .2s ease, slv-cellpop .3s ease-out; }
   @keyframes slv-shake { 0%{transform:translateX(0)} 20%{transform:translateX(-4px)} 40%{transform:translateX(4px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} 100%{transform:translateX(0)} }
   .slv-cell.flash-err { background:#fef2f2; border-color:#dc2626; color:#b91c1c; box-shadow:none; animation:slv-flashin .2s ease, slv-shake .35s ease; }
   @keyframes slv-cellin  { from{background:#fff; border-color:rgba(0,0,0,0.11); color:#1c1208;} }
@@ -856,8 +856,8 @@
     }
     const word = pathWord();
     if (!DICT.has(word)) {
-      hint    = `<span style="font-weight:500">${word.toUpperCase()}</span> — нет в словаре`;
-      hintCls = 'err';
+      hint    = '';
+      hintCls = '';
       flashPath([...path], 'flash-err', () => { path = []; render(); });
       return;
     }
