@@ -335,7 +335,7 @@
   .slv-err-inline  { font-size:17px; font-weight:400; color:#b91c1c; }
   .slv-score-block { display:flex; align-items:center; }
   .slv-score { font-size:15px; font-weight:500; color:#3730a3; line-height:1;
-    background:rgba(255,255,255,0.55);    border:none; border-radius:80px; padding:5px 12px; white-space:nowrap; position:relative; }
+    background:rgba(255,255,255,0.55); border:none; border-radius:80px; padding:5px 0; white-space:nowrap; position:relative; width:90px; text-align:center; }
   .slv-score::before { content:""; border-radius:80px; pointer-events:none; background:linear-gradient(#ffffffa3 40%,#fff0 75% 95%,#ffffffa3); padding:1px; position:absolute; inset:0; -webkit-mask-image:linear-gradient(#fff 0 0),linear-gradient(#fff 0 0); mask-image:linear-gradient(#fff 0 0),linear-gradient(#fff 0 0); -webkit-mask-clip:content-box,border-box; mask-clip:content-box,border-box; -webkit-mask-composite:xor; mask-composite:exclude; }
   .slv-timer-block { display:flex; align-items:center; justify-content:flex-end; }
   .slv-timer-num { font-size:15px; font-weight:500; color:#000000; line-height:1;
@@ -344,7 +344,8 @@
   .slv-timer-num.danger { color:#b91c1c; background:rgba(255,235,235,0.6); }
   /* TIMER BAR */
   /* GRID */
-  .slv-grid-wrap { background:rgba(237,232,223,0.55); border:none; border-radius:18px; padding:var(--slv-pad); flex-shrink:0; position:relative; }
+  .slv-grid-wrap { background:radial-gradient(ellipse at 25% 20%, rgba(215,210,200,0.6) 0%, rgba(215,210,200,0) 70%), radial-gradient(ellipse at 70% 80%, rgba(200,193,182,0.65) 0%, rgba(215,208,197,0.6) 60%, rgba(228,222,213,0.65) 100%); border:none; border-radius:18px; padding:var(--slv-pad); flex-shrink:0; position:relative;  }
+  .slv-grid-wrap::after { content:""; border-radius:18px; pointer-events:none; position:absolute; inset:0; background:linear-gradient(115deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,0.15) 100%); z-index:1; }
   .slv-grid-wrap::before { content:""; border-radius:18px; pointer-events:none; background:linear-gradient(#ffffffa3 40%,#fff0 75% 95%,#ffffffa3); padding:1px; position:absolute; inset:0; -webkit-mask-image:linear-gradient(#fff 0 0),linear-gradient(#fff 0 0); mask-image:linear-gradient(#fff 0 0),linear-gradient(#fff 0 0); -webkit-mask-clip:content-box,border-box; mask-clip:content-box,border-box; -webkit-mask-composite:xor; mask-composite:exclude; }
   .slv-grid { display:grid; grid-template-columns:repeat(5,var(--slv-size)); grid-template-rows:repeat(5,var(--slv-size)); gap:var(--slv-gap); }
   .slv-cell {
@@ -461,7 +462,7 @@
   body, .post-card, .post-title, .author-name, .author-time, .author-section,
   .btn-subscribe, .reaction-inactive, .reaction-add, .action-btn, .action-right,
   .post-content, .post-content#game-root,
-  .slv-cell, .slv-key, .slv-grid-wrap, .slv-score, .slv-timer-num,
+  .slv-cell, .slv-key, .slv-grid-wrap, .slv-score,
   .slv-hint-inline, .slv-bestday-label, .slv-bestday-score {
     transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
@@ -712,6 +713,7 @@
   let used;
   let flashing = false;
   let animateNewLetter = false;
+  let badgeAnimate = false;
   let prevScore = 0;
   let demoTimeouts = [];
 
@@ -893,6 +895,7 @@
     flashing = true;
     flashPath(sp, 'flash-ok', () => {
       flashing = false;
+      if (turn === 1) badgeAnimate = true;
       turn++;
       newPos  = null;
       successMsg = '';
@@ -1123,12 +1126,13 @@
               : '';
     hdr.innerHTML = `
       <div class="slv-score-block">
-        <div class="slv-score" style="${turn < 2 ? 'visibility:hidden' : turn === 2 ? 'animation:slv-badge-in .25s cubic-bezier(.34,1.56,.64,1) forwards' : ''}">${successMsg ? prevScore : score} ${pluralScore(successMsg ? prevScore : score)}</div>
+        <div class="slv-score" style="${turn < 2 ? 'visibility:hidden' : badgeAnimate ? 'animation:slv-badge-in .25s cubic-bezier(.34,1.56,.64,1) forwards' : ''}">${successMsg ? prevScore : score} ${pluralScore(successMsg ? prevScore : score)}</div>
       </div>
       <div class="slv-word-preview${flashCls === 'flash-err' ? ' err' : ''}">${wordPreview}</div>
       <div class="slv-timer-block">
-        <div class="slv-timer-num" id="slv-tnum" style="${turn < 2 ? 'visibility:hidden' : turn === 2 ? 'animation:slv-badge-in .25s cubic-bezier(.34,1.56,.64,1) forwards' : ''}">${String(Math.floor(tLeft/60)).padStart(2,'0')+':'+String(tLeft%60).padStart(2,'0')}</div>
+        <div class="slv-timer-num" id="slv-tnum" style="${turn < 2 ? 'visibility:hidden' : badgeAnimate ? 'animation:slv-badge-in .25s cubic-bezier(.34,1.56,.64,1) forwards' : ''}">${String(Math.floor(tLeft/60)).padStart(2,'0')+':'+String(tLeft%60).padStart(2,'0')}</div>
       </div>`;
+    badgeAnimate = false;
     root.appendChild(hdr);
 
     if (!successMsg && !flashCells && prevScore < score) {
