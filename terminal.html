@@ -354,8 +354,8 @@
         <span>23</span>
       </div>
 
-      <!-- Плюс -->
-      <div class="reaction-add">
+      <!-- Плюс / переключение темы -->
+      <div class="reaction-add" id="theme-toggle" title="Сменить тему">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M10 4.415C10.461 4.415 10.835 4.789 10.835 5.25V9.165H14.75C15.211 9.165 15.585 9.539 15.585 10C15.585 10.461 15.211 10.835 14.75 10.835H10.835V14.75C10.835 15.211 10.461 15.585 10 15.585C9.539 15.585 9.165 15.211 9.165 14.75V10.835H5.25C4.789 10.835 4.415 10.461 4.415 10C4.415 9.539 4.789 9.165 5.25 9.165H9.165V5.25C9.165 4.789 9.539 4.415 10 4.415Z" fill="#595959"/>
         </svg>
@@ -420,12 +420,14 @@
     --cement:  #c0c0c0;
     --clay:    #9a9a7e;
     --mud:     #b8b898;
-    --carbon:  #1a1614;
-    --black:   #0f0d0b;
-    --cell-bg: #161210;
-    --flick:   cubic-bezier(.36, 2.09, .07, -1.52);
-    --fast:    80ms;
-    --mid:     180ms;
+    --carbon:   #1a1614;
+    --black:    #0f0d0b;
+    --cell-bg:  #161210;
+    --surface:  #1e1a14;
+    --surface2: #2a2418;
+    --border:   #2e2820;
+    --flick:    cubic-bezier(.36, 2.09, .07, -1.52);
+    --fast:     80ms;
 
     font-family: 'Departure Mono', monospace;
     font-synthesis: none;
@@ -436,30 +438,56 @@
     background-color: var(--black);
     background-image:
       /* Левый низ — широкий, смещён чуть выше угла */
-      radial-gradient(ellipse 62% 42% at 4% 94%, rgba(210,88,8,0.28) 0%, transparent 70%),
+      radial-gradient(ellipse 62% 42% at 4% 6%, rgba(210,88,8,0.40) 0%, transparent 70%),
       /* Правый верх — вытянутый горизонтально */
-      radial-gradient(ellipse 58% 32% at 96% 4%, rgba(178,72,5,0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 58% 32% at 96% 4%, rgba(178,72,5,0.28) 0%, transparent 65%),
       /* Левый верх — компактный, плотный */
-      radial-gradient(ellipse 32% 28% at 1% 2%,  rgba(152,60,5,0.14) 0%, transparent 72%),
+      radial-gradient(ellipse 32% 28% at 1% 2%,  rgba(152,60,5,0.22) 0%, transparent 72%),
       /* Правый низ — низкий и широкий */
-      radial-gradient(ellipse 52% 36% at 98% 97%, rgba(162,66,5,0.13) 0%, transparent 62%),
+      radial-gradient(ellipse 52% 36% at 98% 97%, rgba(162,66,5,0.22) 0%, transparent 62%),
       /* Артефакт — правый край посередине */
-      radial-gradient(ellipse 18% 22% at 100% 58%, rgba(188,76,5,0.08) 0%, transparent 80%);
-    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+      radial-gradient(ellipse 18% 22% at 100% 58%, rgba(188,76,5,0.14) 0%, transparent 80%);
     color: var(--cement);
     user-select: none;
   }
 
-  /* ─── DOT GRID OVERLAY ─── */
-  .g-dots-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image: radial-gradient(circle, #3a2c14 1px, transparent 1px);
-    background-size: 10px 10px;
-    -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 42%, black 80%);
-    mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 42%, black 80%);
+
+  /* ─── ТЕМА: CYBERPUNK ─── */
+  #game-root[data-theme="cyber"] {
+    --amber:    #c8f700;
+    --pumpkin:  #8fd400;
+    --foam:     #78b840;
+    --cement:   #b4c87a;
+    --clay:     #6e7c52;
+    --mud:      #8a9a68;
+    --black:    #0a0f06;
+    --cell-bg:  #111808;
+    --carbon:   #151e0a;
+    --surface:  #141e0a;
+    --surface2: #1a2810;
+    --border:   #1e2c12;
+    background-image:
+      radial-gradient(ellipse 62% 42% at 4% 6%,  rgba(100,190,0,0.38) 0%, transparent 70%),
+      radial-gradient(ellipse 58% 32% at 96% 4%,  rgba(80,160,0,0.24) 0%, transparent 65%),
+      radial-gradient(ellipse 32% 28% at 1%  2%,  rgba(70,140,0,0.18) 0%, transparent 72%),
+      radial-gradient(ellipse 52% 36% at 98% 97%, rgba(80,150,0,0.18) 0%, transparent 62%),
+      radial-gradient(ellipse 18% 22% at 100% 58%,rgba(90,165,0,0.10) 0%, transparent 80%);
+  }
+
+  #game-root[data-theme="cyber"]::after {
+    background:
+      radial-gradient(ellipse 42% 40% at 50% 48%, rgba(200,247,0,0.04) 0%, transparent 100%),
+      repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.16) 2px, rgba(0,0,0,0.16) 4px);
+  }
+
+  #game-root[data-theme="cyber"]::before {
+    background: linear-gradient(to bottom,
+      transparent              0%,
+      rgba(200,247,0,0.04)    30%,
+      rgba(200,247,0,0.10)    50%,
+      rgba(200,247,0,0.04)    70%,
+      transparent             100%
+    );
   }
 
   /* ─── GAME LAYOUT GROUPS ─── */
@@ -523,7 +551,7 @@
   .g-timer-track {
     width: 100%;
     height: 3px;
-    background: #2a2218;
+    background: var(--surface2);
     border-radius: 0;
     overflow: hidden;
   }
@@ -543,8 +571,7 @@
     margin: 16px 28px 0;
     align-self: flex-start;
     letter-spacing: 0.14em;
-    border-left: 2px solid var(--clay);
-    padding-left: 8px;
+    padding-left: 0;
   }
 
   .g-error-dots { display: flex; gap: 5px; }
@@ -608,7 +635,7 @@
 
   /* Скрытая */
   .g-cell.hidden {
-    border-color: #2a2218;
+    border-color: var(--border);
     background: transparent;
     cursor: pointer;
   }
@@ -656,7 +683,7 @@
   }
 
   .g-cell.open   .g-cell-letter { color: var(--foam);   text-shadow: 0 0 10px rgba(188,202,187,0.45); }
-  .g-cell.solved .g-cell-letter { color: var(--amber);  text-shadow: 0 0 10px rgba(255,161,51,0.45); }
+  .g-cell.solved .g-cell-letter { color: var(--amber);  text-shadow: 0 0 14px rgba(255,161,51,0.75); }
   .g-cell.hidden .g-cell-letter { color: #2a2218; }
   .g-cell.number .g-cell-letter { color: var(--clay); }
 
@@ -666,23 +693,21 @@
   .g-cell-code {
     font-size: 13px;
     color: var(--clay);
-    letter-spacing: 0.02em;
+    letter-spacing: 0;
   }
 
   .g-cell.open   .g-cell-code { color: var(--mud); }
   .g-cell.hidden .g-cell-code { color: #2a2218; }
-  .g-cell.solved .g-cell-code { color: var(--clay); }
+  .g-cell.solved .g-cell-code { color: var(--amber); }
   .g-cell.selected .g-cell-code,
   .g-cell.grouped  .g-cell-code { color: var(--pumpkin); }
 
   /* ─── СТАТУС / ХИНТ ─── */
   .g-hint {
-    font-size: 15px;
-    color: var(--mud);
-    margin-top: 10px;
+    font-size: 13px;
+    color: var(--clay);
     letter-spacing: 0.06em;
     min-height: 16px;
-    height: 16px;
     text-align: center;
   }
 
@@ -692,13 +717,14 @@
     font-family: 'Departure Mono', monospace;
     font-size: 15px;
     font-weight: 400;
-    letter-spacing: 0.20em;
+    letter-spacing: 0.14em;
     color: var(--black);
     background: var(--amber);
     border: none;
     border-radius: 0;
     padding: 11px 40px;
     cursor: pointer;
+    white-space: nowrap;
     text-transform: uppercase;
     transition: background-color var(--fast) var(--flick),
                 transform       var(--fast) var(--flick);
@@ -729,11 +755,11 @@
     font-size: 15px;
     font-weight: 400;
     color: var(--cement);
-    background: #1e1a14;
-    border: 1px solid #2e2820;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 0;
-    width: 46px;
-    height: 40px;
+    width: 42px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -745,7 +771,7 @@
                 transform        var(--fast) var(--flick);
   }
   .g-key:hover {
-    background: #2a2418;
+    background: var(--surface2);
     border-color: var(--mud);
     color: var(--amber);
   }
@@ -755,21 +781,6 @@
     transform: scale(0.90);
   }
 
-  .g-key.used-correct {
-    color: var(--clay);
-    border-color: #2a2218;
-    background: #141210;
-    cursor: default;
-    pointer-events: none;
-  }
-
-  .g-key.used-wrong {
-    color: #2e2818;
-    border-color: #1e1a14;
-    background: var(--black);
-    cursor: default;
-    pointer-events: none;
-  }
 
   /* ─── ФИНАЛЬНЫЙ ЭКРАН ─── */
   .g-final-wrap {
@@ -777,7 +788,6 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
-    margin-top: 32px;
     width: 100%;
     padding: 0 28px;
     box-sizing: border-box;
@@ -805,7 +815,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    border: 1px solid #2e2820;
+    border: 1px solid var(--border);
     border-radius: 0;
     overflow: hidden;
   }
@@ -815,8 +825,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    border-bottom: 1px solid #2e2820;
-    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
     letter-spacing: 0.06em;
   }
   .g-result-row:last-child { border-bottom: none; }
@@ -831,7 +841,7 @@
   .g-result-status {
     color: var(--mud);
     letter-spacing: 0.06em;
-    font-size: 11px;
+    font-size: 13px;
     flex: 1;
     text-align: center;
   }
@@ -944,7 +954,8 @@
     from { opacity: 1; }
     to   { opacity: 0; }
   }
-  .g-cell.entering {
+  .g-cell.entering,
+  .g-result-row.entering {
     animation: cell-enter 0.01s steps(1) both;
   }
   .g-cell.leaving {
@@ -1436,7 +1447,7 @@
   ];
 
   const CYRILLIC   = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЭЮЯ';
-  const GLITCH_CHARS = CYRILLIC + '@#$%&!?~^*/<>|\\[]{}0123456789';
+  const GLITCH_CHARS = '@#$%&!?~^*/<>|\\[]{}';
 
   const KB_ROWS = [
     ['Й','Ц','У','К','Е','Н','Г','Ш','Щ','З','Х','Ъ'],
@@ -1572,7 +1583,7 @@
   }
 
   function render() {
-    root.innerHTML = '<div class="g-dots-overlay"></div><div class="g-jitter" id="jitter"><div class="g-shake" id="shake"></div></div>';
+    root.innerHTML = '<div class="g-jitter" id="jitter"><div class="g-shake" id="shake"></div></div>';
     if      (gameState === 'start') renderStart();
     else if (gameState === 'final') renderFinal();
     else                            renderGame();
@@ -1582,39 +1593,83 @@
     return document.getElementById('shake') || root;
   }
 
+  function jitterEl() {
+    return document.getElementById('jitter') || root;
+  }
+
+  function appendKeyboard() {
+    const old = document.getElementById('kb-wrap');
+    if (old) old.remove();
+
+    const wrap = document.createElement('div');
+    wrap.id = 'kb-wrap';
+    wrap.style.cssText = 'position:absolute;bottom:28px;left:50%;transform:translateX(-50%);';
+
+    const kb = document.createElement('div');
+    kb.id = 'keyboard';
+    kb.className = 'g-keyboard';
+    kb.style.cssText = 'margin:0;width:auto;padding:0;';
+    KB_ROWS.forEach(row => {
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'g-kb-row';
+      row.forEach(letter => {
+        const btn = document.createElement('button');
+        btn.textContent = letter;
+        btn.className = 'g-key';
+        btn.onclick = () => handleKey(letter);
+        rowDiv.appendChild(btn);
+      });
+      kb.appendChild(rowDiv);
+    });
+    wrap.appendChild(kb);
+    jitterEl().appendChild(wrap);
+  }
+
+  function appendBtn(label, id, onclick, hidden) {
+    const btn = document.createElement('button');
+    btn.className = 'g-start-btn';
+    btn.id = id;
+    btn.textContent = label;
+    btn.style.cssText = 'position:absolute;bottom:28px;left:50%;transform:translateX(-50%);margin:0;' + (hidden ? 'visibility:hidden' : '');
+    btn.onclick = onclick;
+    jitterEl().appendChild(btn);
+    return btn;
+  }
+
   /* ─── СТАРТОВЫЙ ЭКРАН ─── */
   function renderStart() {
     PUZZLE = pickPuzzle(currentLevel());
     const lv = currentLevel();
     jitterRoot().innerHTML = `
+      <div class="g-header" style="position:absolute;top:0;left:0;right:0;">
+        <span class="g-label">// TERMINAL_BREACH</span>
+      </div>
       <div class="g-top">
-        <div class="g-header">
-          <span class="g-label">// TERMINAL_BREACH</span>
-        </div>
         <div class="g-timer-wrap" style="visibility:hidden">
           <div class="g-timer-meta"><span>СОЕДИНЕНИЕ</span><span>${fmtTime(lv.timer)}</span></div>
           <div class="g-timer-track"><div class="g-timer-fill" style="width:100%"></div></div>
         </div>
         <div class="g-errors" style="visibility:hidden">
-          <span>ОБНАРУЖЕНИЙ:</span><div class="g-error-dots"></div>
+          <span>ОШИБКИ:</span><div class="g-error-dots"></div>
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
         <span class="g-difficulty" style="visibility:hidden">${lv.label}</span>
-        <div class="g-cells" id="cells"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+          <div class="g-cells" id="cells"></div>
+          <div class="g-hint" style="letter-spacing:0.14em">ЧИСЛО = БУКВА</div>
+        </div>
       </div>
       <div class="g-bottom" style="position:relative">
-        <div class="g-hint" style="text-align:center;margin-top:10px">повторяющиеся числа = одна буква</div>
         <div class="g-keyboard" style="visibility:hidden" aria-hidden="true">${
           KB_ROWS.map(row =>
             `<div class="g-kb-row">${row.map(l => `<button class="g-key">${l}</button>`).join('')}</div>`
           ).join('')
         }</div>
-        <button class="g-start-btn" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);margin:0" id="startBtn">[ НАЧАТЬ ВЗЛОМ ]</button>
       </div>
     `;
     renderCells(false);
-    document.getElementById('startBtn').onclick = () => startGame(false);
+    appendBtn('[ НАЧАТЬ ВЗЛОМ ]', 'startBtn', () => startGame(false), false);
   }
 
   /* ─── ИГРОВОЙ ЭКРАН ─── */
@@ -1622,9 +1677,6 @@
     const lv = currentLevel();
     jitterRoot().innerHTML = `
       <div class="g-top">
-        <div class="g-header">
-          <span class="g-label">// TERMINAL_BREACH</span>
-        </div>
         <div class="g-timer-wrap">
           <div class="g-timer-meta">
             <span>СОЕДИНЕНИЕ</span>
@@ -1636,23 +1688,28 @@
             </div>
           </div>
         </div>
-        <div class="g-errors">
-          <span>ОБНАРУЖЕНИЙ:</span>
-          <div class="g-error-dots" id="errorDots"></div>
+        <div class="g-errors" style="visibility:hidden">
+          <span>ОШИБКИ:</span>
+          <div class="g-error-dots"></div>
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
         <span class="g-difficulty">${lv.label}</span>
-        <div class="g-cells" id="cells"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+          <div class="g-cells" id="cells"></div>
+          <div class="g-hint" id="hint"></div>
+        </div>
       </div>
       <div class="g-bottom">
-        <div class="g-hint" id="hint"></div>
-        <div class="g-keyboard" id="keyboard"></div>
+        <div class="g-keyboard" style="visibility:hidden" aria-hidden="true">${
+          KB_ROWS.map(row =>
+            `<div class="g-kb-row">${row.map(l => `<button class="g-key">${l}</button>`).join('')}</div>`
+          ).join('')
+        }</div>
       </div>
     `;
     renderCells(true);
-    renderErrors();
-    renderKeyboard();
+    appendKeyboard();
   }
 
   /* ─── ФИНАЛЬНЫЙ ЭКРАН ─── */
@@ -1669,33 +1726,26 @@
       return { label: lv.label, status: statusText, score: r.score };
     });
 
+    const rowsHTML = rowData.map((r, i) => `
+      <div class="g-result-row entering" id="result-row-${i}" style="animation-delay:${350 + i * 170}ms">
+        <span class="g-result-label">${r.label}</span>
+        <span class="g-result-status">${r.status}</span>
+        <span class="g-result-score">${r.score > 0 ? '+' + r.score : '0'}</span>
+      </div>`).join('');
+
     jitterRoot().innerHTML = `
       <div class="g-header">
-        <span class="g-label">// TERMINAL_BREACH</span>
         <span class="g-difficulty">ИТОГ</span>
       </div>
-      <div class="g-final-wrap">
-        <div class="g-final-total-label">${sessionLabel}</div>
-        <div class="g-final-total" id="finalScore">—</div>
-        <div class="g-result-list" id="resultList"></div>
-        <button class="g-start-btn" id="restartBtn" style="margin-top:24px;visibility:hidden">[ НАЧАТЬ СНАЧАЛА ]</button>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;width:100%">
+        <div class="g-final-wrap">
+          <div class="g-final-total-label">${sessionLabel}</div>
+          <div class="g-final-total" id="finalScore">—</div>
+          <div class="g-result-list" id="resultList">${rowsHTML}</div>
+        </div>
       </div>
     `;
-    document.getElementById('restartBtn').onclick = restartAll;
-
-    // Строки появляются по одной
-    const list = document.getElementById('resultList');
-    rowData.forEach((r, i) => {
-      setTimeout(() => {
-        const div = document.createElement('div');
-        div.className = 'g-result-row';
-        div.innerHTML = `
-          <span class="g-result-label">${r.label}</span>
-          <span class="g-result-status">${r.status}</span>
-          <span class="g-result-score">${r.score > 0 ? '+' + r.score : '0'}</span>`;
-        list.appendChild(div);
-      }, 350 + i * 320);
-    });
+    appendBtn('[ НАЧАТЬ СНАЧАЛА ]', 'restartBtn', restartAll, true);
 
     // Счёт стартует одновременно с первой строкой
     setTimeout(() => {
@@ -1821,23 +1871,30 @@
   }
 
   function refreshKeyboard() {
-    const kb = document.getElementById('keyboard');
-    if (!kb) return;
-    kb.innerHTML = '';
-    renderKeyboard();
+    appendKeyboard();
   }
 
   /* ─── ИНДИКАТОР ОШИБОК ─── */
   function renderErrors() {
-    const wrap = document.getElementById('errorDots');
-    if (!wrap) return;
-    wrap.innerHTML = '';
+    const h = document.getElementById('hint');
+    if (!h || hintTimer) return;
+    h.innerHTML = '';
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:8px;';
+    const lbl = document.createElement('span');
+    lbl.textContent = 'ОШИБКИ:';
+    lbl.style.cssText = 'font-size:13px;color:var(--clay);letter-spacing:0.14em;';
+    row.appendChild(lbl);
+    const dots = document.createElement('div');
+    dots.className = 'g-error-dots';
     for (let i = 0; i < MAX_ERRORS; i++) {
       const d = document.createElement('div');
       const isNew = (i === errors - 1);
       d.className = 'g-dot' + (i < errors ? ' active' : '') + (isNew ? ' new' : '');
-      wrap.appendChild(d);
+      dots.appendChild(d);
     }
+    row.appendChild(dots);
+    h.appendChild(row);
   }
 
   /* ─── КЛАВИАТУРА ─── */
@@ -1921,7 +1978,6 @@
       if (!wrongGuesses[idx]) wrongGuesses[idx] = new Set();
       wrongGuesses[idx].add(letter);
       errors++;
-      setHint('ОБНАРУЖЕНИЕ #' + errors);
       triggerGlitch('glitch-hit', 300);
       renderErrors();
       if (errors >= MAX_ERRORS) {
@@ -1996,6 +2052,7 @@
     render();
     const first = firstUnfinished();
     if (first !== null) { selectedIndex = first; refreshCells(); refreshKeyboard(); }
+    renderErrors();
     cellsEntering  = false;
     startTimer();
     // циклы уже запущены при инициализации
@@ -2025,26 +2082,18 @@
     }, 1000);
   }
 
-  // Маппинг латиница (QWERTY) → кириллица
-  const LAT_TO_RU = {
-    'Q':'Й','W':'Ц','E':'У','R':'К','T':'Е','Y':'Н','U':'Г','I':'Ш','O':'Щ','P':'З',
-    'A':'Ф','S':'Ы','D':'В','F':'А','G':'П','H':'Р','J':'О','K':'Л','L':'Д',
-    'Z':'Я','X':'Ч','C':'С','V':'М','B':'И','N':'Т','M':'Ь',
-    '[':'Х',']':'Ъ',';':'Ж',"'":'Э',',':'Б','.':'Ю'
-  };
-
-  document.addEventListener('keydown', e => {
-    if (gameState !== 'game') return;
-    if (e.ctrlKey || e.altKey || e.metaKey) return;
-    const key = e.key.toUpperCase();
-    if (key.length !== 1) return;
-    const letter = CYRILLIC.includes(key) ? key : (LAT_TO_RU[key] || null);
-    if (letter) { e.preventDefault(); handleKey(letter); }
-  });
 
   render();
   ghostTick();
   openGlitchTick();
+
+  // ─── ПЕРЕКЛЮЧЕНИЕ ТЕМ ───
+  const THEMES = ['', 'cyber'];
+  let themeIdx = 0;
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    themeIdx = (themeIdx + 1) % THEMES.length;
+    root.dataset.theme = THEMES[themeIdx];
+  });
 })();
 </script>
 
