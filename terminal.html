@@ -423,11 +423,15 @@
     --carbon:   #1a1614;
     --black:    #0f0d0b;
     --cell-bg:  #161210;
-    --surface:  #1e1a14;
-    --surface2: #2a2418;
-    --border:   #2e2820;
-    --flick:    cubic-bezier(.36, 2.09, .07, -1.52);
-    --fast:     80ms;
+    --surface:    #1e1a14;
+    --surface2:   #2a2418;
+    --border:     #2e2820;
+    --flash-bg:      rgba(255,161,51,0.22);
+    --flash-glow:    rgba(255,161,51,0.35);
+    --flash-bg-win:  rgba(255,161,51,0.55);
+    --flash-glow-win:rgba(255,161,51,0.80);
+    --flick:      cubic-bezier(.36, 2.09, .07, -1.52);
+    --fast:       80ms;
 
     font-family: 'Departure Mono', monospace;
     font-synthesis: none;
@@ -466,6 +470,10 @@
     --surface:  #141e0a;
     --surface2: #1a2810;
     --border:   #1e2c12;
+    --flash-bg:      rgba(200,247,0,0.18);
+    --flash-glow:    rgba(200,247,0,0.30);
+    --flash-bg-win:  rgba(200,247,0,0.50);
+    --flash-glow-win:rgba(200,247,0,0.75);
     background-image:
       radial-gradient(ellipse 62% 42% at 4% 6%,  rgba(100,190,0,0.38) 0%, transparent 70%),
       radial-gradient(ellipse 58% 32% at 96% 4%,  rgba(80,160,0,0.24) 0%, transparent 65%),
@@ -535,6 +543,7 @@
     width: calc(100% - 56px);
     margin: 16px 28px 0;
     box-sizing: border-box;
+    position: relative;
   }
 
   .g-timer-meta {
@@ -550,14 +559,15 @@
 
   .g-timer-track {
     width: 100%;
-    height: 3px;
-    background: var(--surface2);
-    border-radius: 0;
-    overflow: hidden;
+    height: 0;
+    position: relative;
   }
 
   .g-timer-fill {
-    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 3px;
     background: var(--amber);
   }
 
@@ -964,11 +974,22 @@
 
   /* ─── 3. CELL SOLVE FLASH ─── */
   @keyframes cell-solve {
-    0%   { background: rgba(255,161,51,0.22); box-shadow: 0 0 10px rgba(255,161,51,0.35); }
+    0%   { background: var(--flash-bg); box-shadow: 0 0 10px var(--flash-glow); }
+    100% { background: transparent; box-shadow: none; }
+  }
+  @keyframes cell-win {
+    0%   { background: var(--flash-bg-win); box-shadow: 0 0 16px var(--flash-glow-win); }
     100% { background: transparent; box-shadow: none; }
   }
   .g-cell.solving {
     animation: cell-solve 0.55s ease-out forwards;
+  }
+  .g-cell.win-solving {
+    animation: cell-win 0.7s ease-out forwards;
+  }
+  .g-cell.win-solving .g-cell-letter,
+  .g-cell.win-solving .g-cell-code {
+    color: var(--amber);
   }
 
   /* ─── 4. DOT POP ─── */
@@ -1019,6 +1040,45 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 0 28px;
+  }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 640px) {
+    body { padding: 0; }
+
+    .post-card { width: 100%; border-radius: 0; }
+    .post-content { border-radius: 0 !important; }
+
+    #game-root {
+      width: 100% !important;
+      height: 520px !important;
+    }
+
+    /* scan line end */
+    @keyframes crt-scan {
+      from { transform: translateY(-70px); }
+      to   { transform: translateY(520px); }
+    }
+
+    .g-timer-wrap {
+      width: calc(100% - 32px);
+      margin: 10px 16px 0;
+    }
+
+    /* ячейки */
+    .g-cells { gap: 3px; }
+    .g-cell  { width: 30px; height: 46px; gap: 2px; }
+    .g-cell-letter { font-size: 16px; }
+    .g-cell-code   { font-size: 10px; }
+    .g-cell.grouped::before,
+    .g-cell.selected::before { --_w: 6px; }
+
+    /* клавиши */
+    .g-key     { width: 27px; height: 38px; font-size: 12px; }
+    .g-kb-row  { gap: 2px; }
+
+    /* клавиатура чуть выше */
+    #kb-wrap { bottom: 16px !important; }
   }
 
   /* ─── GLITCH ANIMATIONS ─── */
@@ -1534,11 +1594,13 @@
   const RGB_SOLVED = 'rgba(255,218,55,0.95)';
   const RGB_SOLVED2= 'rgba(155,38,5,0.80)';
 
-  function openGlitchOne(cellEl) {
+  // intensity: 'bg' — фоновый шум (±1px), 'event' — событийный (±2-3px + символ)
+  function openGlitchOne(cellEl, intensity) {
     const el = cellEl.querySelector('.g-cell-letter');
     if (!el || el.dataset.glitching) return;
     el.dataset.glitching = '1';
-    if (Math.random() < 0.2) {
+    const isEvent = intensity === 'event';
+    if (isEvent && Math.random() < 0.2) {
       const orig = el.textContent;
       el.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
       setTimeout(() => { if (el) { el.textContent = orig; delete el.dataset.glitching; } }, 60);
@@ -1548,22 +1610,29 @@
       const c2 = isSolved ? RGB_SOLVED2 : RGB_OPEN2;
       const offset = Math.random() < 0.5 ? 2 : 3;
       el.style.textShadow = `-${offset}px 0 ${c1}, ${offset}px 0 ${c2}`;
-      setTimeout(() => { if (el) { el.style.textShadow = ''; delete el.dataset.glitching; } }, 80);
+      setTimeout(() => { if (el) { el.style.textShadow = ''; delete el.dataset.glitching; } }, isEvent ? 80 : 80);
     }
+  }
+
+  // Событийный глитч на конкретных ячейках по индексам
+  function glitchCells(indices) {
+    requestAnimationFrame(() => {
+      const cellEls = document.querySelectorAll('#cells .g-cell');
+      indices.forEach(i => { if (cellEls[i]) openGlitchOne(cellEls[i], 'event'); });
+    });
   }
 
   function openGlitchTick() {
     if (gameState === 'game' || gameState === 'start') {
-      const cellEls = Array.from(document.querySelectorAll('#cells .g-cell.open, #cells .g-cell.solved'));
-      if (cellEls.length > 0) {
-        // всегда глитчим одну, иногда вторую
-        openGlitchOne(cellEls[Math.floor(Math.random() * cellEls.length)]);
-        if (cellEls.length > 1 && Math.random() < 0.4) {
-          openGlitchOne(cellEls[Math.floor(Math.random() * cellEls.length)]);
-        }
+      // фоновый шум: solved приоритетнее, но fallback на open
+      const solved = Array.from(document.querySelectorAll('#cells .g-cell.solved'));
+      const open   = Array.from(document.querySelectorAll('#cells .g-cell.open'));
+      const pool   = solved.length > 0 ? solved : open;
+      if (pool.length > 0) {
+        openGlitchOne(pool[Math.floor(Math.random() * pool.length)], 'bg');
       }
     }
-    setTimeout(openGlitchTick, 1800 + Math.random() * 2500);
+    setTimeout(openGlitchTick, 2000 + Math.random() * 3000);
   }
 
   function triggerGlitch(cls, duration) {
@@ -1858,9 +1927,20 @@
 
   function selectCell(idx) {
     if (gameState !== 'game') return;
-    selectedIndex = (selectedIndex === idx) ? null : idx;
+    selectedIndex = idx;
     refreshCells();
     refreshKeyboard();
+    if (Math.random() < 0.4) {
+      const visible = Array.from(document.querySelectorAll('#cells .g-cell.solved, #cells .g-cell.open'));
+      if (visible.length > 0) {
+        requestAnimationFrame(() => {
+          openGlitchOne(visible[Math.floor(Math.random() * visible.length)], 'bg');
+          if (visible.length > 1 && Math.random() < 0.5) {
+            openGlitchOne(visible[Math.floor(Math.random() * visible.length)], 'bg');
+          }
+        });
+      }
+    }
   }
 
   function refreshCells() {
@@ -1946,15 +2026,19 @@
             scrambleReveal(cellEls[idx], letter);
             cellEls[idx].classList.add('solving');
             setTimeout(() => cellEls[idx] && cellEls[idx].classList.remove('solving'), 600);
+            setTimeout(() => glitchCells([idx]), 200);
           }
         } else {
+          const affected = [];
           PUZZLE.forEach((c, i) => {
             if (c.code === cell.code && c.status !== 'hidden' && cellEls[i]) {
               scrambleReveal(cellEls[i], letter);
               cellEls[i].classList.add('solving');
               setTimeout(() => cellEls[i] && cellEls[i].classList.remove('solving'), 600);
+              affected.push(i);
             }
           });
+          setTimeout(() => glitchCells(affected), 200);
         }
       });
 
@@ -1966,9 +2050,19 @@
         const score = calcScore(lv.timer, timeLeft, lv.base);
         levelResults.push({ outcome: 'granted', score });
         selectedIndex = null;
-        setHint('ACCESS_GRANTED');
-        triggerGlitch('glitch-win', 600);
-        refreshKeyboard();
+        // вспышка на всех ячейках
+        requestAnimationFrame(() => {
+          document.querySelectorAll('#cells .g-cell').forEach((el, i) => {
+            setTimeout(() => {
+              el.classList.add('win-solving');
+            }, i * 30);
+          });
+        });
+        setTimeout(() => {
+          setHint('ACCESS_GRANTED');
+          triggerGlitch('glitch-win', 600);
+          refreshKeyboard();
+        }, 300);
         setTimeout(() => advanceLevel(true), 1800);
         return;
       } else {
@@ -1979,6 +2073,7 @@
       wrongGuesses[idx].add(letter);
       errors++;
       triggerGlitch('glitch-hit', 300);
+      glitchCells([idx]);
       renderErrors();
       if (errors >= MAX_ERRORS) {
         clearInterval(timerInterval);
@@ -2015,6 +2110,7 @@
     const total = cells.length;
     if (!total) { cb(); return; }
     cells.forEach((el, i) => {
+      el.classList.remove('win-solving');
       el.classList.add('leaving');
       el.style.animationDelay = (i * 0.04) + 's';
     });
@@ -2086,6 +2182,7 @@
   render();
   ghostTick();
   openGlitchTick();
+
 
   // ─── ПЕРЕКЛЮЧЕНИЕ ТЕМ ───
   const THEMES = ['', 'cyber'];
