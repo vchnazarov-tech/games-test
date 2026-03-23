@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terminal Breach — DTF card</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #edeef0;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px;
+  }
+
+  /* ─── КАРТОЧКА ─── */
+  .post-card {
+    width: 640px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .post-inner {
+    padding: 0 24px;
+  }
+
+  /* ─── ШАПКА ─── */
+  .post-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0 12px;
+  }
+
+  .author-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Аватар с градиентом */
+  .avatar-wrap {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .avatar-main {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 90deg,
+      #6ed0ff 0deg,
+      #61a1ff 42deg,
+      #9d70ff 89deg,
+      #ff60c7 137deg,
+      #ff483e 180deg,
+      #ff9400 223deg,
+      #ffde48 270deg,
+      #7ae632 306deg,
+      #6fd1ff 359deg,
+      #6ed0ff 360deg
+    );
+    outline: 1px solid rgba(0,0,0,0.10);
+    outline-offset: -1px;
+  }
+
+  /* DTF-бейдж */
+  .avatar-badge {
+    position: absolute;
+    bottom: -2px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #1693E5;
+    border: 2px solid #fff;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .author-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #000;
+    line-height: 22px;
+  }
+
+  .author-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .author-section {
+    font-size: 13px;
+    font-weight: 400;
+    color: #000;
+    line-height: 18px;
+  }
+
+  .author-time {
+    font-size: 13px;
+    color: #595959;
+    line-height: 18px;
+  }
+
+  /* Кнопки справа */
+  .header-actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-subscribe {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #000;
+    background: #F4F4F4;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 10px;
+    height: 28px;
+    cursor: pointer;
+    line-height: 18px;
+  }
+  .btn-subscribe:hover { background: #e8e8e8; }
+
+  .btn-more {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 9px 8px;
+  }
+  .btn-more:hover { background: #f4f4f4; }
+
+  /* ─── ЗАГОЛОВОК ─── */
+  .post-title-row {
+    padding-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .post-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: #000;
+    line-height: 30px;
+  }
+
+  /* ─── КОНТЕНТ-БЛОК (игровой экран) ─── */
+  .post-content {
+    width: 592px;
+    height: 592px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.10);
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #bbb;
+    font-size: 14px;
+  }
+
+  /* ─── РЕАКЦИИ ─── */
+  .reactions-bar {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .reaction {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 80px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 22px;
+    color: #595959;
+  }
+
+  .reaction-active {
+    background: #0B5DD7;
+    color: #fff;
+  }
+
+  .reaction-inactive {
+    background: #F5F5F5;
+  }
+  .reaction-inactive:hover { background: #ebebeb; }
+
+  .reaction-add {
+    background: #F5F5F5;
+    border-radius: 80px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #595959;
+  }
+  .reaction-add:hover { background: #ebebeb; }
+
+  /* ─── ЭКШЕН-БАР ─── */
+  .action-bar {
+    padding: 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .action-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px 4px 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 56px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    color: #595959;
+    line-height: 22px;
+  }
+  .action-btn:hover { background: #f4f4f4; }
+
+  .action-icon-btn {
+    width: 36px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 4px 8px;
+  }
+  .action-icon-btn:hover { background: #f4f4f4; }
+
+  .action-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding-left: 12px;
+    color: #595959;
+    font-size: 15px;
+    line-height: 22px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="post-card">
+  <div class="post-inner">
+
+    <!-- Шапка -->
+    <div class="post-header">
+      <div class="author-block">
+        <div class="avatar-wrap">
+          <div class="avatar-main"></div>
+          <div class="avatar-badge"></div>
+        </div>
+        <div class="author-info">
+          <div class="author-name">Терминал</div>
+          <div class="author-meta">
+            <span class="author-section">Игры</span>
+            <span class="author-time">2ч</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-subscribe">Подписаться</button>
+        <button class="btn-more">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="4.58" cy="11" r="1.83" fill="#595959"/>
+            <circle cx="11" cy="11" r="1.83" fill="#595959"/>
+            <circle cx="17.42" cy="11" r="1.83" fill="#595959"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Заголовок -->
+    <div class="post-title-row">
+      <span class="post-title">Терминал — 6 марта</span>
+      <span style="font-size:22px">🎮</span>
+    </div>
+
+    <!-- Контент-блок (игра) -->
+    <div class="post-content" style="padding:0;overflow:hidden;background:#000;border-radius:10px;border:1px solid rgba(0,0,0,0.10);">
+      <div id="game-root" style="width:592px;height:592px;position:relative;"></div>
+    </div>
+
+    <!-- Реакции -->
+    <div class="reactions-bar">
+      <!-- Активная реакция (лайк) -->
+      <div class="reaction reaction-active">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M1.878 6.078C2.366 4.275 3.785 2.69 6.184 2.69C8.889 2.69 10 4.754 10 4.754C10 4.754 11.241 2.69 13.816 2.69C16.392 2.69 17.634 4.275 18.122 6.078C19.215 10.117 15.991 13.625 13.043 15.699C12.234 16.268 11.343 16.927 10.393 17.24C10.328 17.261 10.176 17.31 10 17.31C9.824 17.31 9.672 17.261 9.607 17.24C8.647 16.924 7.776 16.276 6.957 15.699C4.009 13.625 0.785 10.117 1.878 6.078Z" fill="url(#heartGrad)"/>
+          <defs>
+            <linearGradient id="heartGrad" x1="10" y1="2.69" x2="10" y2="17.31" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FF5D6D"/>
+              <stop offset="1" stop-color="#F35565"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span style="color:#fff;font-weight:400">100</span>
+      </div>
+
+      <!-- Огонь -->
+      <div class="reaction reaction-inactive">
+        <svg width="17" height="20" viewBox="0 0 17 20" fill="none">
+          <path d="M0.026 13.631C0.026 13.631 0.606 19.838 7.887 19.986C15.169 20.135 16.708 12.413 15.512 10.799C15.512 10.799 15.198 11.848 14.854 11.975C14.854 11.975 14.736 6.545 12.271 4.787C12.271 4.787 12.372 5.802 11.987 5.819C11.987 5.819 9.69 0.778 4.616 0C4.616 0 6.568 3.34 4.142 6.502C1.717 9.665 1.815 10.961 1.815 10.961C1.815 10.961 1.048 10.329 1.175 9.881C1.175 9.881 -0.207 10.766 0.026 13.631Z" fill="url(#fireGrad0)"/>
+          <defs>
+            <radialGradient id="fireGrad0" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(4 11.82) scale(10.6)">
+              <stop stop-color="#FFAB1D"/>
+              <stop offset="1" stop-color="#FB4201"/>
+            </radialGradient>
+          </defs>
+        </svg>
+        <span>23</span>
+      </div>
+
+      <!-- Плюс -->
+      <div class="reaction-add">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M10 4.415C10.461 4.415 10.835 4.789 10.835 5.25V9.165H14.75C15.211 9.165 15.585 9.539 15.585 10C15.585 10.461 15.211 10.835 14.75 10.835H10.835V14.75C10.835 15.211 10.461 15.585 10 15.585C9.539 15.585 9.165 15.211 9.165 14.75V10.835H5.25C4.789 10.835 4.415 10.461 4.415 10C4.415 9.539 4.789 9.165 5.25 9.165H9.165V5.25C9.165 4.789 9.539 4.415 10 4.415Z" fill="#595959"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Экшен-бар -->
+    <div class="action-bar">
+      <div class="action-left">
+        <!-- Комментарии -->
+        <button class="action-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M17.48 9.78C17.48 5.28 13.83 2.5 9.78 2.5C5.74 2.5 2.1 5.27 2.08 9.75C2.07 14.24 5.64 17.06 9.78 17.06C10.87 17.06 11.74 17 12.8 16.58C12.96 16.52 13.22 16.52 13.47 16.6L16.01 17.44C16.61 17.63 17.14 17.34 17.44 17.04C17.76 16.73 18.03 16.2 17.87 15.59L17.06 13.08C16.95 12.75 16.95 12.38 17.02 12.19L17.06 12.06C17.29 11.42 17.48 10.89 17.48 9.78ZM9.78 4.17C6.46 4.17 3.75 6.38 3.75 9.78C3.75 13.18 6.46 15.39 9.78 15.39C10.8 15.39 11.42 15.34 12.18 15.04C12.79 14.79 13.47 14.84 14 15.02L16.16 15.74L15.43 13.56C15.29 13.01 15.22 12.25 15.45 11.62L15.5 11.48C15.7 10.91 15.82 10.6 15.82 9.78C15.82 6.38 13.1 4.17 9.78 4.17Z" fill="#595959"/>
+          </svg>
+          76
+        </button>
+
+        <!-- Репост -->
+        <button class="action-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.74 3.578C13.07 3.253 13.6 3.253 13.92 3.578L18.09 7.744C18.41 8.07 18.41 8.597 18.09 8.923L13.92 13.09C13.6 13.415 13.07 13.415 12.74 13.09C12.42 12.764 12.42 12.237 12.74 11.911L15.42 9.234C12.84 9.015 9.97 9.331 7.66 10.203C4.98 11.214 3.33 12.843 3.33 15C3.33 15.46 2.96 15.834 2.5 15.834C2.04 15.833 1.67 15.46 1.67 15C1.67 11.797 4.15 9.746 7.07 8.643C9.64 7.674 12.76 7.336 15.56 7.573L12.74 4.756C12.42 4.43 12.42 3.903 12.74 3.578Z" fill="#595959"/>
+          </svg>
+          10
+        </button>
+
+        <!-- Закладка -->
+        <button class="action-icon-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M3.33 5.83C3.33 3.99 4.83 2.5 6.67 2.5H13.33C15.17 2.5 16.67 3.99 16.67 5.83V15.87C16.67 17.23 15.1 17.99 14.04 17.15L10.44 14.32C10.18 14.12 9.82 14.12 9.56 14.32L5.96 17.15C4.9 17.99 3.33 17.23 3.33 15.87V5.83ZM6.67 4.17C5.75 4.17 5 4.91 5 5.83V15.79L8.53 13.01C9.39 12.33 10.61 12.33 11.47 13.01L15 15.79V5.83C15 4.91 14.25 4.17 13.33 4.17H6.67Z" fill="#595959"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Просмотры -->
+      <div class="action-right">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M2.66 10C3.51 11.34 4.33 12.52 5.37 13.41C6.49 14.36 7.91 15 10 15C12.09 15 13.51 14.36 14.63 13.41C15.67 12.52 16.49 11.34 17.34 10C16.49 8.66 15.67 7.48 14.63 6.59C13.51 5.64 12.09 5 10 5C7.91 5 6.49 5.64 5.37 6.59C4.33 7.48 3.51 8.66 2.66 10ZM4.29 5.32C5.71 4.11 7.51 3.33 10 3.33C12.49 3.33 14.29 4.11 15.71 5.32C17.09 6.5 18.09 8.07 19.04 9.55C19.21 9.83 19.21 10.17 19.04 10.45C18.09 11.93 17.09 13.5 15.71 14.68C14.29 15.89 12.49 16.67 10 16.67C7.51 16.67 5.71 15.89 4.29 14.68C2.91 13.5 1.91 11.93 0.96 10.45C0.79 10.17 0.79 9.83 0.96 9.55C1.91 8.07 2.91 6.5 4.29 5.32ZM10 8.54C9.19 8.54 8.54 9.19 8.54 10C8.54 10.81 9.19 11.46 10 11.46C10.81 11.46 11.46 10.81 11.46 10C11.46 9.19 10.81 8.54 10 8.54ZM6.87 10C6.87 8.27 8.27 6.88 10 6.88C11.73 6.88 13.13 8.27 13.13 10C13.13 11.73 11.73 13.13 10 13.13C8.27 13.13 6.87 11.73 6.87 10Z" fill="#595959"/>
+        </svg>
+        10K
+      </div>
+    </div>
+
+  </div><!-- /post-inner -->
+</div>
+
+<style>
+  @font-face {
+    font-family: 'Departure Mono';
+    src: url('DepartureMono-Regular.woff2') format('woff2'),
+         url('DepartureMono-Regular.woff') format('woff'),
+         url('DepartureMono-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+</style>
+<style>
+  /* ─── DEPARTURE MONO PALETTE ─── */
+  #game-root {
+    --amber:   #ffa133;
+    --pumpkin: #e47b1a;
+    --foam:    #bccabb;
+    --cement:  #c0c0c0;
+    --clay:    #9a9a7e;
+    --mud:     #b8b898;
+    --carbon:  #1a1614;
+    --black:   #0f0d0b;
+    --cell-bg: #161210;
+    --flick:   cubic-bezier(.36, 2.09, .07, -1.52);
+    --fast:    80ms;
+    --mid:     180ms;
+
+    font-family: 'Departure Mono', monospace;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    background-color: var(--black);
+    background-image:
+      /* Левый низ — широкий, смещён чуть выше угла */
+      radial-gradient(ellipse 62% 42% at 4% 94%, rgba(210,88,8,0.28) 0%, transparent 70%),
+      /* Правый верх — вытянутый горизонтально */
+      radial-gradient(ellipse 58% 32% at 96% 4%, rgba(178,72,5,0.18) 0%, transparent 65%),
+      /* Левый верх — компактный, плотный */
+      radial-gradient(ellipse 32% 28% at 1% 2%,  rgba(152,60,5,0.14) 0%, transparent 72%),
+      /* Правый низ — низкий и широкий */
+      radial-gradient(ellipse 52% 36% at 98% 97%, rgba(162,66,5,0.13) 0%, transparent 62%),
+      /* Артефакт — правый край посередине */
+      radial-gradient(ellipse 18% 22% at 100% 58%, rgba(188,76,5,0.08) 0%, transparent 80%);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    color: var(--cement);
+    user-select: none;
+  }
+
+  /* ─── DOT GRID OVERLAY ─── */
+  .g-dots-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(circle, #3a2c14 1px, transparent 1px);
+    background-size: 10px 10px;
+    -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 42%, black 80%);
+    mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 42%, black 80%);
+  }
+
+  /* ─── GAME LAYOUT GROUPS ─── */
+  .g-top, .g-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* ─── HEADER BAR ─── */
+  .g-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px 0;
+    box-sizing: border-box;
+  }
+
+  .g-label {
+    font-size: 13px;
+    color: var(--clay);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .g-label::before {
+    content: '░  ';
+    color: var(--mud);
+    letter-spacing: 0;
+  }
+
+  .g-difficulty {
+    font-size: 13px;
+    color: var(--amber);
+    letter-spacing: 0.14em;
+    border: 1px solid var(--pumpkin);
+    border-radius: 0;
+    padding: 2px 8px;
+  }
+
+  /* ─── TIMER BAR ─── */
+  .g-timer-wrap {
+    width: calc(100% - 56px);
+    margin: 16px 28px 0;
+    box-sizing: border-box;
+  }
+
+  .g-timer-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--clay);
+    letter-spacing: 0.14em;
+    margin-bottom: 5px;
+  }
+
+  #timerNum { color: var(--cement); font-size: 16px; line-height: 1; letter-spacing: 0; }
+
+  .g-timer-track {
+    width: 100%;
+    height: 3px;
+    background: #2a2218;
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .g-timer-fill {
+    height: 100%;
+    background: var(--amber);
+  }
+
+  /* ─── ERRORS ─── */
+  .g-errors {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--clay);
+    margin: 16px 28px 0;
+    align-self: flex-start;
+    letter-spacing: 0.14em;
+    border-left: 2px solid var(--clay);
+    padding-left: 8px;
+  }
+
+  .g-error-dots { display: flex; gap: 5px; }
+
+  .g-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 0;
+    border: 1px solid var(--clay);
+    background: transparent;
+  }
+
+  .g-dot.active {
+    background: var(--pumpkin);
+    border-color: var(--amber);
+  }
+
+  /* ─── WORD CELLS ─── */
+  .g-cells {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex-wrap: nowrap;
+  }
+
+  .g-cell {
+    width: 44px;
+    height: 66px;
+    border: 1px solid var(--clay);
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: default;
+    flex-shrink: 0;
+    position: relative;
+    background: transparent;
+    transition: border-color var(--fast) var(--flick),
+                background-color var(--fast) var(--flick);
+  }
+
+  /* Открытая */
+  .g-cell.open {
+    border-color: var(--mud);
+    background: var(--cell-bg);
+  }
+
+  /* Закрытая с кодом */
+  .g-cell.number {
+    border-color: var(--clay);
+    background: transparent;
+    cursor: pointer;
+  }
+  .g-cell.number:hover {
+    border-color: var(--mud);
+    background: var(--cell-bg);
+  }
+
+  /* Скрытая */
+  .g-cell.hidden {
+    border-color: #2a2218;
+    background: transparent;
+    cursor: pointer;
+  }
+  .g-cell.hidden:hover {
+    border-color: var(--clay);
+  }
+
+  /* Выбранная / парная — угловые скобки (фирменный приём сайта) */
+  .g-cell.grouped,
+  .g-cell.selected {
+    border-color: transparent;
+    background: var(--cell-bg);
+    box-shadow: none;
+  }
+  .g-cell.grouped::before,
+  .g-cell.selected::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    --_b: 1px;
+    --_c: var(--amber);
+    --_w: 9px;
+    --_g: #0000 90deg, var(--_c) 0;
+    --_p: var(--_w) var(--_w) border-box no-repeat;
+    background:
+      conic-gradient(from  90deg at top    var(--_b) left  var(--_b), var(--_g))   0%   0%  / var(--_p),
+      conic-gradient(from 180deg at top    var(--_b) right var(--_b), var(--_g)) 100%   0%  / var(--_p),
+      conic-gradient(from   0deg at bottom var(--_b) left  var(--_b), var(--_g))   0% 100%  / var(--_p),
+      conic-gradient(from -90deg at bottom var(--_b) right var(--_b), var(--_g)) 100% 100%  / var(--_p);
+  }
+
+  /* Угаданная */
+  .g-cell.solved {
+    border-color: var(--mud);
+    background: var(--cell-bg);
+    cursor: default;
+  }
+
+  .g-cell-letter {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--cement);
+  }
+
+  .g-cell.open   .g-cell-letter { color: var(--foam);   text-shadow: 0 0 10px rgba(188,202,187,0.45); }
+  .g-cell.solved .g-cell-letter { color: var(--amber);  text-shadow: 0 0 10px rgba(255,161,51,0.45); }
+  .g-cell.hidden .g-cell-letter { color: #2a2218; }
+  .g-cell.number .g-cell-letter { color: var(--clay); }
+
+  .g-cell.selected .g-cell-letter,
+  .g-cell.grouped  .g-cell-letter { color: var(--amber); }
+
+  .g-cell-code {
+    font-size: 13px;
+    color: var(--clay);
+    letter-spacing: 0.02em;
+  }
+
+  .g-cell.open   .g-cell-code { color: var(--mud); }
+  .g-cell.hidden .g-cell-code { color: #2a2218; }
+  .g-cell.solved .g-cell-code { color: var(--clay); }
+  .g-cell.selected .g-cell-code,
+  .g-cell.grouped  .g-cell-code { color: var(--pumpkin); }
+
+  /* ─── СТАТУС / ХИНТ ─── */
+  .g-hint {
+    font-size: 15px;
+    color: var(--mud);
+    margin-top: 10px;
+    letter-spacing: 0.06em;
+    min-height: 16px;
+    height: 16px;
+    text-align: center;
+  }
+
+  /* ─── КНОПКА СТАРТ ─── */
+  .g-start-btn {
+    margin-top: 36px;
+    font-family: 'Departure Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.20em;
+    color: var(--black);
+    background: var(--amber);
+    border: none;
+    border-radius: 0;
+    padding: 11px 40px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color var(--fast) var(--flick),
+                transform       var(--fast) var(--flick);
+  }
+  .g-start-btn:hover  { background: var(--pumpkin); }
+  .g-start-btn:active { transform: scale(0.96); }
+
+  /* ─── КЛАВИАТУРА ─── */
+  .g-keyboard {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .g-kb-row {
+    display: flex;
+    gap: 3px;
+    justify-content: center;
+  }
+
+  .g-key {
+    font-family: 'Departure Mono', monospace;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--cement);
+    background: #1e1a14;
+    border: 1px solid #2e2820;
+    border-radius: 0;
+    width: 46px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    letter-spacing: 0;
+    transition: background-color var(--fast) var(--flick),
+                border-color     var(--fast) var(--flick),
+                color            var(--fast) var(--flick),
+                transform        var(--fast) var(--flick);
+  }
+  .g-key:hover {
+    background: #2a2418;
+    border-color: var(--mud);
+    color: var(--amber);
+  }
+  .g-key:active {
+    background: var(--amber);
+    color: var(--black);
+    transform: scale(0.90);
+  }
+
+  .g-key.used-correct {
+    color: var(--clay);
+    border-color: #2a2218;
+    background: #141210;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .g-key.used-wrong {
+    color: #2e2818;
+    border-color: #1e1a14;
+    background: var(--black);
+    cursor: default;
+    pointer-events: none;
+  }
+
+  /* ─── ФИНАЛЬНЫЙ ЭКРАН ─── */
+  .g-final-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 32px;
+    width: 100%;
+    padding: 0 28px;
+    box-sizing: border-box;
+  }
+
+  .g-final-total-label {
+    font-size: 11px;
+    color: var(--clay);
+    letter-spacing: 0.14em;
+    border-left: 2px solid var(--clay);
+    padding-left: 10px;
+  }
+
+  .g-final-total {
+    font-size: 64px;
+    font-weight: 400;
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 16px;
+    text-shadow: 0 0 32px rgba(255, 161, 51, 0.40);
+    padding-left: 12px;
+  }
+
+  .g-result-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #2e2820;
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .g-result-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #2e2820;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+  .g-result-row:last-child { border-bottom: none; }
+  .g-result-locked { opacity: 0.25; }
+
+  .g-result-label {
+    color: var(--clay);
+    letter-spacing: 0.14em;
+    width: 90px;
+  }
+
+  .g-result-status {
+    color: var(--mud);
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    flex: 1;
+    text-align: center;
+  }
+
+  .g-result-score {
+    color: var(--amber);
+    font-weight: 400;
+    width: 60px;
+    text-align: right;
+  }
+
+  /* ─── CRT EFFECTS ─── */
+
+  /* CRT container */
+  #game-root { overflow: hidden; }
+
+  /* Флікер — нерегулярное дрожание яркости */
+  @keyframes crt-flicker {
+    0%, 19%, 21%, 23%, 41%, 43%, 60%, 62%, 64%, 100% { opacity: 1; filter: brightness(1); }
+    20%  { opacity: 0.75; filter: brightness(0.82); }
+    22%  { opacity: 0.92; filter: brightness(1.08); }
+    42%  { opacity: 0.80; filter: brightness(0.78); }
+    61%  { opacity: 0.70; filter: brightness(0.85); }
+    63%  { opacity: 0.95; filter: brightness(1.12); }
+  }
+
+  /* Виньетка + скэнлайны поверх всего контента */
+  #game-root::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    background:
+      /* Горячий центр — кинескоп светлее посередине */
+      radial-gradient(
+        ellipse 42% 40% at 50% 48%,
+        rgba(255, 161, 51, 0.06) 0%,
+        transparent 100%
+      ),
+      /* Скэнлайны */
+      repeating-linear-gradient(
+        to bottom,
+        transparent      0px,
+        transparent      2px,
+        rgba(0,0,0,0.16) 2px,
+        rgba(0,0,0,0.16) 4px
+      );
+    animation: crt-flicker 11s linear infinite;
+  }
+
+  /* Катящаяся полоса развёртки */
+  @keyframes crt-scan {
+    from { transform: translateY(-70px); }
+    to   { transform: translateY(592px); }
+  }
+
+  #game-root::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 70px;
+    pointer-events: none;
+    z-index: 99;
+    background: linear-gradient(
+      to bottom,
+      transparent               0%,
+      rgba(255,161,51, 0.055)  30%,
+      rgba(255,161,51, 0.13)   50%,
+      rgba(255,161,51, 0.055)  70%,
+      transparent              100%
+    );
+    animation: crt-scan 16s linear infinite;
+  }
+
+  /* ─── ХРОМАТИЧЕСКАЯ АБЕРРАЦИЯ НА БУКВАХ ─── */
+
+  @keyframes aberration-open {
+    0%, 90%, 94%, 100% { text-shadow: 0 0 10px rgba(188,202,187,0.45); }
+    91% { text-shadow: -2px 0 rgba(200,235,140,0.90),  2px 0 rgba(200,85,10,0.75), 0 0 6px rgba(188,202,187,0.2); }
+    92% { text-shadow:  3px 0 rgba(190,228,130,0.80), -3px 0 rgba(180,75,8,0.65),  0 1px rgba(210,200,100,0.30); }
+    93% { text-shadow: -1px 0 rgba(210,238,155,0.65),  1px 0 rgba(195,80,12,0.55); }
+  }
+
+  @keyframes aberration-solved {
+    0%, 90%, 94%, 100% { text-shadow: 0 0 10px rgba(255,161,51,0.45); }
+    91% { text-shadow: -2px 0 rgba(255,218,55,0.95),  2px 0 rgba(155,38,5,0.80), 0 0 6px rgba(255,161,51,0.2); }
+    92% { text-shadow:  3px 0 rgba(255,202,35,0.85), -3px 0 rgba(138,32,5,0.70), 0 1px rgba(255,180,30,0.35); }
+    93% { text-shadow: -1px 0 rgba(255,225,72,0.68),  1px 0 rgba(168,44,5,0.58); }
+  }
+
+  .g-cell.open   .g-cell-letter { animation: aberration-open   11s linear infinite; }
+  .g-cell.solved .g-cell-letter { animation: aberration-solved  11s linear infinite; }
+
+  /* Разные ячейки глитчат не одновременно */
+  .g-cell:nth-child(1)  .g-cell-letter { animation-delay:  0.0s; }
+  .g-cell:nth-child(2)  .g-cell-letter { animation-delay:  2.4s; }
+  .g-cell:nth-child(3)  .g-cell-letter { animation-delay:  5.2s; }
+  .g-cell:nth-child(4)  .g-cell-letter { animation-delay:  1.3s; }
+  .g-cell:nth-child(5)  .g-cell-letter { animation-delay:  7.9s; }
+  .g-cell:nth-child(6)  .g-cell-letter { animation-delay:  3.6s; }
+  .g-cell:nth-child(7)  .g-cell-letter { animation-delay:  6.1s; }
+  .g-cell:nth-child(8)  .g-cell-letter { animation-delay:  4.4s; }
+  .g-cell:nth-child(9)  .g-cell-letter { animation-delay:  8.8s; }
+  .g-cell:nth-child(10) .g-cell-letter { animation-delay:  1.7s; }
+  .g-cell:nth-child(11) .g-cell-letter { animation-delay:  9.5s; }
+
+  /* ─── 1. CURSOR BLINK на выбранной ячейке ─── */
+  @keyframes cursor-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  .g-cell.selected .g-cell-letter {
+    animation: cursor-blink 0.9s step-end infinite;
+  }
+
+  /* ─── 2. STAGGERED ENTRANCE / EXIT ─── */
+  @keyframes cell-enter {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes cell-exit {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+  }
+  .g-cell.entering {
+    animation: cell-enter 0.01s steps(1) both;
+  }
+  .g-cell.leaving {
+    animation: cell-exit 0.01s steps(1) both;
+  }
+
+  /* ─── 3. CELL SOLVE FLASH ─── */
+  @keyframes cell-solve {
+    0%   { background: rgba(255,161,51,0.22); box-shadow: 0 0 10px rgba(255,161,51,0.35); }
+    100% { background: transparent; box-shadow: none; }
+  }
+  .g-cell.solving {
+    animation: cell-solve 0.55s ease-out forwards;
+  }
+
+  /* ─── 4. DOT POP ─── */
+  @keyframes dot-pop {
+    0%   { transform: scale(0.2); }
+    65%  { transform: scale(1.6); }
+    100% { transform: scale(1); }
+  }
+  .g-dot.new { animation: dot-pop 0.35s cubic-bezier(.36,2.09,.07,-1.52) forwards; }
+
+  /* ─── 5. TIMER URGENT ─── */
+  @keyframes timer-urgent {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+  }
+  .g-timer-fill.urgent {
+    background: var(--pumpkin);
+  }
+
+  /* ─── MICRO-JITTER + PERIODIC SKEW ─── */
+  @keyframes micro-jitter {
+    from { background-color: red; }
+    to   { background-color: blue; }
+  }
+
+  @keyframes periodic-skew {
+    0%, 36%, 43%, 100% { transform: none; filter: none; }
+    37% { transform: translateX(-8px) skewX(-3deg);  filter: brightness(1.3); }
+    38% { transform: translateX(10px) skewX(2deg);   filter: brightness(0.85); }
+    39% { transform: translateX(-5px) skewX(4deg);   filter: brightness(1.15); }
+    40% { transform: translateX(6px)  skewX(-1.5deg); }
+    41% { transform: translateX(-2px) skewX(1deg);   filter: brightness(1.05); }
+    42% { transform: none; }
+  }
+
+  .g-jitter {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .g-shake {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 28px;
+  }
+
+  /* ─── GLITCH ANIMATIONS ─── */
+
+  /* Периодический на заголовке — RGB-сдвиг + skew */
+  @keyframes title-glitch {
+    0%, 87%, 92%, 100% {
+      text-shadow:    none;
+      transform:      none;
+      letter-spacing: 0.14em;
+    }
+    88% {
+      text-shadow:    2px 0 rgba(255,100,0,0.85), -2px 0 rgba(0,200,255,0.55);
+      transform:      skewX(-1deg);
+      letter-spacing: 0.17em;
+    }
+    89% {
+      text-shadow:    -3px 0 rgba(255,161,51,0.95), 3px 0 rgba(180,0,255,0.5);
+      transform:      skewX(1.3deg) translateX(4px);
+      letter-spacing: 0.10em;
+    }
+    90% {
+      text-shadow:    1px 0 rgba(255,50,0,0.75);
+      transform:      translateX(-2px);
+      letter-spacing: 0.14em;
+    }
+    91% {
+      text-shadow:    -1px 0 rgba(0,210,210,0.45);
+      transform:      none;
+    }
+  }
+  @keyframes label-jerk {
+    0%, 38%, 44%, 100% { transform: none; opacity: 1; }
+    39% { transform: translateX(-35px) skewX(40deg) scaleY(1.3); opacity: 0.7; }
+    40% { transform: translateX(35px)  skewX(-55deg) scaleY(1.3); opacity: 0.7; }
+    41% { transform: translateX(-10px) skewX(15deg); opacity: 0.9; }
+    42% { transform: none; opacity: 1; }
+    43% { transform: translateX(5px); opacity: 0.95; }
+  }
+
+  .g-label { animation: title-glitch 9s linear infinite; }
+
+  /* Периодический на бейдже сложности */
+  @keyframes badge-glitch {
+    0%, 92%, 96%, 100% { text-shadow: none; transform: none; }
+    93% {
+      text-shadow: 1px 0 var(--pumpkin), -1px 0 rgba(0,200,255,0.75);
+      transform:   skewX(-1.2deg) translateX(1px);
+    }
+    94% {
+      text-shadow: -2px 0 var(--amber);
+      transform:   translateX(3px) skewX(1.2deg);
+    }
+    95% { text-shadow: none; transform: translateX(-1px); }
+  }
+  .g-difficulty { animation: badge-glitch 7s linear infinite; }
+
+  /* Тряска при ошибке */
+  @keyframes glitch-hit {
+    0%   { transform: none;                             filter: none; }
+    20%  { transform: translateX(-7px) skewX(-1.5deg); filter: brightness(1.5); }
+    40%  { transform: translateX(8px)  skewX(1.5deg);  filter: brightness(0.8); }
+    60%  { transform: translateX(-3px);                filter: none; }
+    80%  { transform: translateX(2px); }
+    100% { transform: none;                             filter: none; }
+  }
+  #game-root.glitch-hit {
+    animation: glitch-hit 0.28s linear forwards;
+  }
+
+  /* Жёсткий глитч при провале */
+  @keyframes glitch-fail {
+    0%   { transform: none;                              filter: none; }
+    8%   { transform: translateX(-10px) skewX(-2.5deg); filter: brightness(2) contrast(1.5); }
+    16%  { transform: translateX(12px)  skewX(2.5deg);  filter: brightness(2.4) hue-rotate(20deg); }
+    24%  { transform: scaleX(1.03) skewX(-2deg);        filter: brightness(0.65); }
+    32%  { transform: translateX(-6px);                 filter: brightness(1.6); }
+    40%  { transform: translateX(7px)  skewX(1.5deg);   filter: none; }
+    50%  { transform: skewX(-3deg);                     filter: brightness(1.3); }
+    60%  { transform: none;                             filter: none; }
+    70%  { transform: translateX(4px); }
+    82%  { transform: none;                             filter: brightness(1.1); }
+    100% { transform: none;                             filter: none; }
+  }
+  #game-root.glitch-fail {
+    animation: glitch-fail 0.8s linear forwards;
+  }
+
+  /* Мягкий глитч при успехе */
+  @keyframes glitch-win {
+    0%   { filter: none;                           transform: none; }
+    15%  { filter: brightness(1.7) saturate(1.5); transform: scale(1.007); }
+    30%  { filter: none;                           transform: none; }
+    50%  { filter: brightness(1.3);               transform: translateX(2px); }
+    65%  { filter: none;                           transform: translateX(-1px); }
+    100% { filter: none;                           transform: none; }
+  }
+  #game-root.glitch-win {
+    animation: glitch-win 0.55s linear forwards;
+  }
+</style>
+
+<script>
+(function() {
+  function fmtTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+  }
+
+  // ─── ТРИ УРОВНЯ, 5 СЛОВ КАЖДЫЙ ───
+  const LEVELS = [
+    {
+      label: 'ЛЁГКИЙ',
+      timer: 60,
+      base:  3,
+      puzzles: [
+        // ЗАМОК
+        [
+          { letter: 'З', code: 1, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'М', code: 3, status: 'number' },
+          { letter: 'О', code: 4, status: 'number' },
+          { letter: 'К', code: 5, status: 'open'   },
+        ],
+        // БЕРЕГ
+        [
+          { letter: 'Б', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'number' },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'Г', code: 4, status: 'open'   },
+        ],
+        // ГОЛОС
+        [
+          { letter: 'Г', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Л', code: 3, status: 'number' },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'С', code: 4, status: 'open'   },
+        ],
+        // ВЕСНА
+        [
+          { letter: 'В', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'С', code: 3, status: 'number' },
+          { letter: 'Н', code: 4, status: 'number' },
+          { letter: 'А', code: 5, status: 'open'   },
+        ],
+        // МОРОЗ
+        [
+          { letter: 'М', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'number' },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'З', code: 4, status: 'open'   },
+        ],
+        // ПАРУС
+        [
+          { letter: 'П', code: 1, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'number' },
+          { letter: 'У', code: 4, status: 'number' },
+          { letter: 'С', code: 5, status: 'open'   },
+        ],
+        // ВОЛНА
+        [
+          { letter: 'В', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Л', code: 3, status: 'number' },
+          { letter: 'Н', code: 4, status: 'number' },
+          { letter: 'А', code: 5, status: 'open'   },
+        ],
+        // ГОРОД (О повторяется)
+        [
+          { letter: 'Г', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'number' },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Д', code: 4, status: 'open'   },
+        ],
+        // ПЛАМЯ
+        [
+          { letter: 'П', code: 1, status: 'open'   },
+          { letter: 'Л', code: 2, status: 'number' },
+          { letter: 'А', code: 3, status: 'number' },
+          { letter: 'М', code: 4, status: 'number' },
+          { letter: 'Я', code: 5, status: 'open'   },
+        ],
+        // КРЫША
+        [
+          { letter: 'К', code: 1, status: 'open'   },
+          { letter: 'Р', code: 2, status: 'number' },
+          { letter: 'Ы', code: 3, status: 'number' },
+          { letter: 'Ш', code: 4, status: 'number' },
+          { letter: 'А', code: 5, status: 'open'   },
+        ],
+      ],
+    },
+    {
+      label: 'СРЕДНИЙ',
+      timer: 90,
+      base:  4,
+      puzzles: [
+        // СИСТЕМА — 3 open: И, Е, А (все уникальные)
+        [
+          { letter: 'С', code: 1, status: 'number' },
+          { letter: 'И', code: 2, status: 'open'   },
+          { letter: 'С', code: 1, status: 'number' },
+          { letter: 'Т', code: 3, status: 'number' },
+          { letter: 'Е', code: 4, status: 'open'   },
+          { letter: 'М', code: 5, status: 'hidden' },
+          { letter: 'А', code: 6, status: 'open'   },
+        ],
+        // ПОБЕДА — 2 open: П, А + 1 hidden Б
+        [
+          { letter: 'П', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Б', code: 3, status: 'hidden' },
+          { letter: 'Е', code: 4, status: 'open'   },
+          { letter: 'Д', code: 5, status: 'number' },
+          { letter: 'А', code: 6, status: 'open'   },
+        ],
+        // ЗАГАДКА — 3 open: З, Г, К (А повторяется — нельзя)
+        [
+          { letter: 'З', code: 1, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'Г', code: 3, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'Д', code: 4, status: 'hidden' },
+          { letter: 'К', code: 5, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+        ],
+        // ДОРОГА — 3 open: Д, Г, А (О повторяется — нельзя)
+        [
+          { letter: 'Д', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'hidden' },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Г', code: 4, status: 'open'   },
+          { letter: 'А', code: 5, status: 'open'   },
+        ],
+        // БОРЬБА — 3 open: О, Р, А (Б повторяется — нельзя)
+        [
+          { letter: 'Б', code: 1, status: 'number' },
+          { letter: 'О', code: 2, status: 'open'   },
+          { letter: 'Р', code: 3, status: 'open'   },
+          { letter: 'Ь', code: 4, status: 'hidden' },
+          { letter: 'Б', code: 1, status: 'number' },
+          { letter: 'А', code: 5, status: 'open'   },
+        ],
+        // ДОБРОТА — 3 open: Д, Т, А (О повторяется)
+        [
+          { letter: 'Д', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Б', code: 3, status: 'hidden' },
+          { letter: 'Р', code: 4, status: 'number' },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Т', code: 5, status: 'open'   },
+          { letter: 'А', code: 6, status: 'open'   },
+        ],
+        // КАРТИНА — 3 open: К, Р, Т (А повторяется)
+        [
+          { letter: 'К', code: 1, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'open'   },
+          { letter: 'Т', code: 4, status: 'open'   },
+          { letter: 'И', code: 5, status: 'hidden' },
+          { letter: 'Н', code: 6, status: 'number' },
+          { letter: 'А', code: 2, status: 'number' },
+        ],
+        // ПОДРУГА — 3 open: П, Г, А (все уникальные)
+        [
+          { letter: 'П', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Д', code: 3, status: 'hidden' },
+          { letter: 'Р', code: 4, status: 'number' },
+          { letter: 'У', code: 5, status: 'number' },
+          { letter: 'Г', code: 6, status: 'open'   },
+          { letter: 'А', code: 7, status: 'open'   },
+        ],
+        // ГРАНИЦА — 3 open: Г, Р, Ц (А повторяется)
+        [
+          { letter: 'Г', code: 1, status: 'open'   },
+          { letter: 'Р', code: 2, status: 'open'   },
+          { letter: 'А', code: 3, status: 'number' },
+          { letter: 'Н', code: 4, status: 'number' },
+          { letter: 'И', code: 5, status: 'hidden' },
+          { letter: 'Ц', code: 6, status: 'open'   },
+          { letter: 'А', code: 3, status: 'number' },
+        ],
+        // СОЛНЦЕ — 2 open: С, Е (все уникальные)
+        [
+          { letter: 'С', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Л', code: 3, status: 'hidden' },
+          { letter: 'Н', code: 4, status: 'number' },
+          { letter: 'Ц', code: 5, status: 'number' },
+          { letter: 'Е', code: 6, status: 'open'   },
+        ],
+      ],
+    },
+    {
+      label: 'ТЯЖЁЛЫЙ',
+      timer: 150,
+      base:  5,
+      puzzles: [
+        // ПРОГРАММИСТ — 3 open: П, С, Т (Р и М повторяются)
+        [
+          { letter: 'П', code: 1, status: 'open'   },
+          { letter: 'Р', code: 2, status: 'number' },
+          { letter: 'О', code: 3, status: 'hidden' },
+          { letter: 'Г', code: 4, status: 'hidden' },
+          { letter: 'Р', code: 2, status: 'number' },
+          { letter: 'А', code: 5, status: 'hidden' },
+          { letter: 'М', code: 6, status: 'number' },
+          { letter: 'М', code: 6, status: 'number' },
+          { letter: 'И', code: 7, status: 'number' },
+          { letter: 'С', code: 8, status: 'open'   },
+          { letter: 'Т', code: 9, status: 'open'   },
+        ],
+        // БИБЛИОТЕКА — 3 open: Л, Т, К (Б и И повторяются)
+        [
+          { letter: 'Б', code: 1, status: 'number' },
+          { letter: 'И', code: 2, status: 'number' },
+          { letter: 'Б', code: 1, status: 'number' },
+          { letter: 'Л', code: 3, status: 'open'   },
+          { letter: 'И', code: 2, status: 'number' },
+          { letter: 'О', code: 4, status: 'hidden' },
+          { letter: 'Т', code: 5, status: 'open'   },
+          { letter: 'Е', code: 6, status: 'hidden' },
+          { letter: 'К', code: 7, status: 'open'   },
+          { letter: 'А', code: 8, status: 'hidden' },
+        ],
+        // КОМПЬЮТЕР — 3 open: К, М, Р (все уникальные)
+        [
+          { letter: 'К', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'hidden' },
+          { letter: 'М', code: 3, status: 'open'   },
+          { letter: 'П', code: 4, status: 'hidden' },
+          { letter: 'Ь', code: 5, status: 'number' },
+          { letter: 'Ю', code: 6, status: 'hidden' },
+          { letter: 'Т', code: 7, status: 'number' },
+          { letter: 'Е', code: 8, status: 'number' },
+          { letter: 'Р', code: 9, status: 'open'   },
+        ],
+        // ИНСТРУМЕНТ — 3 open: И, Р, Е (Н и Т повторяются)
+        [
+          { letter: 'И', code: 1, status: 'open'   },
+          { letter: 'Н', code: 2, status: 'number' },
+          { letter: 'С', code: 3, status: 'hidden' },
+          { letter: 'Т', code: 4, status: 'number' },
+          { letter: 'Р', code: 5, status: 'open'   },
+          { letter: 'У', code: 6, status: 'hidden' },
+          { letter: 'М', code: 7, status: 'hidden' },
+          { letter: 'Е', code: 8, status: 'open'   },
+          { letter: 'Н', code: 2, status: 'number' },
+          { letter: 'Т', code: 4, status: 'number' },
+        ],
+        // ДОСТИЖЕНИЕ — 3 open: Д, Ж, Н (И и Е повторяются)
+        [
+          { letter: 'Д', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'hidden' },
+          { letter: 'С', code: 3, status: 'number' },
+          { letter: 'Т', code: 4, status: 'hidden' },
+          { letter: 'И', code: 5, status: 'number' },
+          { letter: 'Ж', code: 6, status: 'open'   },
+          { letter: 'Е', code: 7, status: 'number' },
+          { letter: 'Н', code: 8, status: 'open'   },
+          { letter: 'И', code: 5, status: 'number' },
+          { letter: 'Е', code: 7, status: 'number' },
+        ],
+        // ПРОФЕССИЯ — 3 open: П, Е, Я (С повторяется)
+        [
+          { letter: 'П', code: 1, status: 'open'   },
+          { letter: 'Р', code: 2, status: 'number' },
+          { letter: 'О', code: 3, status: 'hidden' },
+          { letter: 'Ф', code: 4, status: 'hidden' },
+          { letter: 'Е', code: 5, status: 'open'   },
+          { letter: 'С', code: 6, status: 'number' },
+          { letter: 'С', code: 6, status: 'number' },
+          { letter: 'И', code: 7, status: 'hidden' },
+          { letter: 'Я', code: 8, status: 'open'   },
+        ],
+        // КОЛИЧЕСТВО — 3 open: К, Е, В (О повторяется)
+        [
+          { letter: 'К', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Л', code: 3, status: 'hidden' },
+          { letter: 'И', code: 4, status: 'number' },
+          { letter: 'Ч', code: 5, status: 'hidden' },
+          { letter: 'Е', code: 6, status: 'open'   },
+          { letter: 'С', code: 7, status: 'number' },
+          { letter: 'Т', code: 8, status: 'hidden' },
+          { letter: 'В', code: 9, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+        ],
+        // РЕВОЛЮЦИЯ — 3 open: Р, Ц, Я (все уникальные)
+        [
+          { letter: 'Р', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'hidden' },
+          { letter: 'В', code: 3, status: 'number' },
+          { letter: 'О', code: 4, status: 'hidden' },
+          { letter: 'Л', code: 5, status: 'number' },
+          { letter: 'Ю', code: 6, status: 'hidden' },
+          { letter: 'Ц', code: 7, status: 'open'   },
+          { letter: 'И', code: 8, status: 'number' },
+          { letter: 'Я', code: 9, status: 'open'   },
+        ],
+        // ГОСУДАРСТВО — 3 open: Г, А, В (О и С повторяются)
+        [
+          { letter: 'Г', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'С', code: 3, status: 'number' },
+          { letter: 'У', code: 4, status: 'hidden' },
+          { letter: 'Д', code: 5, status: 'hidden' },
+          { letter: 'А', code: 6, status: 'open'   },
+          { letter: 'Р', code: 7, status: 'hidden' },
+          { letter: 'С', code: 3, status: 'number' },
+          { letter: 'Т', code: 8, status: 'number' },
+          { letter: 'В', code: 9, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+        ],
+      ],
+    },
+  ];
+
+  const CYRILLIC   = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЭЮЯ';
+  const GLITCH_CHARS = CYRILLIC + '@#$%&!?~^*/<>|\\[]{}0123456789';
+
+  const KB_ROWS = [
+    ['Й','Ц','У','К','Е','Н','Г','Ш','Щ','З','Х','Ъ'],
+    ['Ф','Ы','В','А','П','Р','О','Л','Д','Ж','Э'],
+    ['Я','Ч','С','М','И','Т','Ь','Б','Ю'],
+  ];
+
+  const MAX_ERRORS = 5;
+
+  // ─── СОСТОЯНИЕ ───
+  let levelIndex   = 0;
+  let gameState    = 'start';
+  let PUZZLE       = [];
+  let revealed     = {};
+  let wrongGuesses = {};
+  let errors       = 0;
+  let timeLeft     = 0;
+  let timerInterval = null;
+  let selectedIndex = null;   // индекс выбранной ячейки
+  let revealedHidden = {};    // index → letter, для hidden-ячеек отдельно
+  let levelResults  = [];
+
+  // Случайный пазл на каждый уровень
+  function pickPuzzle(level) {
+    const puzzles = level.puzzles;
+    return puzzles[Math.floor(Math.random() * puzzles.length)];
+  }
+
+  const root = document.getElementById('game-root');
+
+  // Быстрое мерцание яркости фона
+  setInterval(() => {
+    const el = document.getElementById('shake');
+    if (!el) return;
+    const b = (0.88 + Math.random() * 0.15).toFixed(2);
+    el.style.filter = `brightness(${b})`;
+  }, 30);
+
+
+
+  /* ─── SCRAMBLE: буква "прокручивается" перед появлением ─── */
+  function scrambleReveal(cellEl, finalLetter) {
+    const el = cellEl.querySelector('.g-cell-letter');
+    if (!el) return;
+    let frame = 0;
+    const total = 7;
+    const id = setInterval(() => {
+      if (frame >= total) { clearInterval(id); el.textContent = finalLetter; return; }
+      el.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+      frame++;
+    }, 38);
+  }
+
+  /* ─── GHOST: нераскрытые ячейки иногда "мерцают" случайной буквой ─── */
+  let ghostRunning   = false;
+  let cellsEntering  = false;
+  let hintTimer      = null;
+  function ghostTick() {
+    ghostRunning = true;
+    if (gameState === 'game') {
+      const candidates = PUZZLE.reduce((acc, c, i) => {
+        if (!isCellDone(c, i)) acc.push(i);
+        return acc;
+      }, []);
+      if (candidates.length > 0) {
+        const idx = candidates[Math.floor(Math.random() * candidates.length)];
+        const cellEls = document.querySelectorAll('#cells .g-cell');
+        const el = cellEls[idx] && cellEls[idx].querySelector('.g-cell-letter');
+        if (el) {
+          const orig = el.textContent;
+          const origColor = el.style.color;
+          el.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+          el.style.color = 'var(--clay)';
+          setTimeout(() => { if (el) { el.textContent = orig; el.style.color = origColor; } }, 90);
+        }
+      }
+    }
+    setTimeout(ghostTick, 1800 + Math.random() * 3400);
+  }
+
+  function triggerGlitch(cls, duration) {
+    root.classList.remove('glitch-hit', 'glitch-fail', 'glitch-win');
+    void root.offsetWidth; // reflow — перезапускает анимацию
+    root.classList.add(cls);
+    setTimeout(() => root.classList.remove(cls), duration);
+  }
+
+  function currentLevel() { return LEVELS[levelIndex]; }
+
+  // ─── ФОРМУЛА ОЧКОВ ───
+  function calcScore(timer, timeLeft, base) {
+    const pct = timeLeft / timer;
+    const speedBonus = pct > 0.8 ? 3 : pct > 0.5 ? 2 : pct > 0.3 ? 1 : 0;
+    return base + speedBonus;
+  }
+
+  function render() {
+    root.innerHTML = '<div class="g-dots-overlay"></div><div class="g-jitter" id="jitter"><div class="g-shake" id="shake"></div></div>';
+    if      (gameState === 'start') renderStart();
+    else if (gameState === 'final') renderFinal();
+    else                            renderGame();
+  }
+
+  function jitterRoot() {
+    return document.getElementById('shake') || root;
+  }
+
+  /* ─── СТАРТОВЫЙ ЭКРАН ─── */
+  function renderStart() {
+    PUZZLE = pickPuzzle(currentLevel());
+    jitterRoot().innerHTML = `
+      <div class="g-header">
+        <span class="g-label">// TERMINAL_BREACH</span>
+        <span class="g-difficulty">${currentLevel().label}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div class="g-cells" id="cells"></div>
+        <div class="g-hint" style="align-self:center;margin:0;border-left:none;text-align:center">повторяющиеся числа = одна буква</div>
+      </div>
+      <button class="g-start-btn" id="startBtn">[ НАЧАТЬ ВЗЛОМ ]</button>
+    `;
+    renderCells(false);
+    document.getElementById('startBtn').onclick = startGame;
+  }
+
+  /* ─── ИГРОВОЙ ЭКРАН ─── */
+  function renderGame() {
+    const lv = currentLevel();
+    jitterRoot().innerHTML = `
+      <div class="g-top">
+        <div class="g-header">
+          <span class="g-label">// TERMINAL_BREACH</span>
+          <span class="g-difficulty">${lv.label}</span>
+        </div>
+        <div class="g-timer-wrap">
+          <div class="g-timer-meta">
+            <span>СОЕДИНЕНИЕ</span>
+            <span id="timerNum">${fmtTime(timeLeft)}</span>
+          </div>
+          <div class="g-timer-track">
+            <div class="g-timer-fill" id="timerFill"
+              style="width:${Math.round((timeLeft/lv.timer)*100)}%">
+            </div>
+          </div>
+        </div>
+        <div class="g-errors">
+          <span>ОБНАРУЖЕНИЙ:</span>
+          <div class="g-error-dots" id="errorDots"></div>
+        </div>
+      </div>
+      <div class="g-cells" id="cells"></div>
+      <div class="g-bottom">
+        <div class="g-hint" id="hint"></div>
+        <div class="g-keyboard" id="keyboard"></div>
+      </div>
+    `;
+    renderCells(true);
+    renderErrors();
+    renderKeyboard();
+  }
+
+  /* ─── ФИНАЛЬНЫЙ ЭКРАН ─── */
+  function renderFinal() {
+    const totalScore = levelResults.reduce((s, r) => s + r.score, 0);
+    const allWon = levelResults.length === LEVELS.length && levelResults.every(r => r.outcome === 'granted');
+    const sessionLabel = allWon ? 'СЕССИЯ ЗАВЕРШЕНА' : 'СЕССИЯ ПРЕРВАНА';
+
+    const rowData = levelResults.map((r, i) => {
+      const lv = LEVELS[i];
+      const statusText = r.outcome === 'granted'  ? 'ACCESS_GRANTED'
+                       : r.outcome === 'detected'  ? 'DETECTED'
+                       :                             'CONNECTION_LOST';
+      return { label: lv.label, status: statusText, score: r.score };
+    });
+
+    jitterRoot().innerHTML = `
+      <div class="g-header">
+        <span class="g-label">// TERMINAL_BREACH</span>
+        <span class="g-difficulty">ИТОГ</span>
+      </div>
+      <div class="g-final-wrap">
+        <div class="g-final-total-label">${sessionLabel}</div>
+        <div class="g-final-total" id="finalScore">—</div>
+        <div class="g-result-list" id="resultList"></div>
+        <button class="g-start-btn" id="restartBtn" style="margin-top:24px;visibility:hidden">[ НАЧАТЬ СНАЧАЛА ]</button>
+      </div>
+    `;
+    document.getElementById('restartBtn').onclick = restartAll;
+
+    // Строки появляются по одной
+    const list = document.getElementById('resultList');
+    rowData.forEach((r, i) => {
+      setTimeout(() => {
+        const div = document.createElement('div');
+        div.className = 'g-result-row';
+        div.innerHTML = `
+          <span class="g-result-label">${r.label}</span>
+          <span class="g-result-status">${r.status}</span>
+          <span class="g-result-score">${r.score > 0 ? '+' + r.score : '0'}</span>`;
+        list.appendChild(div);
+      }, 350 + i * 320);
+    });
+
+    // После последней строки — счёт и кнопка
+    const afterRows = 350 + rowData.length * 320;
+    setTimeout(() => {
+      const scoreEl = document.getElementById('finalScore');
+      const btn = document.getElementById('restartBtn');
+      if (scoreEl) {
+        if (totalScore === 0) { scoreEl.textContent = '0'; }
+        else {
+          let cur = 0;
+          const step = Math.ceil(totalScore / 20);
+          const id = setInterval(() => {
+            cur = Math.min(cur + step, totalScore);
+            scoreEl.textContent = cur;
+            if (cur >= totalScore) clearInterval(id);
+          }, 45);
+        }
+      }
+      if (btn) btn.style.visibility = 'visible';
+    }, afterRows);
+  }
+
+  function restartAll() {
+    levelIndex     = 0;
+    levelResults   = [];
+    revealed       = {};
+    revealedHidden = {};
+    wrongGuesses   = {};
+    errors         = 0;
+    selectedIndex  = null;
+    PUZZLE         = [];
+    clearInterval(timerInterval);
+    gameState      = 'start';
+    render();
+  }
+
+  /* ─── ЯЧЕЙКИ ─── */
+  function isCellDone(cell, idx) {
+    if (cell.status === 'open')   return true;
+    if (cell.status === 'hidden') return revealedHidden[idx] !== undefined;
+    return revealed[cell.code] !== undefined;
+  }
+
+  function firstUnfinished() {
+    const idx = PUZZLE.findIndex((c, i) => !isCellDone(c, i) && c.status !== 'open');
+    return idx === -1 ? null : idx;
+  }
+
+  function renderCells(interactive) {
+    const wrap = document.getElementById('cells');
+    if (!wrap) return;
+    PUZZLE.forEach((cell, idx) => {
+      const div = document.createElement('div');
+      const isOpen   = cell.status === 'open';
+      const isHidden = cell.status === 'hidden';
+      const isDone   = isCellDone(cell, idx);
+      const selectedCell = selectedIndex !== null ? PUZZLE[selectedIndex] : null;
+      const isGroupHighlighted = interactive
+        && selectedCell
+        && selectedCell.status !== 'hidden'
+        && cell.status !== 'hidden'
+        && !isOpen && !isDone
+        && cell.code === selectedCell.code
+        && selectedIndex !== idx;
+
+      const isSelected = interactive && selectedIndex === idx && !isOpen && !isDone;
+
+      let cls = 'g-cell';
+      let letterContent, codeContent;
+
+      if (isOpen) {
+        cls += ' open';
+        letterContent = cell.letter;
+        codeContent   = cell.code;
+      } else if (isHidden && revealedHidden[idx] !== undefined) {
+        cls += ' solved';
+        letterContent = revealedHidden[idx];
+        codeContent   = '?';
+      } else if (!isHidden && revealed[cell.code] !== undefined) {
+        cls += ' solved';
+        letterContent = revealed[cell.code];
+        codeContent   = cell.code;
+      } else if (isHidden) {
+        cls += isSelected ? ' selected' : ' number';
+        letterContent = '_';
+        codeContent   = '?';
+      } else {
+        cls += isSelected ? ' selected' : isGroupHighlighted ? ' grouped' : ' number';
+        letterContent = '_';
+        codeContent   = cell.code;
+      }
+
+      if (cellsEntering) cls += ' entering';
+      div.className = cls;
+      if (cellsEntering) div.style.animationDelay = (idx * 0.04) + 's';
+      div.innerHTML = `
+        <div class="g-cell-letter">${letterContent}</div>
+        <div class="g-cell-code">${codeContent}</div>
+      `;
+      if (interactive && !isOpen && !isDone && gameState === 'game') {
+        div.onclick = () => selectCell(idx);
+      }
+      wrap.appendChild(div);
+    });
+  }
+
+  function selectCell(idx) {
+    if (gameState !== 'game') return;
+    selectedIndex = (selectedIndex === idx) ? null : idx;
+    refreshCells();
+    refreshKeyboard();
+  }
+
+  function refreshCells() {
+    const wrap = document.getElementById('cells');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    renderCells(true);
+  }
+
+  function refreshKeyboard() {
+    const kb = document.getElementById('keyboard');
+    if (!kb) return;
+    kb.innerHTML = '';
+    renderKeyboard();
+  }
+
+  /* ─── ИНДИКАТОР ОШИБОК ─── */
+  function renderErrors() {
+    const wrap = document.getElementById('errorDots');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    for (let i = 0; i < MAX_ERRORS; i++) {
+      const d = document.createElement('div');
+      const isNew = (i === errors - 1);
+      d.className = 'g-dot' + (i < errors ? ' active' : '') + (isNew ? ' new' : '');
+      wrap.appendChild(d);
+    }
+  }
+
+  /* ─── КЛАВИАТУРА ─── */
+  function renderKeyboard() {
+    const kb = document.getElementById('keyboard');
+    if (!kb) return;
+    KB_ROWS.forEach(row => {
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'g-kb-row';
+      row.forEach(letter => {
+        const btn = document.createElement('button');
+        btn.textContent = letter;
+        // Все клавиши всегда активны
+        btn.className = 'g-key';
+        btn.onclick = () => handleKey(letter);
+        rowDiv.appendChild(btn);
+      });
+      kb.appendChild(rowDiv);
+    });
+  }
+
+  /* ─── НАЖАТИЕ КЛАВИШИ ─── */
+  function handleKey(letter) {
+    if (gameState !== 'game') return;
+
+    if (selectedIndex === null) {
+      const idx = firstUnfinished();
+      if (idx === null) return;
+      selectedIndex = idx;
+    }
+
+    const idx  = selectedIndex;
+    const cell = PUZZLE[idx];
+    if (!cell || isCellDone(cell, idx)) return;
+
+    if (cell.letter === letter) {
+      if (cell.status === 'hidden') {
+        revealedHidden[idx] = letter;   // открываем только эту ячейку
+      } else {
+        revealed[cell.code] = letter;   // открываем все NUMBER с этим кодом
+      }
+
+      // Scramble + solve flash — анимируем только что раскрытые ячейки
+      refreshCells();
+      requestAnimationFrame(() => {
+        const cellEls = document.querySelectorAll('#cells .g-cell');
+        if (cell.status === 'hidden') {
+          if (cellEls[idx]) {
+            scrambleReveal(cellEls[idx], letter);
+            cellEls[idx].classList.add('solving');
+            setTimeout(() => cellEls[idx] && cellEls[idx].classList.remove('solving'), 600);
+          }
+        } else {
+          PUZZLE.forEach((c, i) => {
+            if (c.code === cell.code && c.status !== 'hidden' && cellEls[i]) {
+              scrambleReveal(cellEls[i], letter);
+              cellEls[i].classList.add('solving');
+              setTimeout(() => cellEls[i] && cellEls[i].classList.remove('solving'), 600);
+            }
+          });
+        }
+      });
+
+      const allSolved = PUZZLE.every((c, i) => isCellDone(c, i));
+      if (allSolved) {
+        clearInterval(timerInterval);
+        gameState = 'over';
+        const lv = currentLevel();
+        const score = calcScore(lv.timer, timeLeft, lv.base);
+        levelResults.push({ outcome: 'granted', score });
+        selectedIndex = null;
+        setHint('ACCESS_GRANTED');
+        triggerGlitch('glitch-win', 600);
+        refreshKeyboard();
+        setTimeout(() => advanceLevel(true), 1800);
+        return;
+      } else {
+        selectedIndex = firstUnfinished();
+      }
+    } else {
+      if (!wrongGuesses[idx]) wrongGuesses[idx] = new Set();
+      wrongGuesses[idx].add(letter);
+      errors++;
+      setHint('ОБНАРУЖЕНИЕ #' + errors);
+      triggerGlitch('glitch-hit', 300);
+      renderErrors();
+      if (errors >= MAX_ERRORS) {
+        clearInterval(timerInterval);
+        gameState = 'over';
+        levelResults.push({ outcome: 'detected', score: 0 });
+        selectedIndex = null;
+        setHint('DETECTED');
+        triggerGlitch('glitch-fail', 850);
+        refreshCells();
+        refreshKeyboard();
+        setTimeout(() => advanceLevel(false), 1800);
+        return;
+      }
+    }
+    refreshCells();
+    refreshKeyboard();
+  }
+
+  function setHint(text) {
+    const h = document.getElementById('hint');
+    if (!h) return;
+    if (hintTimer) { clearInterval(hintTimer); hintTimer = null; }
+    h.textContent = '';
+    let i = 0;
+    hintTimer = setInterval(() => {
+      h.textContent = text.slice(0, ++i);
+      if (i >= text.length) { clearInterval(hintTimer); hintTimer = null; }
+    }, 28);
+  }
+
+  /* ─── ПЕРЕХОД МЕЖДУ УРОВНЯМИ ─── */
+  function exitCells(cb) {
+    const cells = document.querySelectorAll('.g-cell');
+    const total = cells.length;
+    if (!total) { cb(); return; }
+    cells.forEach((el, i) => {
+      el.classList.add('leaving');
+      el.style.animationDelay = (i * 0.04) + 's';
+    });
+    setTimeout(cb, total * 40 + 20);
+  }
+
+  function advanceLevel(won) {
+    if (!won) {
+      gameState = 'final';
+      render();
+      return;
+    }
+    levelIndex++;
+    if (levelIndex >= LEVELS.length) {
+      exitCells(() => { gameState = 'final'; render(); });
+    } else {
+      exitCells(() => {
+        PUZZLE = pickPuzzle(currentLevel());
+        startGame();
+      });
+    }
+  }
+
+  /* ─── СТАРТ УРОВНЯ ─── */
+  function startGame() {
+    // PUZZLE уже выбран в renderStart — не перевыбираем
+    revealed       = {};
+    revealedHidden = {};
+    wrongGuesses   = {};
+    errors         = 0;
+    timeLeft       = currentLevel().timer;
+    selectedIndex  = null;
+    gameState      = 'game';
+    cellsEntering  = true;
+    render();
+    const first = firstUnfinished();
+    if (first !== null) { selectedIndex = first; refreshCells(); refreshKeyboard(); }
+    cellsEntering  = false;
+    startTimer();
+    if (!ghostRunning) ghostTick();
+  }
+
+  function startTimer() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      if (gameState !== 'game') { clearInterval(timerInterval); return; }
+      timeLeft--;
+      const lv = currentLevel();
+      const fill = document.getElementById('timerFill');
+      const num  = document.getElementById('timerNum');
+      if (fill) {
+        fill.style.width = Math.round((timeLeft / lv.timer) * 100) + '%';
+        fill.classList.toggle('urgent', timeLeft <= Math.ceil(lv.timer * 0.2));
+      }
+      if (num)  num.textContent  = fmtTime(timeLeft);
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        gameState = 'over';
+        levelResults.push({ outcome: 'lost', score: 0 });
+        setHint('CONNECTION_LOST');
+        triggerGlitch('glitch-fail', 850);
+        setTimeout(() => advanceLevel(false), 1800);
+      }
+    }, 1000);
+  }
+
+  // Маппинг латиница (QWERTY) → кириллица
+  const LAT_TO_RU = {
+    'Q':'Й','W':'Ц','E':'У','R':'К','T':'Е','Y':'Н','U':'Г','I':'Ш','O':'Щ','P':'З',
+    'A':'Ф','S':'Ы','D':'В','F':'А','G':'П','H':'Р','J':'О','K':'Л','L':'Д',
+    'Z':'Я','X':'Ч','C':'С','V':'М','B':'И','N':'Т','M':'Ь',
+    '[':'Х',']':'Ъ',';':'Ж',"'":'Э',',':'Б','.':'Ю'
+  };
+
+  document.addEventListener('keydown', e => {
+    if (gameState !== 'game') return;
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+    const key = e.key.toUpperCase();
+    if (key.length !== 1) return;
+    const letter = CYRILLIC.includes(key) ? key : (LAT_TO_RU[key] || null);
+    if (letter) { e.preventDefault(); handleKey(letter); }
+  });
+
+  render();
+})();
+</script>
+
+
+
+
