@@ -690,7 +690,7 @@
   .g-start-btn {
     margin-top: 36px;
     font-family: 'Departure Mono', monospace;
-    font-size: 11px;
+    font-size: 15px;
     font-weight: 400;
     letter-spacing: 0.20em;
     color: var(--black);
@@ -923,28 +923,15 @@
     93% { text-shadow: -1px 0 rgba(255,225,72,0.68),  1px 0 rgba(168,44,5,0.58); }
   }
 
-  .g-cell.open   .g-cell-letter { animation: aberration-open   11s linear infinite; }
-  .g-cell.solved .g-cell-letter { animation: aberration-solved  11s linear infinite; }
-
-  /* Разные ячейки глитчат не одновременно */
-  .g-cell:nth-child(1)  .g-cell-letter { animation-delay:  0.0s; }
-  .g-cell:nth-child(2)  .g-cell-letter { animation-delay:  2.4s; }
-  .g-cell:nth-child(3)  .g-cell-letter { animation-delay:  5.2s; }
-  .g-cell:nth-child(4)  .g-cell-letter { animation-delay:  1.3s; }
-  .g-cell:nth-child(5)  .g-cell-letter { animation-delay:  7.9s; }
-  .g-cell:nth-child(6)  .g-cell-letter { animation-delay:  3.6s; }
-  .g-cell:nth-child(7)  .g-cell-letter { animation-delay:  6.1s; }
-  .g-cell:nth-child(8)  .g-cell-letter { animation-delay:  4.4s; }
-  .g-cell:nth-child(9)  .g-cell-letter { animation-delay:  8.8s; }
-  .g-cell:nth-child(10) .g-cell-letter { animation-delay:  1.7s; }
-  .g-cell:nth-child(11) .g-cell-letter { animation-delay:  9.5s; }
+  /* aberration-open / aberration-solved теперь управляются из JS (openGlitchTick) */
 
   /* ─── 1. CURSOR BLINK на выбранной ячейке ─── */
   @keyframes cursor-blink {
     0%, 49% { opacity: 1; }
     50%, 100% { opacity: 0; }
   }
-  .g-cell.selected .g-cell-letter {
+  .g-cell.selected .g-cell-letter,
+  .g-cell.grouped  .g-cell-letter {
     animation: cursor-blink 0.9s step-end infinite;
   }
 
@@ -1509,7 +1496,7 @@
   let hintTimer      = null;
   function ghostTick() {
     ghostRunning = true;
-    if (gameState === 'game') {
+    if (gameState === 'game' || gameState === 'start') {
       const candidates = PUZZLE.reduce((acc, c, i) => {
         if (!isCellDone(c, i)) acc.push(i);
         return acc;
@@ -1527,7 +1514,45 @@
         }
       }
     }
-    setTimeout(ghostTick, 1800 + Math.random() * 3400);
+    setTimeout(ghostTick, 1800 + Math.random() * 2400);
+  }
+
+  /* ─── OPEN GLITCH: символьный или RGB-сдвиг на открытых/угаданных буквах ─── */
+  const RGB_OPEN   = 'rgba(200,235,140,0.90)';
+  const RGB_OPEN2  = 'rgba(200,85,10,0.75)';
+  const RGB_SOLVED = 'rgba(255,218,55,0.95)';
+  const RGB_SOLVED2= 'rgba(155,38,5,0.80)';
+
+  function openGlitchOne(cellEl) {
+    const el = cellEl.querySelector('.g-cell-letter');
+    if (!el || el.dataset.glitching) return;
+    el.dataset.glitching = '1';
+    if (Math.random() < 0.2) {
+      const orig = el.textContent;
+      el.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+      setTimeout(() => { if (el) { el.textContent = orig; delete el.dataset.glitching; } }, 60);
+    } else {
+      const isSolved = cellEl.classList.contains('solved');
+      const c1 = isSolved ? RGB_SOLVED  : RGB_OPEN;
+      const c2 = isSolved ? RGB_SOLVED2 : RGB_OPEN2;
+      const offset = Math.random() < 0.5 ? 2 : 3;
+      el.style.textShadow = `-${offset}px 0 ${c1}, ${offset}px 0 ${c2}`;
+      setTimeout(() => { if (el) { el.style.textShadow = ''; delete el.dataset.glitching; } }, 80);
+    }
+  }
+
+  function openGlitchTick() {
+    if (gameState === 'game' || gameState === 'start') {
+      const cellEls = Array.from(document.querySelectorAll('#cells .g-cell.open, #cells .g-cell.solved'));
+      if (cellEls.length > 0) {
+        // всегда глитчим одну, иногда вторую
+        openGlitchOne(cellEls[Math.floor(Math.random() * cellEls.length)]);
+        if (cellEls.length > 1 && Math.random() < 0.4) {
+          openGlitchOne(cellEls[Math.floor(Math.random() * cellEls.length)]);
+        }
+      }
+    }
+    setTimeout(openGlitchTick, 1800 + Math.random() * 2500);
   }
 
   function triggerGlitch(cls, duration) {
@@ -1560,19 +1585,36 @@
   /* ─── СТАРТОВЫЙ ЭКРАН ─── */
   function renderStart() {
     PUZZLE = pickPuzzle(currentLevel());
+    const lv = currentLevel();
     jitterRoot().innerHTML = `
-      <div class="g-header">
-        <span class="g-label">// TERMINAL_BREACH</span>
-        <span class="g-difficulty">${currentLevel().label}</span>
+      <div class="g-top">
+        <div class="g-header">
+          <span class="g-label">// TERMINAL_BREACH</span>
+        </div>
+        <div class="g-timer-wrap" style="visibility:hidden">
+          <div class="g-timer-meta"><span>СОЕДИНЕНИЕ</span><span>${fmtTime(lv.timer)}</span></div>
+          <div class="g-timer-track"><div class="g-timer-fill" style="width:100%"></div></div>
+        </div>
+        <div class="g-errors" style="visibility:hidden">
+          <span>ОБНАРУЖЕНИЙ:</span><div class="g-error-dots"></div>
+        </div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+        <span class="g-difficulty" style="visibility:hidden">${lv.label}</span>
         <div class="g-cells" id="cells"></div>
-        <div class="g-hint" style="align-self:center;margin:0;border-left:none;text-align:center">повторяющиеся числа = одна буква</div>
       </div>
-      <button class="g-start-btn" id="startBtn">[ НАЧАТЬ ВЗЛОМ ]</button>
+      <div class="g-bottom" style="position:relative">
+        <div class="g-hint" style="text-align:center;margin-top:10px">повторяющиеся числа = одна буква</div>
+        <div class="g-keyboard" style="visibility:hidden" aria-hidden="true">${
+          KB_ROWS.map(row =>
+            `<div class="g-kb-row">${row.map(l => `<button class="g-key">${l}</button>`).join('')}</div>`
+          ).join('')
+        }</div>
+        <button class="g-start-btn" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);margin:0" id="startBtn">[ НАЧАТЬ ВЗЛОМ ]</button>
+      </div>
     `;
     renderCells(false);
-    document.getElementById('startBtn').onclick = startGame;
+    document.getElementById('startBtn').onclick = () => startGame(false);
   }
 
   /* ─── ИГРОВОЙ ЭКРАН ─── */
@@ -1582,7 +1624,6 @@
       <div class="g-top">
         <div class="g-header">
           <span class="g-label">// TERMINAL_BREACH</span>
-          <span class="g-difficulty">${lv.label}</span>
         </div>
         <div class="g-timer-wrap">
           <div class="g-timer-meta">
@@ -1600,7 +1641,10 @@
           <div class="g-error-dots" id="errorDots"></div>
         </div>
       </div>
-      <div class="g-cells" id="cells"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+        <span class="g-difficulty">${lv.label}</span>
+        <div class="g-cells" id="cells"></div>
+      </div>
       <div class="g-bottom">
         <div class="g-hint" id="hint"></div>
         <div class="g-keyboard" id="keyboard"></div>
@@ -1653,11 +1697,9 @@
       }, 350 + i * 320);
     });
 
-    // После последней строки — счёт и кнопка
-    const afterRows = 350 + rowData.length * 320;
+    // Счёт стартует одновременно с первой строкой
     setTimeout(() => {
       const scoreEl = document.getElementById('finalScore');
-      const btn = document.getElementById('restartBtn');
       if (scoreEl) {
         if (totalScore === 0) { scoreEl.textContent = '0'; }
         else {
@@ -1670,6 +1712,12 @@
           }, 45);
         }
       }
+    }, 350);
+
+    // Кнопка — после последней строки
+    const afterRows = 350 + rowData.length * 320;
+    setTimeout(() => {
+      const btn = document.getElementById('restartBtn');
       if (btn) btn.style.visibility = 'visible';
     }, afterRows);
   }
@@ -1935,7 +1983,7 @@
   }
 
   /* ─── СТАРТ УРОВНЯ ─── */
-  function startGame() {
+  function startGame(animate = true) {
     // PUZZLE уже выбран в renderStart — не перевыбираем
     revealed       = {};
     revealedHidden = {};
@@ -1944,13 +1992,13 @@
     timeLeft       = currentLevel().timer;
     selectedIndex  = null;
     gameState      = 'game';
-    cellsEntering  = true;
+    cellsEntering  = animate;
     render();
     const first = firstUnfinished();
     if (first !== null) { selectedIndex = first; refreshCells(); refreshKeyboard(); }
     cellsEntering  = false;
     startTimer();
-    if (!ghostRunning) ghostTick();
+    // циклы уже запущены при инициализации
   }
 
   function startTimer() {
@@ -1995,6 +2043,8 @@
   });
 
   render();
+  ghostTick();
+  openGlitchTick();
 })();
 </script>
 
