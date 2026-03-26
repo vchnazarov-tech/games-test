@@ -518,7 +518,7 @@
 
   .g-label {
     font-size: 13px;
-    color: var(--clay);
+    color: var(--mud);
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
@@ -628,29 +628,30 @@
 
   /* Открытая */
   .g-cell.open {
-    border-color: var(--mud);
+    border-color: #4a4438;
     background: var(--cell-bg);
   }
 
   /* Закрытая с кодом */
   .g-cell.number {
-    border-color: var(--clay);
+    border-color: var(--mud);
     background: transparent;
     cursor: pointer;
   }
   .g-cell.number:hover {
-    border-color: var(--mud);
+    border-color: var(--cement);
     background: var(--cell-bg);
   }
 
   /* Скрытая */
   .g-cell.hidden {
-    border-color: var(--border);
+    border-color: var(--mud);
     background: transparent;
     cursor: pointer;
   }
   .g-cell.hidden:hover {
-    border-color: var(--clay);
+    border-color: var(--cement);
+    background: var(--cell-bg);
   }
 
   /* Выбранная / парная — угловые скобки (фирменный приём сайта) */
@@ -680,7 +681,7 @@
 
   /* Угаданная */
   .g-cell.solved {
-    border-color: var(--mud);
+    border-color: #4a4438;
     background: var(--cell-bg);
     cursor: default;
   }
@@ -694,7 +695,7 @@
 
   .g-cell.open   .g-cell-letter { color: var(--foam);   text-shadow: 0 0 10px rgba(188,202,187,0.45); }
   .g-cell.solved .g-cell-letter { color: var(--amber);  text-shadow: 0 0 14px rgba(255,161,51,0.75); }
-  .g-cell.hidden .g-cell-letter { color: #2a2218; }
+  .g-cell.hidden .g-cell-letter { color: var(--clay); }
   .g-cell.number .g-cell-letter { color: var(--clay); }
 
   .g-cell.selected .g-cell-letter,
@@ -707,7 +708,7 @@
   }
 
   .g-cell.open   .g-cell-code { color: var(--mud); }
-  .g-cell.hidden .g-cell-code { color: #2a2218; }
+  .g-cell.hidden .g-cell-code { color: var(--clay); }
   .g-cell.solved .g-cell-code { color: var(--amber); }
   .g-cell.selected .g-cell-code,
   .g-cell.grouped  .g-cell-code { color: var(--pumpkin); }
@@ -965,21 +966,6 @@
 
   /* ─── ХРОМАТИЧЕСКАЯ АБЕРРАЦИЯ НА БУКВАХ ─── */
 
-  @keyframes aberration-open {
-    0%, 90%, 94%, 100% { text-shadow: 0 0 10px rgba(188,202,187,0.45); }
-    91% { text-shadow: -2px 0 rgba(200,235,140,0.90),  2px 0 rgba(200,85,10,0.75), 0 0 6px rgba(188,202,187,0.2); }
-    92% { text-shadow:  3px 0 rgba(190,228,130,0.80), -3px 0 rgba(180,75,8,0.65),  0 1px rgba(210,200,100,0.30); }
-    93% { text-shadow: -1px 0 rgba(210,238,155,0.65),  1px 0 rgba(195,80,12,0.55); }
-  }
-
-  @keyframes aberration-solved {
-    0%, 90%, 94%, 100% { text-shadow: 0 0 10px rgba(255,161,51,0.45); }
-    91% { text-shadow: -2px 0 rgba(255,218,55,0.95),  2px 0 rgba(155,38,5,0.80), 0 0 6px rgba(255,161,51,0.2); }
-    92% { text-shadow:  3px 0 rgba(255,202,35,0.85), -3px 0 rgba(138,32,5,0.70), 0 1px rgba(255,180,30,0.35); }
-    93% { text-shadow: -1px 0 rgba(255,225,72,0.68),  1px 0 rgba(168,44,5,0.58); }
-  }
-
-  /* aberration-open / aberration-solved теперь управляются из JS (openGlitchTick) */
 
   /* ─── 1. CURSOR BLINK на выбранной ячейке ─── */
   @keyframes cursor-blink {
@@ -1420,7 +1406,7 @@
           { letter: 'П', code: 1, status: 'open'   },
           { letter: 'Л', code: 2, status: 'number' },
           { letter: 'И', code: 3, status: 'number' },
-          { letter: 'Т', code: 4, status: 'number' },
+          { letter: 'Т', code: 4, status: 'open'   },
           { letter: 'К', code: 5, status: 'number' },
           { letter: 'А', code: 6, status: 'open'   },
         ],
@@ -1431,13 +1417,13 @@
           { letter: 'Р', code: 3, status: 'number' },
           { letter: 'Е', code: 2, status: 'number' },
           { letter: 'В', code: 4, status: 'open'   },
-          { letter: 'О', code: 5, status: 'number' },
+          { letter: 'О', code: 5, status: 'open'   },
         ],
         // СТРАНА (А повторяется)
         [
           { letter: 'С', code: 1, status: 'open'   },
           { letter: 'Т', code: 2, status: 'number' },
-          { letter: 'Р', code: 3, status: 'number' },
+          { letter: 'Р', code: 3, status: 'open'   },
           { letter: 'А', code: 4, status: 'number' },
           { letter: 'Н', code: 5, status: 'open'   },
           { letter: 'А', code: 4, status: 'number' },
@@ -1447,14 +1433,14 @@
           { letter: 'Г', code: 1, status: 'open'   },
           { letter: 'Р', code: 2, status: 'number' },
           { letter: 'Я', code: 3, status: 'number' },
-          { letter: 'Д', code: 4, status: 'number' },
+          { letter: 'Д', code: 4, status: 'open'   },
           { letter: 'К', code: 5, status: 'open'   },
           { letter: 'А', code: 6, status: 'number' },
         ],
         // ЛОШАДЬ
         [
           { letter: 'Л', code: 1, status: 'open'   },
-          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'О', code: 2, status: 'open'   },
           { letter: 'Ш', code: 3, status: 'number' },
           { letter: 'А', code: 4, status: 'number' },
           { letter: 'Д', code: 5, status: 'number' },
@@ -1484,6 +1470,172 @@
           { letter: 'Р', code: 4, status: 'number' },
           { letter: 'Ь', code: 5, status: 'open'   },
         ],
+        // ПИРОГ
+        [
+          { letter: 'П', code: 1, status: 'open'   },
+          { letter: 'И', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'number' },
+          { letter: 'О', code: 4, status: 'number' },
+          { letter: 'Г', code: 5, status: 'open'   },
+        ],
+        // ЗЕФИР
+        [
+          { letter: 'З', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'Ф', code: 3, status: 'number' },
+          { letter: 'И', code: 4, status: 'number' },
+          { letter: 'Р', code: 5, status: 'open'   },
+        ],
+        // ВИЛКА
+        [
+          { letter: 'В', code: 1, status: 'open'   },
+          { letter: 'И', code: 2, status: 'number' },
+          { letter: 'Л', code: 3, status: 'number' },
+          { letter: 'К', code: 4, status: 'number' },
+          { letter: 'А', code: 5, status: 'open'   },
+        ],
+        // ЗВЕРЬ
+        [
+          { letter: 'З', code: 1, status: 'open'   },
+          { letter: 'В', code: 2, status: 'number' },
+          { letter: 'Е', code: 3, status: 'number' },
+          { letter: 'Р', code: 4, status: 'number' },
+          { letter: 'Ь', code: 5, status: 'open'   },
+        ],
+        // ГРОЗА
+        [
+          { letter: 'Г', code: 1, status: 'open'   },
+          { letter: 'Р', code: 2, status: 'number' },
+          { letter: 'О', code: 3, status: 'number' },
+          { letter: 'З', code: 4, status: 'number' },
+          { letter: 'А', code: 5, status: 'open'   },
+        ],
+        // ЗЕРНО
+        [
+          { letter: 'З', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'number' },
+          { letter: 'Н', code: 4, status: 'number' },
+          { letter: 'О', code: 5, status: 'open'   },
+        ],
+        // НИТКА
+        [
+          { letter: 'Н', code: 1, status: 'open'   },
+          { letter: 'И', code: 2, status: 'number' },
+          { letter: 'Т', code: 3, status: 'number' },
+          { letter: 'К', code: 4, status: 'number' },
+          { letter: 'А', code: 5, status: 'open'   },
+        ],
+        // МЕСЯЦ
+        [
+          { letter: 'М', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'С', code: 3, status: 'number' },
+          { letter: 'Я', code: 4, status: 'number' },
+          { letter: 'Ц', code: 5, status: 'open'   },
+        ],
+        // ПОЕЗД
+        [
+          { letter: 'П', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Е', code: 3, status: 'number' },
+          { letter: 'З', code: 4, status: 'number' },
+          { letter: 'Д', code: 5, status: 'open'   },
+        ],
+        // РУБИН
+        [
+          { letter: 'Р', code: 1, status: 'open'   },
+          { letter: 'У', code: 2, status: 'number' },
+          { letter: 'Б', code: 3, status: 'number' },
+          { letter: 'И', code: 4, status: 'number' },
+          { letter: 'Н', code: 5, status: 'open'   },
+        ],
+        // ВИШНЯ
+        [
+          { letter: 'В', code: 1, status: 'open'   },
+          { letter: 'И', code: 2, status: 'number' },
+          { letter: 'Ш', code: 3, status: 'number' },
+          { letter: 'Н', code: 4, status: 'number' },
+          { letter: 'Я', code: 5, status: 'open'   },
+        ],
+        // БЛЮДО
+        [
+          { letter: 'Б', code: 1, status: 'open'   },
+          { letter: 'Л', code: 2, status: 'number' },
+          { letter: 'Ю', code: 3, status: 'number' },
+          { letter: 'Д', code: 4, status: 'number' },
+          { letter: 'О', code: 5, status: 'open'   },
+        ],
+        // ВЕТКА
+        [
+          { letter: 'В', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'Т', code: 3, status: 'number' },
+          { letter: 'К', code: 4, status: 'number' },
+          { letter: 'А', code: 5, status: 'open'   },
+        ],
+        // ГАЙКА (А повторяется)
+        [
+          { letter: 'Г', code: 1, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'Й', code: 3, status: 'number' },
+          { letter: 'К', code: 4, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+        ],
+        // КАМЕНЬ
+        [
+          { letter: 'К', code: 1, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'М', code: 3, status: 'open'   },
+          { letter: 'Е', code: 4, status: 'number' },
+          { letter: 'Н', code: 5, status: 'number' },
+          { letter: 'Ь', code: 6, status: 'open'   },
+        ],
+        // МЕДАЛЬ
+        [
+          { letter: 'М', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'Д', code: 3, status: 'open'   },
+          { letter: 'А', code: 4, status: 'number' },
+          { letter: 'Л', code: 5, status: 'number' },
+          { letter: 'Ь', code: 6, status: 'open'   },
+        ],
+        // СИРЕНЬ
+        [
+          { letter: 'С', code: 1, status: 'open'   },
+          { letter: 'И', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'open'   },
+          { letter: 'Е', code: 4, status: 'number' },
+          { letter: 'Н', code: 5, status: 'number' },
+          { letter: 'Ь', code: 6, status: 'open'   },
+        ],
+        // РАКЕТА (А повторяется)
+        [
+          { letter: 'Р', code: 1, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'К', code: 3, status: 'open'   },
+          { letter: 'Е', code: 4, status: 'number' },
+          { letter: 'Т', code: 5, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+        ],
+        // КОРЕНЬ
+        [
+          { letter: 'К', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'open'   },
+          { letter: 'Е', code: 4, status: 'number' },
+          { letter: 'Н', code: 5, status: 'number' },
+          { letter: 'Ь', code: 6, status: 'open'   },
+        ],
+        // БЕРЁЗА
+        [
+          { letter: 'Б', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'open'   },
+          { letter: 'Ё', code: 4, status: 'number' },
+          { letter: 'З', code: 5, status: 'number' },
+          { letter: 'А', code: 6, status: 'open'   },
+        ],
       ],
     },
     {
@@ -1496,7 +1648,7 @@
           { letter: 'С', code: 1, status: 'number' },
           { letter: 'И', code: 2, status: 'open'   },
           { letter: 'С', code: 1, status: 'number' },
-          { letter: 'Т', code: 3, status: 'number' },
+          { letter: 'Т', code: 3, status: 'open'   },
           { letter: 'Е', code: 4, status: 'open'   },
           { letter: 'М', code: 5, status: 'hidden' },
           { letter: 'А', code: 6, status: 'open'   },
@@ -1504,7 +1656,7 @@
         // ПОБЕДА — 2 open: П, А + 1 hidden Б
         [
           { letter: 'П', code: 1, status: 'open'   },
-          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'О', code: 2, status: 'open'   },
           { letter: 'Б', code: 3, status: 'hidden' },
           { letter: 'Е', code: 4, status: 'open'   },
           { letter: 'Д', code: 5, status: 'number' },
@@ -1516,7 +1668,7 @@
           { letter: 'А', code: 2, status: 'number' },
           { letter: 'Г', code: 3, status: 'open'   },
           { letter: 'А', code: 2, status: 'number' },
-          { letter: 'Д', code: 4, status: 'hidden' },
+          { letter: 'Д', code: 4, status: 'open'   },
           { letter: 'К', code: 5, status: 'open'   },
           { letter: 'А', code: 2, status: 'number' },
         ],
@@ -1524,7 +1676,7 @@
         [
           { letter: 'Д', code: 1, status: 'open'   },
           { letter: 'О', code: 2, status: 'number' },
-          { letter: 'Р', code: 3, status: 'hidden' },
+          { letter: 'Р', code: 3, status: 'open'   },
           { letter: 'О', code: 2, status: 'number' },
           { letter: 'Г', code: 4, status: 'open'   },
           { letter: 'А', code: 5, status: 'open'   },
@@ -1534,7 +1686,7 @@
           { letter: 'Б', code: 1, status: 'number' },
           { letter: 'О', code: 2, status: 'open'   },
           { letter: 'Р', code: 3, status: 'open'   },
-          { letter: 'Ь', code: 4, status: 'hidden' },
+          { letter: 'Ь', code: 4, status: 'open'   },
           { letter: 'Б', code: 1, status: 'number' },
           { letter: 'А', code: 5, status: 'open'   },
         ],
@@ -1543,7 +1695,7 @@
           { letter: 'Д', code: 1, status: 'open'   },
           { letter: 'О', code: 2, status: 'number' },
           { letter: 'Б', code: 3, status: 'hidden' },
-          { letter: 'Р', code: 4, status: 'number' },
+          { letter: 'Р', code: 4, status: 'open'   },
           { letter: 'О', code: 2, status: 'number' },
           { letter: 'Т', code: 5, status: 'open'   },
           { letter: 'А', code: 6, status: 'open'   },
@@ -1555,7 +1707,7 @@
           { letter: 'Р', code: 3, status: 'open'   },
           { letter: 'Т', code: 4, status: 'open'   },
           { letter: 'И', code: 5, status: 'hidden' },
-          { letter: 'Н', code: 6, status: 'number' },
+          { letter: 'Н', code: 6, status: 'open'   },
           { letter: 'А', code: 2, status: 'number' },
         ],
         // ПОДРУГА — 3 open: П, Г, А (все уникальные)
@@ -1564,7 +1716,7 @@
           { letter: 'О', code: 2, status: 'number' },
           { letter: 'Д', code: 3, status: 'hidden' },
           { letter: 'Р', code: 4, status: 'number' },
-          { letter: 'У', code: 5, status: 'number' },
+          { letter: 'У', code: 5, status: 'open'   },
           { letter: 'Г', code: 6, status: 'open'   },
           { letter: 'А', code: 7, status: 'open'   },
         ],
@@ -1573,7 +1725,7 @@
           { letter: 'Г', code: 1, status: 'open'   },
           { letter: 'Р', code: 2, status: 'open'   },
           { letter: 'А', code: 3, status: 'number' },
-          { letter: 'Н', code: 4, status: 'number' },
+          { letter: 'Н', code: 4, status: 'open'   },
           { letter: 'И', code: 5, status: 'hidden' },
           { letter: 'Ц', code: 6, status: 'open'   },
           { letter: 'А', code: 3, status: 'number' },
@@ -1583,7 +1735,7 @@
           { letter: 'С', code: 1, status: 'open'   },
           { letter: 'О', code: 2, status: 'number' },
           { letter: 'Л', code: 3, status: 'hidden' },
-          { letter: 'Н', code: 4, status: 'number' },
+          { letter: 'Н', code: 4, status: 'open'   },
           { letter: 'Ц', code: 5, status: 'number' },
           { letter: 'Е', code: 6, status: 'open'   },
         ],
@@ -1593,7 +1745,7 @@
           { letter: 'О', code: 2, status: 'number' },
           { letter: 'Г', code: 3, status: 'open'   },
           { letter: 'О', code: 2, status: 'number' },
-          { letter: 'Д', code: 4, status: 'number' },
+          { letter: 'Д', code: 4, status: 'open'   },
           { letter: 'А', code: 5, status: 'hidden' },
         ],
         // ЗАБОТА (А повторяется)
@@ -1601,14 +1753,14 @@
           { letter: 'З', code: 1, status: 'open'   },
           { letter: 'А', code: 2, status: 'number' },
           { letter: 'Б', code: 3, status: 'hidden' },
-          { letter: 'О', code: 4, status: 'number' },
+          { letter: 'О', code: 4, status: 'open'   },
           { letter: 'Т', code: 5, status: 'open'   },
           { letter: 'А', code: 2, status: 'number' },
         ],
         // ПРАВДА (А повторяется)
         [
           { letter: 'П', code: 1, status: 'open'   },
-          { letter: 'Р', code: 2, status: 'number' },
+          { letter: 'Р', code: 2, status: 'open'   },
           { letter: 'А', code: 3, status: 'number' },
           { letter: 'В', code: 4, status: 'open'   },
           { letter: 'Д', code: 5, status: 'hidden' },
@@ -1619,7 +1771,7 @@
           { letter: 'Т', code: 1, status: 'open'   },
           { letter: 'А', code: 2, status: 'number' },
           { letter: 'Й', code: 3, status: 'hidden' },
-          { letter: 'Н', code: 4, status: 'number' },
+          { letter: 'Н', code: 4, status: 'open'   },
           { letter: 'И', code: 5, status: 'number' },
           { letter: 'К', code: 6, status: 'open'   },
         ],
@@ -1630,13 +1782,13 @@
           { letter: 'К', code: 3, status: 'hidden' },
           { letter: 'Р', code: 4, status: 'open'   },
           { letter: 'Е', code: 2, status: 'number' },
-          { letter: 'Т', code: 5, status: 'number' },
+          { letter: 'Т', code: 5, status: 'open'   },
         ],
         // ЛЕГЕНДА (Е повторяется)
         [
           { letter: 'Л', code: 1, status: 'open'   },
           { letter: 'Е', code: 2, status: 'number' },
-          { letter: 'Г', code: 3, status: 'number' },
+          { letter: 'Г', code: 3, status: 'open'   },
           { letter: 'Е', code: 2, status: 'number' },
           { letter: 'Н', code: 4, status: 'open'   },
           { letter: 'Д', code: 5, status: 'number' },
@@ -1645,7 +1797,7 @@
         // СВОБОДА (О повторяется)
         [
           { letter: 'С', code: 1, status: 'open'   },
-          { letter: 'В', code: 2, status: 'number' },
+          { letter: 'В', code: 2, status: 'open'   },
           { letter: 'О', code: 3, status: 'number' },
           { letter: 'Б', code: 4, status: 'hidden' },
           { letter: 'О', code: 3, status: 'number' },
@@ -1655,7 +1807,7 @@
         // ПЛАНЕТА (А повторяется)
         [
           { letter: 'П', code: 1, status: 'open'   },
-          { letter: 'Л', code: 2, status: 'number' },
+          { letter: 'Л', code: 2, status: 'open'   },
           { letter: 'А', code: 3, status: 'number' },
           { letter: 'Н', code: 4, status: 'hidden' },
           { letter: 'Е', code: 5, status: 'open'   },
@@ -1666,7 +1818,7 @@
         [
           { letter: 'Д', code: 1, status: 'open'   },
           { letter: 'Е', code: 2, status: 'number' },
-          { letter: 'Р', code: 3, status: 'number' },
+          { letter: 'Р', code: 3, status: 'open'   },
           { letter: 'Е', code: 2, status: 'number' },
           { letter: 'В', code: 4, status: 'open'   },
           { letter: 'Н', code: 5, status: 'hidden' },
@@ -1675,7 +1827,7 @@
         // СТОЛИЦА
         [
           { letter: 'С', code: 1, status: 'open'   },
-          { letter: 'Т', code: 2, status: 'number' },
+          { letter: 'Т', code: 2, status: 'open'   },
           { letter: 'О', code: 3, status: 'number' },
           { letter: 'Л', code: 4, status: 'number' },
           { letter: 'И', code: 5, status: 'hidden' },
@@ -1687,7 +1839,7 @@
           { letter: 'Ф', code: 1, status: 'open'   },
           { letter: 'О', code: 2, status: 'number' },
           { letter: 'Н', code: 3, status: 'hidden' },
-          { letter: 'А', code: 4, status: 'number' },
+          { letter: 'А', code: 4, status: 'open'   },
           { letter: 'Р', code: 5, status: 'open'   },
           { letter: 'Ь', code: 6, status: 'number' },
         ],
@@ -1698,14 +1850,14 @@
           { letter: 'С', code: 3, status: 'number' },
           { letter: 'С', code: 3, status: 'number' },
           { letter: 'В', code: 4, status: 'open'   },
-          { letter: 'Е', code: 5, status: 'number' },
+          { letter: 'Е', code: 5, status: 'open'   },
           { letter: 'Т', code: 6, status: 'number' },
         ],
         // ПРОГРЕСС (Р и С повторяются)
         [
           { letter: 'П', code: 1, status: 'open'   },
           { letter: 'Р', code: 2, status: 'number' },
-          { letter: 'О', code: 3, status: 'hidden' },
+          { letter: 'О', code: 3, status: 'open'   },
           { letter: 'Г', code: 4, status: 'open'   },
           { letter: 'Р', code: 2, status: 'number' },
           { letter: 'Е', code: 5, status: 'hidden' },
@@ -1719,7 +1871,7 @@
           { letter: 'Р', code: 3, status: 'number' },
           { letter: 'А', code: 2, status: 'number' },
           { letter: 'К', code: 4, status: 'open'   },
-          { letter: 'Т', code: 5, status: 'hidden' },
+          { letter: 'Т', code: 5, status: 'open'   },
           { letter: 'Е', code: 6, status: 'hidden' },
           { letter: 'Р', code: 3, status: 'number' },
         ],
@@ -1728,7 +1880,7 @@
           { letter: 'Н', code: 1, status: 'open'   },
           { letter: 'А', code: 2, status: 'number' },
           { letter: 'Х', code: 3, status: 'open'   },
-          { letter: 'О', code: 4, status: 'number' },
+          { letter: 'О', code: 4, status: 'open'   },
           { letter: 'Д', code: 5, status: 'hidden' },
           { letter: 'К', code: 6, status: 'number' },
           { letter: 'А', code: 2, status: 'number' },
@@ -1736,7 +1888,7 @@
         // ДРУЖБА
         [
           { letter: 'Д', code: 1, status: 'open'   },
-          { letter: 'Р', code: 2, status: 'number' },
+          { letter: 'Р', code: 2, status: 'open'   },
           { letter: 'У', code: 3, status: 'hidden' },
           { letter: 'Ж', code: 4, status: 'open'   },
           { letter: 'Б', code: 5, status: 'number' },
@@ -1749,7 +1901,7 @@
           { letter: 'Л', code: 3, status: 'open'   },
           { letter: 'О', code: 2, status: 'number' },
           { letter: 'Д', code: 4, status: 'hidden' },
-          { letter: 'Е', code: 5, status: 'number' },
+          { letter: 'Е', code: 5, status: 'open'   },
           { letter: 'Ц', code: 6, status: 'number' },
         ],
         // ФАБРИКА (А повторяется)
@@ -1757,7 +1909,7 @@
           { letter: 'Ф', code: 1, status: 'open'   },
           { letter: 'А', code: 2, status: 'number' },
           { letter: 'Б', code: 3, status: 'hidden' },
-          { letter: 'Р', code: 4, status: 'number' },
+          { letter: 'Р', code: 4, status: 'open'   },
           { letter: 'И', code: 5, status: 'open'   },
           { letter: 'К', code: 6, status: 'number' },
           { letter: 'А', code: 2, status: 'number' },
@@ -1769,7 +1921,7 @@
           { letter: 'И', code: 3, status: 'hidden' },
           { letter: 'Р', code: 2, status: 'number' },
           { letter: 'О', code: 4, status: 'open'   },
-          { letter: 'Д', code: 5, status: 'number' },
+          { letter: 'Д', code: 5, status: 'open'   },
           { letter: 'А', code: 6, status: 'number' },
         ],
         // ЖИВОТНОЕ (О повторяется)
@@ -1778,10 +1930,198 @@
           { letter: 'И', code: 2, status: 'hidden' },
           { letter: 'В', code: 3, status: 'open'   },
           { letter: 'О', code: 4, status: 'number' },
-          { letter: 'Т', code: 5, status: 'number' },
+          { letter: 'Т', code: 5, status: 'open'   },
           { letter: 'Н', code: 6, status: 'number' },
           { letter: 'О', code: 4, status: 'number' },
           { letter: 'Е', code: 7, status: 'hidden' },
+        ],
+        // ПАМЯТЬ
+        [
+          { letter: 'П', code: 1, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'М', code: 3, status: 'hidden' },
+          { letter: 'Я', code: 4, status: 'open'   },
+          { letter: 'Т', code: 5, status: 'number' },
+          { letter: 'Ь', code: 6, status: 'open'   },
+        ],
+        // ПОДВИГ
+        [
+          { letter: 'П', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Д', code: 3, status: 'hidden' },
+          { letter: 'В', code: 4, status: 'open'   },
+          { letter: 'И', code: 5, status: 'number' },
+          { letter: 'Г', code: 6, status: 'open'   },
+        ],
+        // ФОРМАТ
+        [
+          { letter: 'Ф', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'open'   },
+          { letter: 'М', code: 4, status: 'hidden' },
+          { letter: 'А', code: 5, status: 'number' },
+          { letter: 'Т', code: 6, status: 'open'   },
+        ],
+        // КИНЖАЛ
+        [
+          { letter: 'К', code: 1, status: 'open'   },
+          { letter: 'И', code: 2, status: 'open'   },
+          { letter: 'Н', code: 3, status: 'hidden' },
+          { letter: 'Ж', code: 4, status: 'number' },
+          { letter: 'А', code: 5, status: 'number' },
+          { letter: 'Л', code: 6, status: 'open'   },
+        ],
+        // ПРОЕКТ
+        [
+          { letter: 'П', code: 1, status: 'open'   },
+          { letter: 'Р', code: 2, status: 'number' },
+          { letter: 'О', code: 3, status: 'hidden' },
+          { letter: 'Е', code: 4, status: 'open'   },
+          { letter: 'К', code: 5, status: 'number' },
+          { letter: 'Т', code: 6, status: 'open'   },
+        ],
+        // ВОСТОК (О повторяется)
+        [
+          { letter: 'В', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'С', code: 3, status: 'open'   },
+          { letter: 'Т', code: 4, status: 'hidden' },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'К', code: 5, status: 'open'   },
+        ],
+        // ЖЕРТВА
+        [
+          { letter: 'Ж', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'open'   },
+          { letter: 'Р', code: 3, status: 'hidden' },
+          { letter: 'Т', code: 4, status: 'number' },
+          { letter: 'В', code: 5, status: 'number' },
+          { letter: 'А', code: 6, status: 'open'   },
+        ],
+        // ВУЛКАН
+        [
+          { letter: 'В', code: 1, status: 'open'   },
+          { letter: 'У', code: 2, status: 'open'   },
+          { letter: 'Л', code: 3, status: 'hidden' },
+          { letter: 'К', code: 4, status: 'number' },
+          { letter: 'А', code: 5, status: 'number' },
+          { letter: 'Н', code: 6, status: 'open'   },
+        ],
+        // КРИЗИС (И повторяется)
+        [
+          { letter: 'К', code: 1, status: 'open'   },
+          { letter: 'Р', code: 2, status: 'open'   },
+          { letter: 'И', code: 3, status: 'number' },
+          { letter: 'З', code: 4, status: 'hidden' },
+          { letter: 'И', code: 3, status: 'number' },
+          { letter: 'С', code: 5, status: 'open'   },
+        ],
+        // СИГНАЛ
+        [
+          { letter: 'С', code: 1, status: 'open'   },
+          { letter: 'И', code: 2, status: 'number' },
+          { letter: 'Г', code: 3, status: 'hidden' },
+          { letter: 'Н', code: 4, status: 'open'   },
+          { letter: 'А', code: 5, status: 'number' },
+          { letter: 'Л', code: 6, status: 'open'   },
+        ],
+        // ЖУРНАЛ
+        [
+          { letter: 'Ж', code: 1, status: 'open'   },
+          { letter: 'У', code: 2, status: 'number' },
+          { letter: 'Р', code: 3, status: 'hidden' },
+          { letter: 'Н', code: 4, status: 'open'   },
+          { letter: 'А', code: 5, status: 'number' },
+          { letter: 'Л', code: 6, status: 'open'   },
+        ],
+        // МОЛНИЯ
+        [
+          { letter: 'М', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'number' },
+          { letter: 'Л', code: 3, status: 'open'   },
+          { letter: 'Н', code: 4, status: 'hidden' },
+          { letter: 'И', code: 5, status: 'number' },
+          { letter: 'Я', code: 6, status: 'open'   },
+        ],
+        // ЖЕЛАНИЕ (Е повторяется)
+        [
+          { letter: 'Ж', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'Л', code: 3, status: 'open'   },
+          { letter: 'А', code: 4, status: 'hidden' },
+          { letter: 'Н', code: 5, status: 'open'   },
+          { letter: 'И', code: 6, status: 'number' },
+          { letter: 'Е', code: 2, status: 'number' },
+        ],
+        // КАПИТАЛ (А повторяется)
+        [
+          { letter: 'К', code: 1, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'П', code: 3, status: 'open'   },
+          { letter: 'И', code: 4, status: 'hidden' },
+          { letter: 'Т', code: 5, status: 'number' },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'Л', code: 6, status: 'open'   },
+        ],
+        // КОМИТЕТ (Т повторяется)
+        [
+          { letter: 'К', code: 1, status: 'open'   },
+          { letter: 'О', code: 2, status: 'open'   },
+          { letter: 'М', code: 3, status: 'open'   },
+          { letter: 'И', code: 4, status: 'hidden' },
+          { letter: 'Т', code: 5, status: 'number' },
+          { letter: 'Е', code: 6, status: 'number' },
+          { letter: 'Т', code: 5, status: 'number' },
+        ],
+        // РЕШЕНИЕ (Е повторяется трижды)
+        [
+          { letter: 'Р', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'Ш', code: 3, status: 'hidden' },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'Н', code: 4, status: 'open'   },
+          { letter: 'И', code: 5, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+        ],
+        // ЗАДАНИЕ (А повторяется)
+        [
+          { letter: 'З', code: 1, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'Д', code: 3, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'Н', code: 4, status: 'hidden' },
+          { letter: 'И', code: 5, status: 'number' },
+          { letter: 'Е', code: 6, status: 'open'   },
+        ],
+        // ТРАМВАЙ (А повторяется)
+        [
+          { letter: 'Т', code: 1, status: 'open'   },
+          { letter: 'Р', code: 2, status: 'open'   },
+          { letter: 'А', code: 3, status: 'number' },
+          { letter: 'М', code: 4, status: 'hidden' },
+          { letter: 'В', code: 5, status: 'number' },
+          { letter: 'А', code: 3, status: 'number' },
+          { letter: 'Й', code: 6, status: 'open'   },
+        ],
+        // ТЕЛЕФОН (Е повторяется)
+        [
+          { letter: 'Т', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'Л', code: 3, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'number' },
+          { letter: 'Ф', code: 4, status: 'hidden' },
+          { letter: 'О', code: 5, status: 'number' },
+          { letter: 'Н', code: 6, status: 'open'   },
+        ],
+        // КАБИНЕТ
+        [
+          { letter: 'К', code: 1, status: 'open'   },
+          { letter: 'А', code: 2, status: 'number' },
+          { letter: 'Б', code: 3, status: 'open'   },
+          { letter: 'И', code: 4, status: 'hidden' },
+          { letter: 'Н', code: 5, status: 'number' },
+          { letter: 'Е', code: 6, status: 'number' },
+          { letter: 'Т', code: 7, status: 'open'   },
         ],
       ],
     },
@@ -2339,11 +2679,42 @@
       setTimeout(() => { if (el) { el.textContent = orig; delete el.dataset.glitching; } }, 60);
     } else {
       const isSolved = cellEl.classList.contains('solved');
-      const c1 = isSolved ? RGB_SOLVED  : RGB_OPEN;
-      const c2 = isSolved ? RGB_SOLVED2 : RGB_OPEN2;
-      const offset = Math.random() < 0.5 ? 2 : 3;
-      el.style.textShadow = `-${offset}px 0 ${c1}, ${offset}px 0 ${c2}`;
-      setTimeout(() => { if (el) { el.style.textShadow = ''; delete el.dataset.glitching; } }, isEvent ? 80 : 80);
+      const c1base = isSolved ? [255,218,55]  : [200,235,140];
+      const c2base = isSolved ? [155,38,5]    : [200,85,10];
+
+      // 1. Интенсивность: плавный диапазон 1–4px
+      const offset = 1 + Math.random() * 3;
+      // небольшая вертикальная составляющая (~30% случаев)
+      const vy = Math.random() < 0.3 ? (Math.random() * 1.5).toFixed(1) : 0;
+
+      // 2. Количество теней: 2 основных + иногда 3-я призрачная
+      const a1 = (0.7 + Math.random() * 0.25).toFixed(2);
+      const a2 = (0.55 + Math.random() * 0.25).toFixed(2);
+      const ox = offset.toFixed(2);
+      let shadow =
+        `-${ox}px ${vy}px rgba(${c1base[0]},${c1base[1]},${c2base[2]},${a1}), ` +
+        ` ${ox}px -${vy}px rgba(${c2base[0]},${c2base[1]},${c2base[2]},${a2})`;
+      if (Math.random() < 0.35) {
+        const ox3 = (offset * 1.6).toFixed(2);
+        const a3  = (0.2 + Math.random() * 0.15).toFixed(2);
+        shadow += `, ${ox3}px 0 rgba(${c1base[0]},${c1base[1]},${c1base[2]},${a3})`;
+      }
+
+      // 3. Форма затухания: быстрый всплеск или медленное нарастание
+      const burst    = Math.random() < 0.4; // 40% — резкий всплеск
+      const fadeIn   = burst ? 120 : 350;
+      const holdTime = burst ? 180 : (isEvent ? 400 : 300);
+      const fadeOut  = burst ? 400 : 600;
+
+      el.style.transition = `text-shadow ${fadeIn}ms ease-in`;
+      void el.offsetWidth;
+      el.style.textShadow = shadow;
+      setTimeout(() => {
+        if (!el) return;
+        el.style.transition = `text-shadow ${fadeOut}ms ease-out`;
+        el.style.textShadow = '';
+        setTimeout(() => { if (el) { el.style.transition = ''; delete el.dataset.glitching; } }, fadeOut);
+      }, holdTime);
     }
   }
 
@@ -2674,12 +3045,12 @@
         letterContent = revealed[cell.code];
         codeContent   = cell.code;
       } else if (isHidden) {
-        cls += isSelected ? ' selected' : ' number';
-        letterContent = '_';
+        cls += isSelected ? ' selected' : ' hidden';
+        letterContent = '';
         codeContent   = '?';
       } else {
         cls += isSelected ? ' selected' : isGroupHighlighted ? ' grouped' : ' number';
-        letterContent = '_';
+        letterContent = '';
         codeContent   = cell.code;
       }
 
