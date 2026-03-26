@@ -688,6 +688,8 @@
   ];
   const START_WORDS = ['норма','лампа','стена','карта','школа','парус','замок','число','волна','песня','гроза','мечта','книга','рынок','место','кошка','город','голос','образ','порог','забор','завод','берег','доска','ветер','весна','осень','пламя','крыша','башня','свеча','буква','лента','мираж','пирог','север','якорь','каток','пятно','проза','танец','плита','рыбак','крест','центр','театр','трава','жизнь','поезд','чашка','ложка','речка','кукла','маска','зебра','ствол','диван','земля','форма','отряд','рамка'];
   const TIMER_MAX = 90;
+  const ANALYTICS_URL = 'https://script.google.com/macros/s/AKfycbzaAaRHCPIUc0IX0P9iDel4sbPmJVTVJ9ncqcM8lza7f1XAH6NwHqmFja7_-z2JQuBMGg/exec';
+  const SESSION_ID = crypto.randomUUID();
 
   // ── Scoring ──
   const LETTER_VAL = (() => {
@@ -716,6 +718,7 @@
   let badgeAnimate = false;
   let prevScore = 0;
   let demoTimeouts = [];
+  let startWord, wordsCount, gameStartTime;
 
   // phase: 'select_cell' | 'draw_word' | 'game_over'
 
@@ -737,6 +740,9 @@
     tInterval  = null;
 
     const sw = START_WORDS[Math.floor(Math.random() * START_WORDS.length)];
+    startWord = sw;
+    wordsCount = 0;
+    gameStartTime = null;
     const sc = Math.floor((COLS - sw.length) / 2);
     for (let i = 0; i < sw.length; i++) grid[2][sc + i] = sw[i];
     used = new Set([sw]);
@@ -768,6 +774,7 @@
         clearInterval(tInterval);
         updateTimerDOM();
         phase = 'game_over';
+        sendGameOver();
         render();
         return;
       }
@@ -889,6 +896,20 @@
     used.add(word);
     prevScore = score;
     score += pts;
+    wordsCount++;
+    sendAnalytics({
+      timestamp: new Date().toISOString(),
+      session_id: SESSION_ID,
+      event: 'word_scored',
+      start_word: startWord,
+      score: score,
+      words_count: wordsCount,
+      duration_sec: gameStartTime ? Math.round((Date.now() - gameStartTime) / 1000) : 0,
+      word: word,
+      word_score: pts,
+      turn: turn,
+      is_mobile: window.innerWidth <= 640
+    });
     successMsg = `+${pts} ${pluralScore(pts)}`;
     const sp = [...path];
     path    = [];
@@ -905,6 +926,7 @@
       tInterval = null;
       if (grid.every(row => row.every(cell => cell))) {
         phase = 'game_over';
+        sendGameOver();
       } else {
         phase = 'select_cell';
         if (turn >= 2) startTimer();
@@ -1284,6 +1306,14 @@
     startBtn.style.marginTop = window.innerWidth <= 640 ? '48px' : '48px';
     startBtn.addEventListener('click', () => {
       clearDemo();
+      gameStartTime = Date.now();
+      sendAnalytics({
+        timestamp: new Date().toISOString(),
+        session_id: SESSION_ID,
+        event: 'game_start',
+        start_word: startWord,
+        is_mobile: window.innerWidth <= 640
+      });
       phase = 'select_cell';
       hint = 'Выберите пустую клетку и добавьте букву';
       render();
@@ -1323,6 +1353,29 @@
     const e = document.createElement(tag);
     if (cls) e.className = cls;
     return e;
+  }
+
+  // ── Analytics ──
+  function sendAnalytics(data) {
+    fetch(ANALYTICS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'text/plain' }
+    }).catch(() => {});
+  }
+
+  function sendGameOver() {
+    sendAnalytics({
+      timestamp: new Date().toISOString(),
+      session_id: SESSION_ID,
+      event: 'game_over',
+      start_word: startWord,
+      score: score,
+      words_count: wordsCount,
+      duration_sec: gameStartTime ? Math.round((Date.now() - gameStartTime) / 1000) : 0,
+      is_mobile: window.innerWidth <= 640
+    });
   }
 
   // ── Global mouseup ──
