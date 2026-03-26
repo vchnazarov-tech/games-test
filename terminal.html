@@ -3295,6 +3295,14 @@
     if (first !== null) { selectedIndex = first; refreshCells(); refreshKeyboard(); }
     renderErrors();
     cellsEntering  = false;
+    if (animate) {
+      setTimeout(() => {
+        document.querySelectorAll('#cells .g-cell.entering').forEach(el => {
+          el.classList.remove('entering');
+          el.style.animationDelay = '';
+        });
+      }, 800);
+    }
     startTimer();
     // циклы уже запущены при инициализации
   }
