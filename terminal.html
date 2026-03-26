@@ -2569,7 +2569,7 @@
     const theme = THEMES[themeIdx] || 'amber';
     const payload = {
       session_id:   sessionId,
-      timestamp:    new Date().toISOString(),
+      timestamp:    new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
       level:        levelIndex + 1,
       word:         word,
       result:       result,
