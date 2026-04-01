@@ -319,6 +319,9 @@
       <span style="font-size:22px">🎮</span>
     </div>
 
+    <!-- Тема текущей сессии -->
+    <div id="theme-subtitle" style="font-size:17px;color:#000000;margin:00px 0 24px 0;"></div>
+
     <!-- Контент-блок (игра) -->
     <div class="post-content" style="padding:0;overflow:hidden;background:#000;border-radius:10px;border:1px solid rgba(0,0,0,0.10);">
       <div id="game-root" style="width:592px;height:592px;position:relative;"></div>
@@ -416,16 +419,16 @@
   #game-root {
     --amber:   #ffa133;
     --pumpkin: #e47b1a;
-    --foam:    #bccabb;
-    --cement:  #c0c0c0;
-    --clay:    #9a9a7e;
-    --mud:     #b8b898;
+    --foam:    #e0eede;
+    --cement:  #e8e4dc;
+    --clay:    #c8b878;
+    --mud:     #d4c490;
     --carbon:   #1a1614;
-    --black:    #0f0d0b;
-    --cell-bg:  #161210;
-    --surface:    #1e1a14;
-    --surface2:   #2a2418;
-    --border:     #2e2820;
+    --black:    #262018;
+    --cell-bg:  #2e2820;
+    --surface:    #342e28;
+    --surface2:   #403830;
+    --border:     #4a4038;
     --flash-bg:      rgba(255,161,51,0.22);
     --flash-glow:    rgba(255,161,51,0.35);
     --flash-bg-win:  rgba(255,161,51,0.55);
@@ -622,8 +625,7 @@
     flex-shrink: 0;
     position: relative;
     background: transparent;
-    transition: border-color var(--fast) var(--flick),
-                background-color var(--fast) var(--flick);
+    transition: none;
   }
 
   /* Открытая */
@@ -634,31 +636,23 @@
 
   /* Закрытая с кодом */
   .g-cell.number {
-    border-color: var(--mud);
-    background: transparent;
-    cursor: pointer;
-  }
-  .g-cell.number:hover {
-    border-color: var(--cement);
+    border-color: #4a4438;
     background: var(--cell-bg);
+    cursor: pointer;
   }
 
   /* Скрытая */
   .g-cell.hidden {
-    border-color: var(--mud);
-    background: transparent;
-    cursor: pointer;
-  }
-  .g-cell.hidden:hover {
-    border-color: var(--cement);
+    border-color: #4a4438;
     background: var(--cell-bg);
+    cursor: pointer;
   }
 
   /* Выбранная / парная — угловые скобки (фирменный приём сайта) */
   .g-cell.grouped,
   .g-cell.selected {
     border-color: transparent;
-    background: var(--cell-bg);
+    background: linear-gradient(rgba(255,161,51,0.18), rgba(255,161,51,0.18)), var(--cell-bg);
     box-shadow: none;
   }
   .g-cell.grouped::before,
@@ -690,6 +684,7 @@
     font-size: 22px;
     font-weight: 400;
     line-height: 1;
+    height: 1em;
     color: var(--cement);
   }
 
@@ -969,11 +964,10 @@
 
   /* ─── 1. CURSOR BLINK на выбранной ячейке ─── */
   @keyframes cursor-blink {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
+    0%, 49% { color: var(--amber); }
+    50%, 100% { color: transparent; }
   }
-  .g-cell.selected .g-cell-letter,
-  .g-cell.grouped  .g-cell-letter {
+  .g-cell.selected .g-cell-letter {
     animation: cursor-blink 0.9s step-end infinite;
   }
 
@@ -1217,6 +1211,205 @@
     const sec = s % 60;
     return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
   }
+
+  // ─── ТЕМАТИЧЕСКИЕ НАБОРЫ СЛОВ ───
+  // Структура: 5 тем × 3 слова (лёгкое / среднее / тяжёлое)
+  // При загрузке страницы выбирается одна тема случайно.
+  // puzzles[0] — лёгкий, puzzles[1] — средний, puzzles[2] — тяжёлый
+  const WORD_THEMES = [
+    {
+      name: 'Космос',
+      puzzles: [
+        // ЗВЕЗДА (лёгкий, 6 букв)
+        [
+          { letter: 'З', code: 3, status: 'number' },
+          { letter: 'В', code: 1, status: 'open'   },
+          { letter: 'Е', code: 4, status: 'number' },
+          { letter: 'З', code: 3, status: 'number' },
+          { letter: 'Д', code: 2, status: 'open'   },
+          { letter: 'А', code: 5, status: 'open'   },
+        ],
+        // СПУТНИК (средний, 7 букв)
+        [
+          { letter: 'С', code: 1, status: 'number' },
+          { letter: 'П', code: 2, status: 'open'   },
+          { letter: 'У', code: 3, status: 'number' },
+          { letter: 'Т', code: 4, status: 'hidden' },
+          { letter: 'Н', code: 5, status: 'number' },
+          { letter: 'И', code: 6, status: 'open'   },
+          { letter: 'К', code: 7, status: 'open'   },
+        ],
+        // НЕВЕСОМОСТЬ (тяжёлый, 11 букв)
+        [
+          { letter: 'Н', code: 1, status: 'open'   },
+          { letter: 'Е', code: 7, status: 'number' },
+          { letter: 'В', code: 2, status: 'open'   },
+          { letter: 'Е', code: 7, status: 'hidden' },
+          { letter: 'С', code: 4, status: 'number' },
+          { letter: 'О', code: 6, status: 'number' },
+          { letter: 'М', code: 3, status: 'open'   },
+          { letter: 'О', code: 6, status: 'hidden' },
+          { letter: 'С', code: 4, status: 'hidden' },
+          { letter: 'Т', code: 5, status: 'number' },
+          { letter: 'Ь', code: 8, status: 'hidden' },
+        ],
+      ],
+    },
+    {
+      name: 'Музыка',
+      puzzles: [
+        // ФЛЕЙТА (лёгкий, 6 букв)
+        [
+          { letter: 'Ф', code: 3, status: 'number' },
+          { letter: 'Л', code: 1, status: 'open'   },
+          { letter: 'Е', code: 2, status: 'open'   },
+          { letter: 'Й', code: 4, status: 'number' },
+          { letter: 'Т', code: 5, status: 'number' },
+          { letter: 'А', code: 6, status: 'open'   },
+        ],
+        // ОРКЕСТР (средний, 7 букв)
+        [
+          { letter: 'О', code: 1, status: 'open'   },
+          { letter: 'Р', code: 4, status: 'number' },
+          { letter: 'К', code: 3, status: 'hidden' },
+          { letter: 'Е', code: 5, status: 'number' },
+          { letter: 'С', code: 6, status: 'number' },
+          { letter: 'Т', code: 2, status: 'open'   },
+          { letter: 'Р', code: 4, status: 'number' },
+        ],
+        // АРАНЖИРОВКА (тяжёлый, 11 букв)
+        [
+          { letter: 'А', code: 4, status: 'number' },
+          { letter: 'Р', code: 5, status: 'number' },
+          { letter: 'А', code: 4, status: 'hidden' },
+          { letter: 'Н', code: 1, status: 'open'   },
+          { letter: 'Ж', code: 6, status: 'hidden' },
+          { letter: 'И', code: 2, status: 'open'   },
+          { letter: 'Р', code: 5, status: 'number' },
+          { letter: 'О', code: 7, status: 'number' },
+          { letter: 'В', code: 3, status: 'open'   },
+          { letter: 'К', code: 8, status: 'hidden' },
+          { letter: 'А', code: 4, status: 'hidden' },
+        ],
+      ],
+    },
+    {
+      name: 'Спорт',
+      puzzles: [
+        // БОРЬБА (лёгкий, 6 букв)
+        [
+          { letter: 'Б', code: 3, status: 'number' },
+          { letter: 'О', code: 1, status: 'open'   },
+          { letter: 'Р', code: 2, status: 'open'   },
+          { letter: 'Ь', code: 4, status: 'number' },
+          { letter: 'Б', code: 3, status: 'number' },
+          { letter: 'А', code: 5, status: 'open'   },
+        ],
+        // ТРИБУНА (средний, 7 букв)
+        [
+          { letter: 'Т', code: 1, status: 'number' },
+          { letter: 'Р', code: 2, status: 'number' },
+          { letter: 'И', code: 3, status: 'open'   },
+          { letter: 'Б', code: 4, status: 'open'   },
+          { letter: 'У', code: 5, status: 'hidden' },
+          { letter: 'Н', code: 6, status: 'open'   },
+          { letter: 'А', code: 7, status: 'number' },
+        ],
+        // КВАЛИФИКАЦИЯ (тяжёлый, 12 букв)
+        [
+          { letter: 'К', code: 3, status: 'number' },
+          { letter: 'В', code: 1, status: 'open'   },
+          { letter: 'А', code: 4, status: 'number' },
+          { letter: 'Л', code: 2, status: 'open'   },
+          { letter: 'И', code: 5, status: 'number' },
+          { letter: 'Ф', code: 6, status: 'hidden' },
+          { letter: 'И', code: 5, status: 'hidden' },
+          { letter: 'К', code: 3, status: 'number' },
+          { letter: 'А', code: 4, status: 'number' },
+          { letter: 'Ц', code: 7, status: 'number' },
+          { letter: 'И', code: 5, status: 'hidden' },
+          { letter: 'Я', code: 8, status: 'number' },
+        ],
+      ],
+    },
+    {
+      name: 'Кино',
+      puzzles: [
+        // СЮЖЕТ (лёгкий, 5 букв)
+        [
+          { letter: 'С', code: 1, status: 'open'   },
+          { letter: 'Ю', code: 3, status: 'number' },
+          { letter: 'Ж', code: 4, status: 'number' },
+          { letter: 'Е', code: 5, status: 'number' },
+          { letter: 'Т', code: 2, status: 'open'   },
+        ],
+        // СЦЕНАРИЙ (средний, 8 букв)
+        [
+          { letter: 'С', code: 1, status: 'open'   },
+          { letter: 'Ц', code: 3, status: 'number' },
+          { letter: 'Е', code: 4, status: 'hidden' },
+          { letter: 'Н', code: 5, status: 'number' },
+          { letter: 'А', code: 2, status: 'open'   },
+          { letter: 'Р', code: 6, status: 'hidden' },
+          { letter: 'И', code: 7, status: 'open'   },
+          { letter: 'Й', code: 8, status: 'number' },
+        ],
+        // ЭКРАНИЗАЦИЯ (тяжёлый, 11 букв)
+        [
+          { letter: 'Э', code: 3, status: 'number' },
+          { letter: 'К', code: 1, status: 'open'   },
+          { letter: 'Р', code: 4, status: 'number' },
+          { letter: 'А', code: 5, status: 'number' },
+          { letter: 'Н', code: 2, status: 'open'   },
+          { letter: 'И', code: 6, status: 'number' },
+          { letter: 'З', code: 7, status: 'hidden' },
+          { letter: 'А', code: 5, status: 'number' },
+          { letter: 'Ц', code: 8, status: 'number' },
+          { letter: 'И', code: 6, status: 'hidden' },
+          { letter: 'Я', code: 9, status: 'hidden' },
+        ],
+      ],
+    },
+    {
+      name: 'Наука',
+      puzzles: [
+        // ПРИБОР (лёгкий, 6 букв)
+        [
+          { letter: 'П', code: 1, status: 'open'   },
+          { letter: 'Р', code: 3, status: 'number' },
+          { letter: 'И', code: 4, status: 'open'   },
+          { letter: 'Б', code: 5, status: 'number' },
+          { letter: 'О', code: 2, status: 'open'   },
+          { letter: 'Р', code: 3, status: 'number' },
+        ],
+        // МОЛЕКУЛА (средний, 8 букв)
+        [
+          { letter: 'М', code: 1, status: 'open'   },
+          { letter: 'О', code: 3, status: 'number' },
+          { letter: 'Л', code: 4, status: 'number' },
+          { letter: 'Е', code: 5, status: 'open'   },
+          { letter: 'К', code: 6, status: 'number' },
+          { letter: 'У', code: 7, status: 'hidden' },
+          { letter: 'Л', code: 4, status: 'number' },
+          { letter: 'А', code: 2, status: 'open'   },
+        ],
+        // ЛАБОРАТОРИЯ (тяжёлый, 11 букв)
+        [
+          { letter: 'Л', code: 4, status: 'number' },
+          { letter: 'А', code: 2, status: 'hidden' },
+          { letter: 'Б', code: 1, status: 'open'   },
+          { letter: 'О', code: 5, status: 'number' },
+          { letter: 'Р', code: 6, status: 'number' },
+          { letter: 'А', code: 2, status: 'open'   },
+          { letter: 'Т', code: 7, status: 'hidden' },
+          { letter: 'О', code: 5, status: 'hidden' },
+          { letter: 'Р', code: 6, status: 'number' },
+          { letter: 'И', code: 3, status: 'open'   },
+          { letter: 'Я', code: 8, status: 'hidden' },
+        ],
+      ],
+    },
+  ];
 
   // ─── ТРИ УРОВНЯ, 5 СЛОВ КАЖДЫЙ ───
   const LEVELS = [
@@ -2598,10 +2791,23 @@
   let revealedHidden = {};    // index → letter, для hidden-ячеек отдельно
   let levelResults  = [];
 
-  // Случайный пазл на каждый уровень — с перемешанными кодами
-  function pickPuzzle(level) {
-    const puzzles = level.puzzles;
-    const base = puzzles[Math.floor(Math.random() * puzzles.length)];
+  // Выбор темы сессии — без повторов, сброс после всех тем
+  let activeTheme = null;
+  let usedThemeIndices = [];
+  function pickTheme() {
+    if (usedThemeIndices.length >= WORD_THEMES.length) usedThemeIndices = [];
+    const available = WORD_THEMES.map((_, i) => i).filter(i => !usedThemeIndices.includes(i));
+    const idx = available[Math.floor(Math.random() * available.length)];
+    usedThemeIndices.push(idx);
+    activeTheme = WORD_THEMES[idx];
+    const el = document.getElementById('theme-subtitle');
+    if (el) el.textContent = activeTheme.name;
+  }
+  pickTheme();
+
+  // Пазл текущего уровня из активной темы — с перемешанными кодами
+  function pickPuzzle() {
+    const base = activeTheme.puzzles[levelIndex];
     const codes = [...new Set(base.map(c => c.code))];
     const shuffled = [...codes].sort(() => Math.random() - 0.5);
     const remap = {};
@@ -2615,7 +2821,7 @@
   setInterval(() => {
     const el = document.getElementById('shake');
     if (!el) return;
-    const b = (0.88 + Math.random() * 0.15).toFixed(2);
+    const b = (0.92 + Math.random() * 0.10).toFixed(2);
     el.style.filter = `brightness(${b})`;
   }, 30);
 
@@ -2812,7 +3018,7 @@
 
   /* ─── СТАРТОВЫЙ ЭКРАН ─── */
   function renderStart() {
-    PUZZLE = pickPuzzle(currentLevel());
+    PUZZLE = pickPuzzle();
     const lv = currentLevel();
     jitterRoot().innerHTML = `
       <div class="g-header" style="position:absolute;top:0;left:0;right:0;">
@@ -2977,6 +3183,7 @@
   }
 
   function restartAll() {
+    pickTheme();
     levelIndex     = 0;
     levelResults   = [];
     revealed       = {};
@@ -3046,11 +3253,11 @@
         codeContent   = cell.code;
       } else if (isHidden) {
         cls += isSelected ? ' selected' : ' hidden';
-        letterContent = '';
+        letterContent = isSelected ? '_' : '';
         codeContent   = '?';
       } else {
         cls += isSelected ? ' selected' : isGroupHighlighted ? ' grouped' : ' number';
-        letterContent = '';
+        letterContent = isSelected ? '_' : '';
         codeContent   = cell.code;
       }
 
@@ -3089,8 +3296,66 @@
   function refreshCells() {
     const wrap = document.getElementById('cells');
     if (!wrap) return;
-    wrap.innerHTML = '';
-    renderCells(true);
+    const existingEls = wrap.querySelectorAll('.g-cell');
+    if (existingEls.length !== PUZZLE.length) {
+      wrap.innerHTML = '';
+      renderCells(true);
+      return;
+    }
+    const selectedCell = selectedIndex !== null ? PUZZLE[selectedIndex] : null;
+    PUZZLE.forEach((cell, idx) => {
+      const div      = existingEls[idx];
+      const isOpen   = cell.status === 'open';
+      const isHidden = cell.status === 'hidden';
+      const isDone   = isCellDone(cell, idx);
+      const isGroupHighlighted = selectedCell
+        && selectedCell.status !== 'hidden'
+        && cell.status !== 'hidden'
+        && !isOpen && !isDone
+        && cell.code === selectedCell.code
+        && selectedIndex !== idx;
+      const isSelected = selectedIndex === idx && !isOpen && !isDone;
+
+      let cls = 'g-cell';
+      let letterContent, codeContent;
+
+      if (isOpen) {
+        cls += ' open';
+        letterContent = cell.letter;
+        codeContent   = cell.code;
+      } else if (isHidden && revealedHidden[idx] !== undefined) {
+        cls += ' solved';
+        letterContent = revealedHidden[idx];
+        codeContent   = cell.code;
+      } else if (!isHidden && revealed[cell.code] !== undefined) {
+        cls += ' solved';
+        letterContent = revealed[cell.code];
+        codeContent   = cell.code;
+      } else if (isHidden) {
+        cls += isSelected ? ' selected' : ' hidden';
+        letterContent = isSelected ? '_' : '';
+        codeContent   = '?';
+      } else {
+        cls += isSelected ? ' selected' : isGroupHighlighted ? ' grouped' : ' number';
+        letterContent = isSelected ? '_' : '';
+        codeContent   = cell.code;
+      }
+
+      if (div.className !== cls) div.className = cls;
+
+      const letterEl = div.querySelector('.g-cell-letter');
+      if (letterEl && letterEl.textContent !== String(letterContent)) {
+        letterEl.textContent = letterContent;
+      }
+      const codeEl = div.querySelector('.g-cell-code');
+      if (codeEl && String(codeEl.textContent) !== String(codeContent)) {
+        codeEl.textContent = codeContent;
+      }
+
+      div.onclick = (!isOpen && !isDone && gameState === 'game')
+        ? () => selectCell(idx)
+        : null;
+    });
   }
 
   function refreshKeyboard() {
@@ -3272,7 +3537,7 @@
       exitCells(() => { gameState = 'final'; render(); });
     } else {
       exitCells(() => {
-        PUZZLE = pickPuzzle(currentLevel());
+        PUZZLE = pickPuzzle();
         startGame();
       });
     }
