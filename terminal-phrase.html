@@ -1,0 +1,2029 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terminal Breach — DTF card</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #edeef0;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px;
+  }
+
+  /* ─── КАРТОЧКА ─── */
+  .post-card {
+    width: 640px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .post-inner {
+    padding: 0 24px;
+  }
+
+  /* ─── ШАПКА ─── */
+  .post-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0 12px;
+  }
+
+  .author-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Аватар с градиентом */
+  .avatar-wrap {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .avatar-main {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 90deg,
+      #6ed0ff 0deg,
+      #61a1ff 42deg,
+      #9d70ff 89deg,
+      #ff60c7 137deg,
+      #ff483e 180deg,
+      #ff9400 223deg,
+      #ffde48 270deg,
+      #7ae632 306deg,
+      #6fd1ff 359deg,
+      #6ed0ff 360deg
+    );
+    outline: 1px solid rgba(0,0,0,0.10);
+    outline-offset: -1px;
+  }
+
+  /* DTF-бейдж */
+  .avatar-badge {
+    position: absolute;
+    bottom: -2px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #1693E5;
+    border: 2px solid #fff;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .author-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #000;
+    line-height: 22px;
+  }
+
+  .author-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .author-section {
+    font-size: 13px;
+    font-weight: 400;
+    color: #000;
+    line-height: 18px;
+  }
+
+  .author-time {
+    font-size: 13px;
+    color: #595959;
+    line-height: 18px;
+  }
+
+  /* Кнопки справа */
+  .header-actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-subscribe {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #000;
+    background: #F4F4F4;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 10px;
+    height: 28px;
+    cursor: pointer;
+    line-height: 18px;
+  }
+  .btn-subscribe:hover { background: #e8e8e8; }
+
+  .btn-more {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 9px 8px;
+  }
+  .btn-more:hover { background: #f4f4f4; }
+
+  /* ─── ЗАГОЛОВОК ─── */
+  .post-title-row {
+    padding-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .post-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: #000;
+    line-height: 30px;
+  }
+
+  /* ─── КОНТЕНТ-БЛОК (игровой экран) ─── */
+  .post-content {
+    width: 592px;
+    height: 592px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.10);
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #bbb;
+    font-size: 14px;
+  }
+
+  /* ─── РЕАКЦИИ ─── */
+  .reactions-bar {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .reaction {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 80px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 22px;
+    color: #595959;
+  }
+
+  .reaction-active {
+    background: #0B5DD7;
+    color: #fff;
+  }
+
+  .reaction-inactive {
+    background: #F5F5F5;
+  }
+  .reaction-inactive:hover { background: #ebebeb; }
+
+  .reaction-add {
+    background: #F5F5F5;
+    border-radius: 80px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #595959;
+  }
+  .reaction-add:hover { background: #ebebeb; }
+
+  /* ─── ЭКШЕН-БАР ─── */
+  .action-bar {
+    padding: 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .action-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px 4px 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 56px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    color: #595959;
+    line-height: 22px;
+  }
+  .action-btn:hover { background: #f4f4f4; }
+
+  .action-icon-btn {
+    width: 36px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 4px 8px;
+  }
+  .action-icon-btn:hover { background: #f4f4f4; }
+
+  .action-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding-left: 12px;
+    color: #595959;
+    font-size: 15px;
+    line-height: 22px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="post-card">
+  <div class="post-inner">
+
+    <!-- Шапка -->
+    <div class="post-header">
+      <div class="author-block">
+        <div class="avatar-wrap">
+          <div class="avatar-main"></div>
+          <div class="avatar-badge"></div>
+        </div>
+        <div class="author-info">
+          <div class="author-name">Терминал</div>
+          <div class="author-meta">
+            <span class="author-section">Игры</span>
+            <span class="author-time">2ч</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-subscribe">Подписаться</button>
+        <button class="btn-more">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="4.58" cy="11" r="1.83" fill="#595959"/>
+            <circle cx="11" cy="11" r="1.83" fill="#595959"/>
+            <circle cx="17.42" cy="11" r="1.83" fill="#595959"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Заголовок -->
+    <div class="post-title-row">
+      <span class="post-title">Терминал — 6 марта</span>
+      <span style="font-size:22px">🎮</span>
+    </div>
+
+    <!-- Контент-блок (игра) -->
+    <div class="post-content" style="padding:0;overflow:hidden;background:#000;border-radius:10px;border:1px solid rgba(0,0,0,0.10);">
+      <div id="game-root" style="width:592px;height:592px;position:relative;"></div>
+    </div>
+
+    <!-- Реакции -->
+    <div class="reactions-bar">
+      <!-- Активная реакция (лайк) -->
+      <div class="reaction reaction-active">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M1.878 6.078C2.366 4.275 3.785 2.69 6.184 2.69C8.889 2.69 10 4.754 10 4.754C10 4.754 11.241 2.69 13.816 2.69C16.392 2.69 17.634 4.275 18.122 6.078C19.215 10.117 15.991 13.625 13.043 15.699C12.234 16.268 11.343 16.927 10.393 17.24C10.328 17.261 10.176 17.31 10 17.31C9.824 17.31 9.672 17.261 9.607 17.24C8.647 16.924 7.776 16.276 6.957 15.699C4.009 13.625 0.785 10.117 1.878 6.078Z" fill="url(#heartGrad)"/>
+          <defs>
+            <linearGradient id="heartGrad" x1="10" y1="2.69" x2="10" y2="17.31" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FF5D6D"/>
+              <stop offset="1" stop-color="#F35565"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span style="color:#fff;font-weight:400">100</span>
+      </div>
+
+      <!-- Огонь -->
+      <div class="reaction reaction-inactive">
+        <svg width="17" height="20" viewBox="0 0 17 20" fill="none">
+          <path d="M0.026 13.631C0.026 13.631 0.606 19.838 7.887 19.986C15.169 20.135 16.708 12.413 15.512 10.799C15.512 10.799 15.198 11.848 14.854 11.975C14.854 11.975 14.736 6.545 12.271 4.787C12.271 4.787 12.372 5.802 11.987 5.819C11.987 5.819 9.69 0.778 4.616 0C4.616 0 6.568 3.34 4.142 6.502C1.717 9.665 1.815 10.961 1.815 10.961C1.815 10.961 1.048 10.329 1.175 9.881C1.175 9.881 -0.207 10.766 0.026 13.631Z" fill="url(#fireGrad0)"/>
+          <defs>
+            <radialGradient id="fireGrad0" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(4 11.82) scale(10.6)">
+              <stop stop-color="#FFAB1D"/>
+              <stop offset="1" stop-color="#FB4201"/>
+            </radialGradient>
+          </defs>
+        </svg>
+        <span>23</span>
+      </div>
+
+      <!-- Плюс / переключение темы -->
+      <div class="reaction-add" id="theme-toggle" title="Сменить тему">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M10 4.415C10.461 4.415 10.835 4.789 10.835 5.25V9.165H14.75C15.211 9.165 15.585 9.539 15.585 10C15.585 10.461 15.211 10.835 14.75 10.835H10.835V14.75C10.835 15.211 10.461 15.585 10 15.585C9.539 15.585 9.165 15.211 9.165 14.75V10.835H5.25C4.789 10.835 4.415 10.461 4.415 10C4.415 9.539 4.789 9.165 5.25 9.165H9.165V5.25C9.165 4.789 9.539 4.415 10 4.415Z" fill="#595959"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Экшен-бар -->
+    <div class="action-bar">
+      <div class="action-left">
+        <!-- Комментарии -->
+        <button class="action-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M17.48 9.78C17.48 5.28 13.83 2.5 9.78 2.5C5.74 2.5 2.1 5.27 2.08 9.75C2.07 14.24 5.64 17.06 9.78 17.06C10.87 17.06 11.74 17 12.8 16.58C12.96 16.52 13.22 16.52 13.47 16.6L16.01 17.44C16.61 17.63 17.14 17.34 17.44 17.04C17.76 16.73 18.03 16.2 17.87 15.59L17.06 13.08C16.95 12.75 16.95 12.38 17.02 12.19L17.06 12.06C17.29 11.42 17.48 10.89 17.48 9.78ZM9.78 4.17C6.46 4.17 3.75 6.38 3.75 9.78C3.75 13.18 6.46 15.39 9.78 15.39C10.8 15.39 11.42 15.34 12.18 15.04C12.79 14.79 13.47 14.84 14 15.02L16.16 15.74L15.43 13.56C15.29 13.01 15.22 12.25 15.45 11.62L15.5 11.48C15.7 10.91 15.82 10.6 15.82 9.78C15.82 6.38 13.1 4.17 9.78 4.17Z" fill="#595959"/>
+          </svg>
+          76
+        </button>
+
+        <!-- Репост -->
+        <button class="action-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.74 3.578C13.07 3.253 13.6 3.253 13.92 3.578L18.09 7.744C18.41 8.07 18.41 8.597 18.09 8.923L13.92 13.09C13.6 13.415 13.07 13.415 12.74 13.09C12.42 12.764 12.42 12.237 12.74 11.911L15.42 9.234C12.84 9.015 9.97 9.331 7.66 10.203C4.98 11.214 3.33 12.843 3.33 15C3.33 15.46 2.96 15.834 2.5 15.834C2.04 15.833 1.67 15.46 1.67 15C1.67 11.797 4.15 9.746 7.07 8.643C9.64 7.674 12.76 7.336 15.56 7.573L12.74 4.756C12.42 4.43 12.42 3.903 12.74 3.578Z" fill="#595959"/>
+          </svg>
+          10
+        </button>
+
+        <!-- Закладка -->
+        <button class="action-icon-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M3.33 5.83C3.33 3.99 4.83 2.5 6.67 2.5H13.33C15.17 2.5 16.67 3.99 16.67 5.83V15.87C16.67 17.23 15.1 17.99 14.04 17.15L10.44 14.32C10.18 14.12 9.82 14.12 9.56 14.32L5.96 17.15C4.9 17.99 3.33 17.23 3.33 15.87V5.83ZM6.67 4.17C5.75 4.17 5 4.91 5 5.83V15.79L8.53 13.01C9.39 12.33 10.61 12.33 11.47 13.01L15 15.79V5.83C15 4.91 14.25 4.17 13.33 4.17H6.67Z" fill="#595959"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Просмотры -->
+      <div class="action-right">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M2.66 10C3.51 11.34 4.33 12.52 5.37 13.41C6.49 14.36 7.91 15 10 15C12.09 15 13.51 14.36 14.63 13.41C15.67 12.52 16.49 11.34 17.34 10C16.49 8.66 15.67 7.48 14.63 6.59C13.51 5.64 12.09 5 10 5C7.91 5 6.49 5.64 5.37 6.59C4.33 7.48 3.51 8.66 2.66 10ZM4.29 5.32C5.71 4.11 7.51 3.33 10 3.33C12.49 3.33 14.29 4.11 15.71 5.32C17.09 6.5 18.09 8.07 19.04 9.55C19.21 9.83 19.21 10.17 19.04 10.45C18.09 11.93 17.09 13.5 15.71 14.68C14.29 15.89 12.49 16.67 10 16.67C7.51 16.67 5.71 15.89 4.29 14.68C2.91 13.5 1.91 11.93 0.96 10.45C0.79 10.17 0.79 9.83 0.96 9.55C1.91 8.07 2.91 6.5 4.29 5.32ZM10 8.54C9.19 8.54 8.54 9.19 8.54 10C8.54 10.81 9.19 11.46 10 11.46C10.81 11.46 11.46 10.81 11.46 10C11.46 9.19 10.81 8.54 10 8.54ZM6.87 10C6.87 8.27 8.27 6.88 10 6.88C11.73 6.88 13.13 8.27 13.13 10C13.13 11.73 11.73 13.13 10 13.13C8.27 13.13 6.87 11.73 6.87 10Z" fill="#595959"/>
+        </svg>
+        10K
+      </div>
+    </div>
+
+  </div><!-- /post-inner -->
+</div>
+
+<style>
+  @font-face {
+    font-family: 'Departure Mono';
+    src: url('DepartureMono-Regular.woff2') format('woff2'),
+         url('DepartureMono-Regular.woff') format('woff'),
+         url('DepartureMono-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+</style>
+<style>
+  /* ─── DEPARTURE MONO PALETTE ─── */
+  #game-root {
+    --amber:   #ffa133;
+    --pumpkin: #e47b1a;
+    --foam:    #e0eede;
+    --cement:  #e8e4dc;
+    --clay:    #c8b878;
+    --mud:     #d4c490;
+    --carbon:   #1a1614;
+    --black:    #262018;
+    --cell-bg:  #2e2820;
+    --surface:    #342e28;
+    --surface2:   #403830;
+    --border:     #4a4038;
+    --flash-bg:      rgba(255,161,51,0.22);
+    --flash-glow:    rgba(255,161,51,0.35);
+    --flash-bg-win:  rgba(255,161,51,0.55);
+    --flash-glow-win:rgba(255,161,51,0.80);
+    --flick:      cubic-bezier(.36, 2.09, .07, -1.52);
+    --fast:       80ms;
+
+    font-family: 'Departure Mono', monospace;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    background-color: var(--black);
+    background-image:
+      /* Левый низ — широкий, смещён чуть выше угла */
+      radial-gradient(ellipse 62% 42% at 4% 6%, rgba(210,88,8,0.40) 0%, transparent 70%),
+      /* Правый верх — вытянутый горизонтально */
+      radial-gradient(ellipse 58% 32% at 96% 4%, rgba(178,72,5,0.28) 0%, transparent 65%),
+      /* Левый верх — компактный, плотный */
+      radial-gradient(ellipse 32% 28% at 1% 2%,  rgba(152,60,5,0.22) 0%, transparent 72%),
+      /* Правый низ — низкий и широкий */
+      radial-gradient(ellipse 52% 36% at 98% 97%, rgba(162,66,5,0.22) 0%, transparent 62%),
+      /* Артефакт — правый край посередине */
+      radial-gradient(ellipse 18% 22% at 100% 58%, rgba(188,76,5,0.14) 0%, transparent 80%);
+    color: var(--cement);
+    user-select: none;
+  }
+
+
+  /* ─── ТЕМА: CYBERPUNK ─── */
+  #game-root[data-theme="cyber"] {
+    --amber:    #c8f700;
+    --pumpkin:  #8fd400;
+    --foam:     #78b840;
+    --cement:   #b4c87a;
+    --clay:     #6e7c52;
+    --mud:      #8a9a68;
+    --black:    #0a0f06;
+    --cell-bg:  #111808;
+    --carbon:   #151e0a;
+    --surface:  #141e0a;
+    --surface2: #1a2810;
+    --border:   #1e2c12;
+    --flash-bg:      rgba(200,247,0,0.18);
+    --flash-glow:    rgba(200,247,0,0.30);
+    --flash-bg-win:  rgba(200,247,0,0.50);
+    --flash-glow-win:rgba(200,247,0,0.75);
+    background-image:
+      radial-gradient(ellipse 62% 42% at 4% 6%,  rgba(100,190,0,0.38) 0%, transparent 70%),
+      radial-gradient(ellipse 58% 32% at 96% 4%,  rgba(80,160,0,0.24) 0%, transparent 65%),
+      radial-gradient(ellipse 32% 28% at 1%  2%,  rgba(70,140,0,0.18) 0%, transparent 72%),
+      radial-gradient(ellipse 52% 36% at 98% 97%, rgba(80,150,0,0.18) 0%, transparent 62%),
+      radial-gradient(ellipse 18% 22% at 100% 58%,rgba(90,165,0,0.10) 0%, transparent 80%);
+  }
+
+  #game-root[data-theme="cyber"]::after {
+    background:
+      radial-gradient(ellipse 42% 40% at 50% 48%, rgba(200,247,0,0.04) 0%, transparent 100%),
+      repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.16) 2px, rgba(0,0,0,0.16) 4px);
+  }
+
+  #game-root[data-theme="cyber"]::before {
+    background: linear-gradient(to bottom,
+      transparent              0%,
+      rgba(200,247,0,0.04)    30%,
+      rgba(200,247,0,0.10)    50%,
+      rgba(200,247,0,0.04)    70%,
+      transparent             100%
+    );
+  }
+
+  /* ─── GAME LAYOUT GROUPS ─── */
+  .g-top, .g-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* ─── HEADER BAR ─── */
+  .g-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px 0;
+    box-sizing: border-box;
+  }
+
+  .g-label {
+    font-size: 13px;
+    color: var(--mud);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .g-label::before {
+    content: '';
+  }
+
+  .g-difficulty {
+    font-size: 13px;
+    color: var(--amber);
+    letter-spacing: 0.14em;
+    border: 1px solid var(--pumpkin);
+    border-radius: 0;
+    padding: 2px 8px;
+  }
+
+  /* ─── TIMER BAR ─── */
+  .g-timer-wrap {
+    width: calc(100% - 56px);
+    margin: 16px 28px 0;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  .g-timer-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--clay);
+    letter-spacing: 0.14em;
+    margin-bottom: 5px;
+  }
+
+  #timerNum { color: var(--cement); font-size: 16px; line-height: 1; letter-spacing: 0; }
+
+  .g-timer-track {
+    width: 100%;
+    height: 0;
+    position: relative;
+  }
+
+  .g-timer-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 3px;
+    background: var(--amber);
+  }
+
+  /* ─── ERRORS ─── */
+  .g-errors {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--clay);
+    margin: 16px 28px 0;
+    align-self: flex-start;
+    letter-spacing: 0.14em;
+    padding-left: 0;
+  }
+
+  .g-error-dots { display: flex; gap: 5px; }
+
+  .g-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 0;
+    border: 1px solid var(--clay);
+    background: transparent;
+  }
+
+  .g-dot.active {
+    background: var(--pumpkin);
+    border-color: var(--amber);
+  }
+
+  /* ─── WORD CELLS ─── */
+  .g-cells {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 6px 4px;
+    flex-wrap: wrap;
+  }
+
+  .g-word {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .g-cell-space {
+    width: 10px;
+    height: 66px;
+    flex-shrink: 0;
+  }
+
+  .g-cell-punct {
+    display: flex;
+    align-items: flex-end;
+    height: 56px;
+    padding-bottom: 4px;
+    color: var(--clay);
+    font-family: 'Departure Mono', monospace;
+    font-size: 22px;
+    flex-shrink: 0;
+    user-select: none;
+  }
+
+  .g-cell {
+    width: 44px;
+    height: 66px;
+    border: 1px solid var(--clay);
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: default;
+    flex-shrink: 0;
+    position: relative;
+    background: transparent;
+    transition: none;
+  }
+
+  /* Открытая */
+  .g-cell.open {
+    border-color: #4a4438;
+    background: var(--cell-bg);
+  }
+
+  /* Закрытая с кодом */
+  .g-cell.number {
+    border-color: #4a4438;
+    background: var(--cell-bg);
+    cursor: pointer;
+  }
+
+  /* Скрытая */
+  .g-cell.hidden {
+    border-color: #4a4438;
+    background: var(--cell-bg);
+    cursor: pointer;
+  }
+
+  /* Выбранная / парная — угловые скобки (фирменный приём сайта) */
+  .g-cell.grouped,
+  .g-cell.selected {
+    border-color: transparent;
+    background: linear-gradient(rgba(255,161,51,0.18), rgba(255,161,51,0.18)), var(--cell-bg);
+    box-shadow: none;
+  }
+  .g-cell.grouped::before,
+  .g-cell.selected::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    --_b: 1px;
+    --_c: var(--amber);
+    --_w: 9px;
+    --_g: #0000 90deg, var(--_c) 0;
+    --_p: var(--_w) var(--_w) border-box no-repeat;
+    background:
+      conic-gradient(from  90deg at top    var(--_b) left  var(--_b), var(--_g))   0%   0%  / var(--_p),
+      conic-gradient(from 180deg at top    var(--_b) right var(--_b), var(--_g)) 100%   0%  / var(--_p),
+      conic-gradient(from   0deg at bottom var(--_b) left  var(--_b), var(--_g))   0% 100%  / var(--_p),
+      conic-gradient(from -90deg at bottom var(--_b) right var(--_b), var(--_g)) 100% 100%  / var(--_p);
+  }
+
+  /* Угаданная */
+  .g-cell.solved {
+    border-color: #4a4438;
+    background: var(--cell-bg);
+    cursor: default;
+  }
+
+  .g-cell-letter {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1;
+    height: 1em;
+    color: var(--cement);
+  }
+
+  .g-cell.open   .g-cell-letter { color: var(--foam);   text-shadow: 0 0 10px rgba(188,202,187,0.45); }
+  .g-cell.solved .g-cell-letter { color: var(--amber);  text-shadow: 0 0 14px rgba(255,161,51,0.75); }
+  .g-cell.hidden .g-cell-letter { color: var(--clay); }
+  .g-cell.number .g-cell-letter { color: var(--clay); }
+
+  .g-cell.selected .g-cell-letter,
+  .g-cell.grouped  .g-cell-letter { color: var(--amber); }
+
+  .g-cell-code {
+    font-size: 13px;
+    color: var(--clay);
+    letter-spacing: 0;
+  }
+
+  .g-cell.open   .g-cell-code { color: var(--mud); }
+  .g-cell.hidden .g-cell-code { color: var(--clay); }
+  .g-cell.solved .g-cell-code { color: var(--amber); }
+  .g-cell.selected .g-cell-code,
+  .g-cell.grouped  .g-cell-code { color: var(--pumpkin); }
+
+  /* ─── СТАТУС / ХИНТ ─── */
+  .g-hint {
+    font-size: 13px;
+    color: var(--clay);
+    letter-spacing: 0.06em;
+    min-height: 16px;
+    text-align: center;
+  }
+
+  /* ─── КНОПКА СТАРТ ─── */
+  .g-start-btn {
+    margin-top: 36px;
+    font-family: 'Departure Mono', monospace;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    color: var(--black);
+    background: var(--amber);
+    border: none;
+    border-radius: 0;
+    padding: 11px 40px;
+    cursor: pointer;
+    white-space: nowrap;
+    text-transform: uppercase;
+    transition: background-color var(--fast) var(--flick),
+                transform       var(--fast) var(--flick);
+  }
+  .g-start-btn:hover  { background: var(--pumpkin); }
+  .g-start-btn:active { transform: scale(0.96); }
+
+  /* ─── КЛАВИАТУРА ─── */
+  .g-keyboard {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .g-kb-row {
+    display: flex;
+    gap: 3px;
+    justify-content: center;
+  }
+
+  .g-key {
+    font-family: 'Departure Mono', monospace;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--cement);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    width: 42px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    letter-spacing: 0;
+    transition: background-color var(--fast) var(--flick),
+                border-color     var(--fast) var(--flick),
+                color            var(--fast) var(--flick),
+                transform        var(--fast) var(--flick);
+  }
+  .g-key:hover {
+    background: var(--surface2);
+    border-color: var(--mud);
+    color: var(--amber);
+  }
+  .g-key:active {
+    background: var(--amber);
+    color: var(--black);
+    transform: scale(0.90);
+  }
+
+
+  /* ─── ФИНАЛЬНЫЙ ЭКРАН ─── */
+  .g-final-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0 28px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .g-final-total-label {
+    font-size: 11px;
+    color: var(--clay);
+    letter-spacing: 0.14em;
+  }
+
+  .g-final-total {
+    font-size: 64px;
+    font-weight: 400;
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 16px;
+    text-shadow: 0 0 32px rgba(255, 161, 51, 0.40);
+  }
+
+  .g-result-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .g-result-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+  .g-result-row:last-child { border-bottom: none; }
+  .g-result-locked { opacity: 0.25; }
+
+  .g-result-label {
+    color: var(--clay);
+    letter-spacing: 0.14em;
+    width: 90px;
+  }
+
+  .g-result-status {
+    color: var(--mud);
+    letter-spacing: 0.06em;
+    font-size: 13px;
+    flex: 1;
+    text-align: center;
+  }
+
+  .g-result-score {
+    color: var(--amber);
+    font-weight: 400;
+    width: 60px;
+    text-align: right;
+  }
+
+  /* ─── СТРИК ─── */
+  .g-streak {
+    display: flex;
+    gap: 4px;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .g-streak-cell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 0 8px;
+    border: 1px solid var(--border);
+  }
+  .g-streak-icon {
+    font-size: 13px;
+    line-height: 1;
+    color: var(--clay);
+  }
+  .g-streak-day {
+    font-size: 10px;
+    color: var(--clay);
+    letter-spacing: 0.14em;
+  }
+  .g-streak-cell.s-done  .g-streak-icon { color: var(--amber); }
+  .g-streak-cell.s-fail  .g-streak-icon { color: var(--surface2); }
+  .g-streak-cell.s-today {
+    border-color: var(--amber);
+    background: rgba(255,161,51,0.06);
+  }
+  .g-streak-cell.s-today .g-streak-icon { color: var(--amber); font-size: 15px; }
+  .g-streak-cell.s-today .g-streak-day  { color: var(--amber); }
+  .g-streak-cell.s-future .g-streak-icon { color: var(--mud); font-size: 11px; }
+
+  /* ─── CRT EFFECTS ─── */
+
+  /* CRT container */
+  #game-root { overflow: hidden; }
+
+  /* Флікер — нерегулярное дрожание яркости */
+  @keyframes crt-flicker {
+    0%, 19%, 21%, 23%, 41%, 43%, 60%, 62%, 64%, 100% { opacity: 1; filter: brightness(1); }
+    20%  { opacity: 0.75; filter: brightness(0.82); }
+    22%  { opacity: 0.92; filter: brightness(1.08); }
+    42%  { opacity: 0.80; filter: brightness(0.78); }
+    61%  { opacity: 0.70; filter: brightness(0.85); }
+    63%  { opacity: 0.95; filter: brightness(1.12); }
+  }
+
+  /* Виньетка + скэнлайны поверх всего контента */
+  #game-root::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    background:
+      /* Горячий центр — кинескоп светлее посередине */
+      radial-gradient(
+        ellipse 42% 40% at 50% 48%,
+        rgba(255, 161, 51, 0.06) 0%,
+        transparent 100%
+      ),
+      /* Скэнлайны */
+      repeating-linear-gradient(
+        to bottom,
+        transparent      0px,
+        transparent      2px,
+        rgba(0,0,0,0.16) 2px,
+        rgba(0,0,0,0.16) 4px
+      );
+    animation: crt-flicker 11s linear infinite;
+  }
+
+  /* Катящаяся полоса развёртки */
+  @keyframes crt-scan {
+    from { transform: translateY(-70px); }
+    to   { transform: translateY(592px); }
+  }
+
+  #game-root::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 70px;
+    pointer-events: none;
+    z-index: 99;
+    background: linear-gradient(
+      to bottom,
+      transparent               0%,
+      rgba(255,161,51, 0.055)  30%,
+      rgba(255,161,51, 0.13)   50%,
+      rgba(255,161,51, 0.055)  70%,
+      transparent              100%
+    );
+    animation: crt-scan 16s linear infinite;
+  }
+
+  /* ─── ХРОМАТИЧЕСКАЯ АБЕРРАЦИЯ НА БУКВАХ ─── */
+
+
+  /* ─── 1. CURSOR BLINK на выбранной ячейке ─── */
+  @keyframes cursor-blink {
+    0%, 49% { color: var(--amber); }
+    50%, 100% { color: transparent; }
+  }
+  .g-cell.selected .g-cell-letter {
+    animation: cursor-blink 0.9s step-end infinite;
+  }
+
+  /* ─── 2. STAGGERED ENTRANCE / EXIT ─── */
+  @keyframes cell-enter {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes cell-exit {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+  }
+  .g-cell.entering,
+  .g-result-row.entering {
+    animation: cell-enter 0.01s steps(1) both;
+  }
+  .g-cell.leaving {
+    animation: cell-exit 0.01s steps(1) both;
+  }
+
+  /* ─── 3. CELL SOLVE FLASH ─── */
+  @keyframes cell-solve {
+    0%   { background: var(--flash-bg); box-shadow: 0 0 10px var(--flash-glow); }
+    100% { background: transparent; box-shadow: none; }
+  }
+  @keyframes cell-win {
+    0%   { background: var(--flash-bg-win); box-shadow: 0 0 16px var(--flash-glow-win); }
+    100% { background: transparent; box-shadow: none; }
+  }
+  .g-cell.solving {
+    animation: cell-solve 0.55s ease-out forwards;
+  }
+  .g-cell.win-solving {
+    animation: cell-win 0.7s ease-out forwards;
+  }
+  .g-cell.win-solving .g-cell-letter,
+  .g-cell.win-solving .g-cell-code {
+    color: var(--amber);
+  }
+  .g-cell.win-solving {
+    border-color: var(--amber);
+  }
+  /* leaving перебивает анимацию win-solving, но сохраняет цвет */
+  .g-cell.win-solving.leaving {
+    animation: cell-exit 0.01s steps(1) both;
+  }
+
+  /* ─── 4. DOT POP ─── */
+  @keyframes dot-pop {
+    0%   { transform: scale(0.2); }
+    65%  { transform: scale(1.6); }
+    100% { transform: scale(1); }
+  }
+  .g-dot.new { animation: dot-pop 0.35s cubic-bezier(.36,2.09,.07,-1.52) forwards; }
+
+  /* ─── 5. TIMER URGENT ─── */
+  @keyframes timer-urgent {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+  }
+  .g-timer-fill.urgent {
+    background: var(--pumpkin);
+  }
+
+  /* ─── MICRO-JITTER + PERIODIC SKEW ─── */
+  @keyframes micro-jitter {
+    from { background-color: red; }
+    to   { background-color: blue; }
+  }
+
+  @keyframes periodic-skew {
+    0%, 36%, 43%, 100% { transform: none; filter: none; }
+    37% { transform: translateX(-8px) skewX(-3deg);  filter: brightness(1.3); }
+    38% { transform: translateX(10px) skewX(2deg);   filter: brightness(0.85); }
+    39% { transform: translateX(-5px) skewX(4deg);   filter: brightness(1.15); }
+    40% { transform: translateX(6px)  skewX(-1.5deg); }
+    41% { transform: translateX(-2px) skewX(1deg);   filter: brightness(1.05); }
+    42% { transform: none; }
+  }
+
+  .g-jitter {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .g-shake {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 28px;
+  }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 640px) {
+    body { padding: 0; }
+
+    .post-card { width: 100%; border-radius: 0; }
+    .post-content { border-radius: 0 !important; }
+
+    #game-root {
+      width: 100% !important;
+      height: 520px !important;
+    }
+
+    /* scan line end */
+    @keyframes crt-scan {
+      from { transform: translateY(-70px); }
+      to   { transform: translateY(520px); }
+    }
+
+    .g-timer-wrap {
+      width: calc(100% - 32px);
+      margin: 10px 16px 0;
+    }
+
+    /* ячейки */
+    .g-cells { gap: 4px 3px; }
+    .g-word  { gap: 3px; }
+    .g-cell  { width: 30px; height: 46px; gap: 2px; }
+    .g-cell-space { height: 46px; }
+    .g-cell-letter { font-size: 16px; }
+    .g-cell-code   { font-size: 10px; }
+    .g-cell.selected::before { --_w: 6px; }
+
+    /* клавиши */
+    .g-key     { width: 27px; height: 38px; font-size: 12px; }
+    .g-kb-row  { gap: 2px; }
+
+    /* клавиатура чуть выше */
+    #kb-wrap { bottom: 16px !important; }
+  }
+
+  /* ─── GLITCH ANIMATIONS ─── */
+
+  /* Периодический на заголовке — RGB-сдвиг + skew */
+  @keyframes title-glitch {
+    0%, 87%, 92%, 100% {
+      text-shadow:    none;
+      transform:      none;
+      letter-spacing: 0.14em;
+    }
+    88% {
+      text-shadow:    2px 0 rgba(255,100,0,0.85), -2px 0 rgba(0,200,255,0.55);
+      transform:      skewX(-1deg);
+      letter-spacing: 0.17em;
+    }
+    89% {
+      text-shadow:    -3px 0 rgba(255,161,51,0.95), 3px 0 rgba(180,0,255,0.5);
+      transform:      skewX(1.3deg) translateX(4px);
+      letter-spacing: 0.10em;
+    }
+    90% {
+      text-shadow:    1px 0 rgba(255,50,0,0.75);
+      transform:      translateX(-2px);
+      letter-spacing: 0.14em;
+    }
+    91% {
+      text-shadow:    -1px 0 rgba(0,210,210,0.45);
+      transform:      none;
+    }
+  }
+  @keyframes label-jerk {
+    0%, 38%, 44%, 100% { transform: none; opacity: 1; }
+    39% { transform: translateX(-35px) skewX(40deg) scaleY(1.3); opacity: 0.7; }
+    40% { transform: translateX(35px)  skewX(-55deg) scaleY(1.3); opacity: 0.7; }
+    41% { transform: translateX(-10px) skewX(15deg); opacity: 0.9; }
+    42% { transform: none; opacity: 1; }
+    43% { transform: translateX(5px); opacity: 0.95; }
+  }
+
+  .g-label { animation: title-glitch 9s linear infinite; }
+
+  /* Периодический на бейдже сложности */
+  @keyframes badge-glitch {
+    0%, 92%, 96%, 100% { text-shadow: none; transform: none; }
+    93% {
+      text-shadow: 1px 0 var(--pumpkin), -1px 0 rgba(0,200,255,0.75);
+      transform:   skewX(-1.2deg) translateX(1px);
+    }
+    94% {
+      text-shadow: -2px 0 var(--amber);
+      transform:   translateX(3px) skewX(1.2deg);
+    }
+    95% { text-shadow: none; transform: translateX(-1px); }
+  }
+  .g-difficulty { animation: badge-glitch 7s linear infinite; }
+
+  /* Тряска при ошибке */
+  @keyframes glitch-hit {
+    0%   { transform: none;                             filter: none; }
+    20%  { transform: translateX(-7px) skewX(-1.5deg); filter: brightness(1.5); }
+    40%  { transform: translateX(8px)  skewX(1.5deg);  filter: brightness(0.8); }
+    60%  { transform: translateX(-3px);                filter: none; }
+    80%  { transform: translateX(2px); }
+    100% { transform: none;                             filter: none; }
+  }
+  #game-root.glitch-hit {
+    animation: glitch-hit 0.28s linear forwards;
+  }
+
+  /* Жёсткий глитч при провале */
+  @keyframes glitch-fail {
+    0%   { transform: none;                              filter: none; }
+    8%   { transform: translateX(-10px) skewX(-2.5deg); filter: brightness(2) contrast(1.5); }
+    16%  { transform: translateX(12px)  skewX(2.5deg);  filter: brightness(2.4) hue-rotate(20deg); }
+    24%  { transform: scaleX(1.03) skewX(-2deg);        filter: brightness(0.65); }
+    32%  { transform: translateX(-6px);                 filter: brightness(1.6); }
+    40%  { transform: translateX(7px)  skewX(1.5deg);   filter: none; }
+    50%  { transform: skewX(-3deg);                     filter: brightness(1.3); }
+    60%  { transform: none;                             filter: none; }
+    70%  { transform: translateX(4px); }
+    82%  { transform: none;                             filter: brightness(1.1); }
+    100% { transform: none;                             filter: none; }
+  }
+  #game-root.glitch-fail {
+    animation: glitch-fail 0.8s linear forwards;
+  }
+
+  /* Мягкий глитч при успехе */
+  @keyframes glitch-win {
+    0%   { filter: none;                           transform: none; }
+    15%  { filter: brightness(1.7) saturate(1.5); transform: scale(1.007); }
+    30%  { filter: none;                           transform: none; }
+    50%  { filter: brightness(1.3);               transform: translateX(2px); }
+    65%  { filter: none;                           transform: translateX(-1px); }
+    100% { filter: none;                           transform: none; }
+  }
+  #game-root.glitch-win {
+    animation: glitch-win 0.55s linear forwards;
+  }
+</style>
+
+<script>
+(function() {
+  function fmtTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+  }
+
+  // ─── ФРАЗЫ ───
+  const PHRASES = [
+    { phrase: 'НИЧТО НЕ ИСТИНА, ВСЁ ДОЗВОЛЕНО',                    timer: 100, open: [2, 18, 21] },
+    { phrase: 'ГЛАЗА У МЕНЯ ДОБРЫЕ, НО РУБАШКА СМИРИТЕЛЬНАЯ',      timer: 110, open: [6, 22, 34] },
+    { phrase: 'СМЕРТЬ — НЕ ПОВОД НАРУШАТЬ ПРИСЯГУ',                 timer:  90, open: [2, 20, 33] },
+  ];
+
+  const CYRILLIC   = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЭЮЯ';
+  const GLITCH_CHARS = '@#$%&!?~^*/<>|\\[]{}';
+
+  const KB_ROWS = [
+    ['Й','Ц','У','К','Е','Н','Г','Ш','Щ','З','Х','Ъ'],
+    ['Ф','Ы','В','А','П','Р','О','Л','Д','Ж','Э'],
+    ['Я','Ч','С','М','И','Т','Ь','Б','Ю'],
+  ];
+
+  // ─── АНАЛИТИКА ───
+  const ANALYTICS_URL = 'https://script.google.com/macros/s/AKfycbyo1Izn7xhWtp0eJoi3FpLILInWL2T7xe2dx01efiGi597mu6Fjt6xrzxALt4zCmg13/exec';
+  const sessionId = crypto.randomUUID();
+  let levelStartTime = null;
+
+  function sendAnalytics(result, phrase, score) {
+    const duration = levelStartTime ? Math.round((Date.now() - levelStartTime) / 1000) : null;
+    const theme = THEMES[themeIdx] || 'amber';
+    const payload = {
+      session_id:   sessionId,
+      timestamp:    new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
+      word:         phrase,
+      result:       result,
+      time_left:    timeLeft,
+      score:        score,
+      duration_sec: duration,
+      theme:        theme
+    };
+    fetch(ANALYTICS_URL, { method: 'POST', body: JSON.stringify(payload) }).catch(() => {});
+  }
+
+  // ─── СОСТОЯНИЕ ───
+  const MAX_ERRORS = 5;
+  let gameState    = 'start';
+  let PUZZLE       = [];
+  let revealed     = {};    // idx → letter (каждая ячейка независима)
+  let errors       = 0;
+  let timeLeft     = 0;
+  let timerInterval = null;
+  let selectedIndex = null;
+  let gameResult   = null;  // 'granted' | 'lost'
+  let gameScore    = 0;
+
+  // Выбор фразы — без повторов, сброс после всех
+  let activeTheme = null;
+  let usedPhraseIndices = [];
+  function pickTheme() {
+    if (usedPhraseIndices.length >= PHRASES.length) usedPhraseIndices = [];
+    const available = PHRASES.map((_, i) => i).filter(i => !usedPhraseIndices.includes(i));
+    const idx = available[Math.floor(Math.random() * available.length)];
+    usedPhraseIndices.push(idx);
+    activeTheme = PHRASES[idx];
+  }
+  pickTheme();
+
+  // Строим массив ячеек из строки фразы
+  // Каждой уникальной букве назначается перемешанный числовой код (подсказка)
+  function buildPhrase(str) {
+    const PUNCT = new Set([',', '—', '–', '!', '?', '.', ':', ';']);
+    const letters = [...new Set(str.split('').filter(ch => ch !== ' ' && !PUNCT.has(ch)))];
+    const codes = letters.map((_, i) => i + 1);
+    const shuffled = [...codes].sort(() => Math.random() - 0.5);
+    const codeMap = {};
+    letters.forEach((l, i) => codeMap[l] = shuffled[i]);
+    return str.split('').map(ch => {
+      if (ch === ' ')       return { status: 'space' };
+      if (PUNCT.has(ch))   return { status: 'punct', char: ch };
+      return { status: 'letter', letter: ch, code: codeMap[ch] };
+    });
+  }
+
+  // Открываем ячейки по конкретным индексам из activeTheme.open
+  function pickPuzzle() {
+    const cells = buildPhrase(activeTheme.phrase);
+    const openSet = new Set(activeTheme.open || []);
+    return cells.map((c, i) =>
+      c.status === 'letter' && openSet.has(i) ? { ...c, status: 'open' } : c
+    );
+  }
+
+  const root = document.getElementById('game-root');
+
+  // Быстрое мерцание яркости фона
+  setInterval(() => {
+    const el = document.getElementById('shake');
+    if (!el) return;
+    const b = (0.92 + Math.random() * 0.10).toFixed(2);
+    el.style.filter = `brightness(${b})`;
+  }, 30);
+
+
+
+  /* ─── SCRAMBLE: буква "прокручивается" перед появлением ─── */
+  function scrambleReveal(cellEl, finalLetter) {
+    const el = cellEl.querySelector('.g-cell-letter');
+    if (!el) return;
+    let frame = 0;
+    const total = 7;
+    const id = setInterval(() => {
+      if (frame >= total) { clearInterval(id); el.textContent = finalLetter; return; }
+      el.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+      frame++;
+    }, 38);
+  }
+
+  /* ─── GHOST: нераскрытые ячейки иногда "мерцают" случайной буквой ─── */
+  let ghostRunning   = false;
+  let cellsEntering  = false;
+  let hintTimer      = null;
+  function ghostTick() {
+    ghostRunning = true;
+    if (gameState === 'game' || gameState === 'start') {
+      const candidates = PUZZLE.reduce((acc, c, i) => {
+        if (c.status === 'letter' && !isCellDone(c, i)) acc.push(i);
+        return acc;
+      }, []);
+      if (candidates.length > 0) {
+        const puzzleIdx = candidates[Math.floor(Math.random() * candidates.length)];
+        const cellEl = document.querySelector(`#cells [data-idx="${puzzleIdx}"]`);
+        const el = cellEl && cellEl.querySelector('.g-cell-letter');
+        if (el) {
+          const orig = el.textContent;
+          const origColor = el.style.color;
+          el.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+          el.style.color = 'var(--clay)';
+          setTimeout(() => { if (el) { el.textContent = orig; el.style.color = origColor; } }, 90);
+        }
+      }
+    }
+    setTimeout(ghostTick, 1800 + Math.random() * 2400);
+  }
+
+  /* ─── OPEN GLITCH: символьный или RGB-сдвиг на открытых/угаданных буквах ─── */
+  const RGB_OPEN   = 'rgba(200,235,140,0.90)';
+  const RGB_OPEN2  = 'rgba(200,85,10,0.75)';
+  const RGB_SOLVED = 'rgba(255,218,55,0.95)';
+  const RGB_SOLVED2= 'rgba(155,38,5,0.80)';
+
+  // intensity: 'bg' — фоновый шум (±1px), 'event' — событийный (±2-3px + символ)
+  function openGlitchOne(cellEl, intensity) {
+    const el = cellEl.querySelector('.g-cell-letter');
+    if (!el || el.dataset.glitching) return;
+    el.dataset.glitching = '1';
+    const isEvent = intensity === 'event';
+    if (isEvent && Math.random() < 0.2) {
+      const orig = el.textContent;
+      el.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+      setTimeout(() => { if (el) { el.textContent = orig; delete el.dataset.glitching; } }, 60);
+    } else {
+      const isSolved = cellEl.classList.contains('solved');
+      const c1base = isSolved ? [255,218,55]  : [200,235,140];
+      const c2base = isSolved ? [155,38,5]    : [200,85,10];
+
+      // 1. Интенсивность: плавный диапазон 1–4px
+      const offset = 1 + Math.random() * 3;
+      // небольшая вертикальная составляющая (~30% случаев)
+      const vy = Math.random() < 0.3 ? (Math.random() * 1.5).toFixed(1) : 0;
+
+      // 2. Количество теней: 2 основных + иногда 3-я призрачная
+      const a1 = (0.7 + Math.random() * 0.25).toFixed(2);
+      const a2 = (0.55 + Math.random() * 0.25).toFixed(2);
+      const ox = offset.toFixed(2);
+      let shadow =
+        `-${ox}px ${vy}px rgba(${c1base[0]},${c1base[1]},${c2base[2]},${a1}), ` +
+        ` ${ox}px -${vy}px rgba(${c2base[0]},${c2base[1]},${c2base[2]},${a2})`;
+      if (Math.random() < 0.35) {
+        const ox3 = (offset * 1.6).toFixed(2);
+        const a3  = (0.2 + Math.random() * 0.15).toFixed(2);
+        shadow += `, ${ox3}px 0 rgba(${c1base[0]},${c1base[1]},${c1base[2]},${a3})`;
+      }
+
+      // 3. Форма затухания: быстрый всплеск или медленное нарастание
+      const burst    = Math.random() < 0.4; // 40% — резкий всплеск
+      const fadeIn   = burst ? 120 : 350;
+      const holdTime = burst ? 180 : (isEvent ? 400 : 300);
+      const fadeOut  = burst ? 400 : 600;
+
+      el.style.transition = `text-shadow ${fadeIn}ms ease-in`;
+      void el.offsetWidth;
+      el.style.textShadow = shadow;
+      setTimeout(() => {
+        if (!el) return;
+        el.style.transition = `text-shadow ${fadeOut}ms ease-out`;
+        el.style.textShadow = '';
+        setTimeout(() => { if (el) { el.style.transition = ''; delete el.dataset.glitching; } }, fadeOut);
+      }, holdTime);
+    }
+  }
+
+  // Событийный глитч на конкретных ячейках по puzzle-индексам
+  function glitchCells(puzzleIndices) {
+    requestAnimationFrame(() => {
+      puzzleIndices.forEach(puzzleIdx => {
+        const el = document.querySelector(`#cells [data-idx="${puzzleIdx}"]`);
+        if (el) openGlitchOne(el, 'event');
+      });
+    });
+  }
+
+  function openGlitchTick() {
+    if (gameState === 'game' || gameState === 'start') {
+      const pool = Array.from(document.querySelectorAll('#cells .g-cell.solved'));
+      if (pool.length > 0) {
+        openGlitchOne(pool[Math.floor(Math.random() * pool.length)], 'bg');
+      }
+    }
+    setTimeout(openGlitchTick, 2000 + Math.random() * 3000);
+  }
+
+  function triggerGlitch(cls, duration) {
+    root.classList.remove('glitch-hit', 'glitch-fail', 'glitch-win');
+    void root.offsetWidth; // reflow — перезапускает анимацию
+    root.classList.add(cls);
+    setTimeout(() => root.classList.remove(cls), duration);
+  }
+
+  // ─── ФОРМУЛА ОЧКОВ ───
+  function calcScore(timer, timeLeft) {
+    const pct = timeLeft / timer;
+    return pct > 0.67 ? 10 : pct > 0.34 ? 7 : pct > 0 ? 4 : 0;
+  }
+
+  function render() {
+    root.innerHTML = '<div class="g-jitter" id="jitter"><div class="g-shake" id="shake"></div></div>';
+    if      (gameState === 'start') renderStart();
+    else if (gameState === 'final') renderFinal();
+    else                            renderGame();
+  }
+
+  function jitterRoot() {
+    return document.getElementById('shake') || root;
+  }
+
+  function jitterEl() {
+    return document.getElementById('jitter') || root;
+  }
+
+  function appendKeyboard() {
+    const old = document.getElementById('kb-wrap');
+    if (old) old.remove();
+
+    const wrap = document.createElement('div');
+    wrap.id = 'kb-wrap';
+    wrap.style.cssText = 'position:absolute;bottom:28px;left:50%;transform:translateX(-50%);';
+
+    const kb = document.createElement('div');
+    kb.id = 'keyboard';
+    kb.className = 'g-keyboard';
+    kb.style.cssText = 'margin:0;width:auto;padding:0;';
+    KB_ROWS.forEach(row => {
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'g-kb-row';
+      row.forEach(letter => {
+        const btn = document.createElement('button');
+        btn.textContent = letter;
+        btn.className = 'g-key';
+        btn.onclick = () => handleKey(letter);
+        rowDiv.appendChild(btn);
+      });
+      kb.appendChild(rowDiv);
+    });
+    wrap.appendChild(kb);
+    jitterEl().appendChild(wrap);
+  }
+
+  function appendBtn(label, id, onclick, hidden) {
+    const btn = document.createElement('button');
+    btn.className = 'g-start-btn';
+    btn.id = id;
+    btn.textContent = label;
+    btn.style.cssText = 'position:absolute;bottom:28px;left:50%;transform:translateX(-50%);margin:0;' + (hidden ? 'visibility:hidden' : '');
+    btn.onclick = onclick;
+    jitterEl().appendChild(btn);
+    return btn;
+  }
+
+  /* ─── СТАРТОВЫЙ ЭКРАН ─── */
+  function renderStart() {
+    PUZZLE = pickPuzzle();
+    jitterRoot().innerHTML = `
+      <div class="g-header" style="position:absolute;top:0;left:0;right:0;">
+        <span class="g-label">// TERMINAL_BREACH</span>
+      </div>
+      <div class="g-top">
+        <div class="g-timer-wrap" style="visibility:hidden">
+          <div class="g-timer-meta"><span>СОЕДИНЕНИЕ</span><span>${fmtTime(activeTheme.timer)}</span></div>
+          <div class="g-timer-track"><div class="g-timer-fill" style="width:100%"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+          <div class="g-cells" id="cells"></div>
+          <div class="g-hint" style="letter-spacing:0.14em"></div>
+        </div>
+      </div>
+      <div class="g-bottom" style="position:relative">
+        <div class="g-keyboard" style="visibility:hidden" aria-hidden="true">${
+          KB_ROWS.map(row =>
+            `<div class="g-kb-row">${row.map(l => `<button class="g-key">${l}</button>`).join('')}</div>`
+          ).join('')
+        }</div>
+      </div>
+    `;
+    renderCells(false);
+    appendBtn('[ НАЧАТЬ ВЗЛОМ ]', 'startBtn', () => startGame(false), false);
+  }
+
+  /* ─── ИГРОВОЙ ЭКРАН ─── */
+  function renderGame() {
+    jitterRoot().innerHTML = `
+      <div class="g-top">
+        <div class="g-timer-wrap">
+          <div class="g-timer-meta">
+            <span>СОЕДИНЕНИЕ</span>
+            <span id="timerNum">${fmtTime(timeLeft)}</span>
+          </div>
+          <div class="g-timer-track">
+            <div class="g-timer-fill" id="timerFill"
+              style="width:${Math.round((timeLeft/activeTheme.timer)*100)}%">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+          <div class="g-cells" id="cells"></div>
+          <div class="g-hint" id="hint"></div>
+        </div>
+      </div>
+      <div class="g-bottom">
+        <div class="g-keyboard" style="visibility:hidden" aria-hidden="true">${
+          KB_ROWS.map(row =>
+            `<div class="g-kb-row">${row.map(l => `<button class="g-key">${l}</button>`).join('')}</div>`
+          ).join('')
+        }</div>
+      </div>
+    `;
+    renderCells(true);
+    appendKeyboard();
+  }
+
+  /* ─── ФИНАЛЬНЫЙ ЭКРАН ─── */
+  function renderFinal() {
+    const totalScore = gameScore;
+    const sessionLabel = gameResult === 'granted' ? 'ДОСТУП ПОЛУЧЕН' : 'СОЕДИНЕНИЕ ПРЕРВАНО';
+
+    jitterRoot().innerHTML = `
+      <div class="g-header">
+        <span class="g-difficulty">ИТОГ</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;width:100%">
+        <div class="g-final-wrap">
+          <div class="g-final-total-label">${sessionLabel}</div>
+          <div class="g-final-total" id="finalScore">—</div>
+          <div class="g-streak entering" style="animation-delay:500ms">
+            <div class="g-streak-cell s-done">
+              <span class="g-streak-icon">+</span>
+              <span class="g-streak-day">ПН</span>
+            </div>
+            <div class="g-streak-cell s-done">
+              <span class="g-streak-icon">+</span>
+              <span class="g-streak-day">ВТ</span>
+            </div>
+            <div class="g-streak-cell s-fail">
+              <span class="g-streak-icon">-</span>
+              <span class="g-streak-day">СР</span>
+            </div>
+            <div class="g-streak-cell s-today">
+              <span class="g-streak-icon">[+]</span>
+              <span class="g-streak-day">ЧТ</span>
+            </div>
+            <div class="g-streak-cell s-future">
+              <span class="g-streak-icon">+1</span>
+              <span class="g-streak-day">ПТ</span>
+            </div>
+            <div class="g-streak-cell s-future">
+              <span class="g-streak-icon">+2</span>
+              <span class="g-streak-day">СБ</span>
+            </div>
+            <div class="g-streak-cell s-future">
+              <span class="g-streak-icon">+3</span>
+              <span class="g-streak-day">ВС</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    appendBtn('[ НАЧАТЬ СНАЧАЛА ]', 'restartBtn', restartAll, true);
+
+    // Счёт стартует одновременно с первой строкой
+    setTimeout(() => {
+      const scoreEl = document.getElementById('finalScore');
+      if (scoreEl) {
+        if (totalScore === 0) { scoreEl.textContent = '0'; }
+        else {
+          let cur = 0;
+          const step = Math.ceil(totalScore / 20);
+          const id = setInterval(() => {
+            cur = Math.min(cur + step, totalScore);
+            scoreEl.textContent = cur;
+            if (cur >= totalScore) clearInterval(id);
+          }, 45);
+        }
+      }
+    }, 350);
+
+    // Кнопка — после счёта
+    setTimeout(() => {
+      const btn = document.getElementById('restartBtn');
+      if (btn) btn.style.visibility = 'visible';
+    }, 900);
+  }
+
+  function restartAll() {
+    pickTheme();
+    revealed      = {};
+    errors        = 0;
+    selectedIndex = null;
+    PUZZLE        = [];
+    gameResult    = null;
+    gameScore     = 0;
+    clearInterval(timerInterval);
+    gameState     = 'start';
+    render();
+  }
+
+  /* ─── ЯЧЕЙКИ ─── */
+  function isCellDone(cell, idx) {
+    if (cell.status === 'space') return true;
+    if (cell.status === 'punct') return true;
+    if (cell.status === 'open')  return true;
+    return revealed[idx] !== undefined;
+  }
+
+  function firstUnfinished(after) {
+    const start = after !== undefined ? after + 1 : 0;
+    for (let i = start; i < PUZZLE.length; i++) {
+      if (PUZZLE[i].status === 'letter' && !isCellDone(PUZZLE[i], i)) return i;
+    }
+    for (let i = 0; i < start; i++) {
+      if (PUZZLE[i].status === 'letter' && !isCellDone(PUZZLE[i], i)) return i;
+    }
+    return null;
+  }
+
+  // Собираем слова: массив групп { cells: [{cell,idx}] }, { space: true } или { punct: ',' }
+  function buildWordGroups() {
+    const groups = [];
+    let current = [];
+    PUZZLE.forEach((cell, idx) => {
+      if (cell.status === 'space') {
+        if (current.length) { groups.push({ cells: current }); current = []; }
+        groups.push({ space: true });
+      } else if (cell.status === 'punct') {
+        if (current.length) { groups.push({ cells: current }); current = []; }
+        groups.push({ punct: cell.char });
+      } else {
+        current.push({ cell, idx });
+      }
+    });
+    if (current.length) groups.push({ cells: current });
+    return groups;
+  }
+
+  function renderCells(interactive) {
+    const wrap = document.getElementById('cells');
+    if (!wrap) return;
+    buildWordGroups().forEach(group => {
+      if (group.space) {
+        const sp = document.createElement('div');
+        sp.className = 'g-cell-space';
+        wrap.appendChild(sp);
+        return;
+      }
+      if (group.punct !== undefined) {
+        const p = document.createElement('div');
+        p.className = 'g-cell-punct';
+        p.textContent = group.punct;
+        wrap.appendChild(p);
+        return;
+      }
+      const wordDiv = document.createElement('div');
+      wordDiv.className = 'g-word';
+      group.cells.forEach(({ cell, idx }) => {
+        const div = document.createElement('div');
+        const isDone     = isCellDone(cell, idx);
+        const isSelected = interactive && selectedIndex === idx;
+        let cls = 'g-cell';
+        let letterContent = '';
+        let codeContent   = '';
+        if (cell.status === 'open') {
+          cls += ' open';
+          letterContent = cell.letter;
+          codeContent   = cell.code;
+        } else if (isDone) {
+          cls += ' solved';
+          letterContent = revealed[idx];
+          codeContent   = cell.code;
+        } else if (isSelected) {
+          cls += ' selected';
+          letterContent = '_';
+          codeContent   = cell.code;
+        } else {
+          cls += ' number';
+          codeContent   = cell.code;
+        }
+        if (cellsEntering) { cls += ' entering'; div.style.animationDelay = (idx * 0.04) + 's'; }
+        div.className = cls;
+        div.dataset.idx = idx;
+        div.innerHTML = `<div class="g-cell-letter">${letterContent}</div><div class="g-cell-code">${codeContent}</div>`;
+        if (interactive && !isDone && gameState === 'game') {
+          div.onclick = () => selectCell(idx);
+        }
+        wordDiv.appendChild(div);
+      });
+      wrap.appendChild(wordDiv);
+    });
+  }
+
+  function selectCell(idx) {
+    if (gameState !== 'game') return;
+    selectedIndex = idx;
+    refreshCells();
+    refreshKeyboard();
+    if (Math.random() < 0.4) {
+      const visible = Array.from(document.querySelectorAll('#cells .g-cell.solved'));
+      if (visible.length > 0) {
+        requestAnimationFrame(() => {
+          openGlitchOne(visible[Math.floor(Math.random() * visible.length)], 'bg');
+          if (visible.length > 1 && Math.random() < 0.5) {
+            openGlitchOne(visible[Math.floor(Math.random() * visible.length)], 'bg');
+          }
+        });
+      }
+    }
+  }
+
+  function refreshCells() {
+    const wrap = document.getElementById('cells');
+    if (!wrap) return;
+    // Проверяем что DOM уже построен (есть хотя бы один .g-cell или .g-cell-space)
+    if (!wrap.querySelector('.g-cell') && !wrap.querySelector('.g-cell-space')) {
+      renderCells(true);
+      return;
+    }
+    PUZZLE.forEach((cell, idx) => {
+      if (cell.status === 'space') return;
+      const div = wrap.querySelector(`[data-idx="${idx}"]`);
+      if (!div) return;
+      const isDone     = isCellDone(cell, idx);
+      const isSelected = selectedIndex === idx;
+      let cls = 'g-cell';
+      let letterContent = '';
+      let codeContent   = '';
+      if (cell.status === 'open') {
+        cls += ' open';
+        letterContent = cell.letter;
+        codeContent   = String(cell.code);
+      } else if (isDone) {
+        cls += ' solved';
+        letterContent = revealed[idx];
+        codeContent   = String(cell.code);
+      } else if (isSelected) {
+        cls += ' selected';
+        letterContent = '_';
+        codeContent   = String(cell.code);
+      } else {
+        cls += ' number';
+        codeContent   = String(cell.code);
+      }
+      if (div.className !== cls) div.className = cls;
+      div.dataset.idx = idx;
+      const letterEl = div.querySelector('.g-cell-letter');
+      if (letterEl && letterEl.textContent !== String(letterContent)) {
+        letterEl.textContent = letterContent;
+      }
+      const codeEl = div.querySelector('.g-cell-code');
+      if (codeEl && codeEl.textContent !== codeContent) {
+        codeEl.textContent = codeContent;
+      }
+      div.onclick = (!isDone && gameState === 'game') ? () => selectCell(idx) : null;
+    });
+  }
+
+  /* ─── ИНДИКАТОР ОШИБОК ─── */
+  function renderErrors() {
+    const h = document.getElementById('hint');
+    if (!h || hintTimer) return;
+    h.innerHTML = '';
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:8px;';
+    const lbl = document.createElement('span');
+    lbl.textContent = 'ОШИБКИ:';
+    lbl.style.cssText = 'font-size:13px;color:var(--clay);letter-spacing:0.14em;';
+    row.appendChild(lbl);
+    const dots = document.createElement('div');
+    dots.className = 'g-error-dots';
+    for (let i = 0; i < MAX_ERRORS; i++) {
+      const d = document.createElement('div');
+      const isNew = (i === errors - 1);
+      d.className = 'g-dot' + (i < errors ? ' active' : '') + (isNew ? ' new' : '');
+      dots.appendChild(d);
+    }
+    row.appendChild(dots);
+    h.appendChild(row);
+  }
+
+  function refreshKeyboard() {
+    appendKeyboard();
+  }
+
+
+  /* ─── КЛАВИАТУРА ─── */
+  function renderKeyboard() {
+    const kb = document.getElementById('keyboard');
+    if (!kb) return;
+    KB_ROWS.forEach(row => {
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'g-kb-row';
+      row.forEach(letter => {
+        const btn = document.createElement('button');
+        btn.textContent = letter;
+        // Все клавиши всегда активны
+        btn.className = 'g-key';
+        btn.onclick = () => handleKey(letter);
+        rowDiv.appendChild(btn);
+      });
+      kb.appendChild(rowDiv);
+    });
+  }
+
+  /* ─── НАЖАТИЕ КЛАВИШИ ─── */
+  function handleKey(letter) {
+    if (gameState !== 'game') return;
+
+    if (selectedIndex === null) {
+      const idx = firstUnfinished();
+      if (idx === null) return;
+      selectedIndex = idx;
+    }
+
+    const idx  = selectedIndex;
+    const cell = PUZZLE[idx];
+    if (!cell || isCellDone(cell, idx)) return;
+
+    if (cell.letter === letter) {
+      // Открываем только эту конкретную ячейку
+      revealed[idx] = letter;
+      refreshCells();
+      requestAnimationFrame(() => {
+        const div = document.querySelector(`#cells [data-idx="${idx}"]`);
+        if (div) {
+          scrambleReveal(div, letter);
+          div.classList.add('solving');
+          setTimeout(() => div && div.classList.remove('solving'), 600);
+          setTimeout(() => glitchCells([idx]), 200);
+        }
+      });
+
+      const allSolved = PUZZLE.every((c, i) => isCellDone(c, i));
+      if (allSolved) {
+        clearInterval(timerInterval);
+        gameState = 'over';
+        const score = calcScore(activeTheme.timer, timeLeft);
+        gameResult = 'granted';
+        gameScore  = score;
+        sendAnalytics('win', activeTheme.phrase, score);
+        selectedIndex = null;
+        requestAnimationFrame(() => {
+          document.querySelectorAll('#cells .g-cell').forEach((el, i) => {
+            setTimeout(() => { el.classList.add('win-solving'); }, i * 30);
+          });
+        });
+        setTimeout(() => {
+          setHint('ДОСТУП_ПОЛУЧЕН');
+          triggerGlitch('glitch-win', 600);
+          refreshKeyboard();
+        }, 300);
+        setTimeout(() => { gameState = 'final'; render(); }, 1800);
+        return;
+      } else {
+        selectedIndex = firstUnfinished(idx);
+      }
+    } else {
+      errors++;
+      triggerGlitch('glitch-hit', 300);
+      glitchCells([idx]);
+      renderErrors();
+      if (errors >= MAX_ERRORS) {
+        clearInterval(timerInterval);
+        gameState  = 'over';
+        gameResult = 'detected';
+        gameScore  = 0;
+        sendAnalytics('fail_errors', activeTheme.phrase, 0);
+        selectedIndex = null;
+        setHint('ОБНАРУЖЕН');
+        triggerGlitch('glitch-fail', 850);
+        refreshCells();
+        refreshKeyboard();
+        setTimeout(() => { gameState = 'final'; render(); }, 1800);
+        return;
+      }
+    }
+    refreshCells();
+    refreshKeyboard();
+  }
+
+  function setHint(text) {
+    const h = document.getElementById('hint');
+    if (!h) return;
+    if (hintTimer) { clearInterval(hintTimer); hintTimer = null; }
+    h.textContent = '';
+    let i = 0;
+    hintTimer = setInterval(() => {
+      h.textContent = text.slice(0, ++i);
+      if (i >= text.length) { clearInterval(hintTimer); hintTimer = null; }
+    }, 28);
+  }
+
+  /* ─── СТАРТ ИГРЫ ─── */
+  function startGame(animate = true) {
+    // PUZZLE уже выбран в renderStart — не перевыбираем
+    revealed      = {};
+    errors        = 0;
+    timeLeft      = activeTheme.timer;
+    selectedIndex = null;
+    gameResult    = null;
+    gameScore     = 0;
+    gameState     = 'game';
+    levelStartTime = Date.now();
+    cellsEntering  = animate;
+    render();
+    const first = firstUnfinished();
+    if (first !== null) { selectedIndex = first; refreshCells(); refreshKeyboard(); }
+    renderErrors();
+    cellsEntering  = false;
+    if (animate) {
+      setTimeout(() => {
+        document.querySelectorAll('#cells .g-cell.entering').forEach(el => {
+          el.classList.remove('entering');
+          el.style.animationDelay = '';
+        });
+      }, 800);
+    }
+    startTimer();
+  }
+
+  function startTimer() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      if (gameState !== 'game') { clearInterval(timerInterval); return; }
+      timeLeft--;
+      const fill = document.getElementById('timerFill');
+      const num  = document.getElementById('timerNum');
+      if (fill) {
+        fill.style.width = Math.round((timeLeft / activeTheme.timer) * 100) + '%';
+        fill.classList.toggle('urgent', timeLeft <= Math.ceil(activeTheme.timer * 0.2));
+      }
+      if (num) num.textContent = fmtTime(timeLeft);
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        gameState  = 'over';
+        gameResult = 'lost';
+        gameScore  = 0;
+        sendAnalytics('fail_timeout', activeTheme.phrase, 0);
+        setHint('СОЕДИНЕНИЕ_ПРЕРВАНО');
+        triggerGlitch('glitch-fail', 850);
+        setTimeout(() => { gameState = 'final'; render(); }, 1800);
+      }
+    }, 1000);
+  }
+
+
+  render();
+  ghostTick();
+  openGlitchTick();
+
+
+  // ─── ПЕРЕКЛЮЧЕНИЕ ТЕМ ───
+  const THEMES = ['', 'cyber'];
+  let themeIdx = 0;
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    themeIdx = (themeIdx + 1) % THEMES.length;
+    root.dataset.theme = THEMES[themeIdx];
+  });
+})();
+</script>
+
+
+
+
