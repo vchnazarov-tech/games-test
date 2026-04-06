@@ -1273,10 +1273,12 @@
     const duration = levelStartTime ? Math.round((Date.now() - levelStartTime) / 1000) : null;
     const theme = THEMES[themeIdx] || 'amber';
     const payload = {
+      game:         'phrase',
       session_id:   sessionId,
       timestamp:    new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
       word:         phrase,
       result:       result,
+      errors:       errors,
       time_left:    timeLeft,
       score:        score,
       duration_sec: duration,
