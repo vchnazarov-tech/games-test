@@ -602,7 +602,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    gap: 6px 4px;
+    gap: 14px 4px;
     flex-wrap: wrap;
   }
 
@@ -716,7 +716,7 @@
   .g-cell.grouped  .g-cell-letter { color: var(--amber); }
 
   .g-cell-code {
-    font-size: 13px;
+    font-size: 15px;
     color: var(--clay);
     letter-spacing: 0;
   }
@@ -804,6 +804,24 @@
     background: var(--amber);
     color: var(--black);
     transform: scale(0.90);
+  }
+  /* Буква отсутствует во фразе */
+  .g-key.key-absent {
+    color: var(--cement);
+    background: var(--cell-bg);
+    border-color: var(--border);
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+  /* Все вхождения буквы уже открыты */
+  .g-key.key-done {
+    color: var(--pumpkin);
+    background: var(--cell-bg);
+    border-color: var(--border);
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.5;
   }
 
 
@@ -1232,9 +1250,9 @@
 
   // ─── ФРАЗЫ ───
   const PHRASES = [
-    { phrase: 'НИЧТО НЕ ИСТИНА, ВСЁ ДОЗВОЛЕНО',                    timer: 100, open: [2, 18, 21] },
-    { phrase: 'ГЛАЗА У МЕНЯ ДОБРЫЕ, НО РУБАШКА СМИРИТЕЛЬНАЯ',      timer: 110, open: [6, 22, 34] },
-    { phrase: 'СМЕРТЬ — НЕ ПОВОД НАРУШАТЬ ПРИСЯГУ',                 timer:  90, open: [2, 20, 33] },
+    { phrase: 'НИЧТО НЕ ИСТИНА, ВСЕ ДОЗВОЛЕНО',                    timer: 150, open: [2, 18, 21] },
+    { phrase: 'ГЛАЗА У МЕНЯ ДОБРЫЕ, НО РУБАШКА СМИРИТЕЛЬНАЯ',      timer: 150, open: [6, 22, 34] },
+    { phrase: 'СМЕРТЬ — НЕ ПОВОД НАРУШАТЬ ПРИСЯГУ',                 timer: 150, open: [2, 20, 33] },
   ];
 
   const CYRILLIC   = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЭЮЯ';
@@ -1491,8 +1509,10 @@
       row.forEach(letter => {
         const btn = document.createElement('button');
         btn.textContent = letter;
-        btn.className = 'g-key';
-        btn.onclick = () => handleKey(letter);
+        const kState = getKeyState(letter);
+        btn.className = 'g-key' + (kState !== 'active' ? ' key-' + kState : '');
+        if (kState === 'active') btn.onclick = () => handleKey(letter);
+        else btn.disabled = true;
         rowDiv.appendChild(btn);
       });
       kb.appendChild(rowDiv);
@@ -1663,6 +1683,21 @@
   }
 
   /* ─── ЯЧЕЙКИ ─── */
+  // 'absent' — буква не встречается во фразе
+  // 'done'   — все ячейки с этой буквой уже открыты
+  // 'active' — есть хотя бы одна нераскрытая ячейка
+  function getKeyState(letter) {
+    const cells = PUZZLE.reduce((acc, c, i) => {
+      if (c.status === 'letter' || c.status === 'open') {
+        if (c.letter === letter) acc.push({ cell: c, idx: i });
+      }
+      return acc;
+    }, []);
+    if (cells.length === 0) return 'absent';
+    const allDone = cells.every(({ cell, idx }) => isCellDone(cell, idx));
+    return allDone ? 'done' : 'active';
+  }
+
   function isCellDone(cell, idx) {
     if (cell.status === 'space') return true;
     if (cell.status === 'punct') return true;
