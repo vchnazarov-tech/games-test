@@ -784,6 +784,10 @@
     color: var(--black);
     transform: scale(0.90);
   }
+  .g-key.hint {
+    border-color: var(--clay);
+    color: var(--amber);
+  }
 
 
   /* ─── ФИНАЛЬНЫЙ ЭКРАН ─── */
@@ -1533,6 +1537,7 @@
   let levelStartTime = null;
 
   function sendAnalytics(result, word, score) {
+    if (location.protocol === 'file:') return;
     const lv = currentLevel();
     const duration = levelStartTime ? Math.round((Date.now() - levelStartTime) / 1000) : null;
     const theme = THEMES[themeIdx] || 'amber';
@@ -1765,13 +1770,22 @@
     kb.id = 'keyboard';
     kb.className = 'g-keyboard';
     kb.style.cssText = 'margin:0;width:auto;padding:0;';
+    const hintLetters = new Set();
+    if (levelIndex === 0) {
+      PUZZLE.forEach(c => {
+        if (c.status === 'number' && revealed[c.code] === undefined) {
+          hintLetters.add(c.letter);
+        }
+      });
+    }
+
     KB_ROWS.forEach(row => {
       const rowDiv = document.createElement('div');
       rowDiv.className = 'g-kb-row';
       row.forEach(letter => {
         const btn = document.createElement('button');
         btn.textContent = letter;
-        btn.className = 'g-key';
+        btn.className = 'g-key' + (hintLetters.has(letter) ? ' hint' : '');
         btn.onclick = () => handleKey(letter);
         rowDiv.appendChild(btn);
       });
@@ -1813,7 +1827,7 @@
         <span class="g-difficulty">${activeTheme.name.toUpperCase()}</span>
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <div class="g-cells" id="cells"></div>
-          <div class="g-hint" style="letter-spacing:0.14em">ЧИСЛО = БУКВА</div>
+          <div class="g-hint" style="letter-spacing:0.14em">ОТГАДАЙТЕ ЗАШИФРОВАННОЕ СЛОВО</div>
         </div>
       </div>
       <div class="g-bottom" style="position:relative">
@@ -2216,7 +2230,7 @@
         clearInterval(timerInterval);
         gameState = 'over';
         const lv = currentLevel();
-        const score = calcScore(lv.timer, timeLeft, lv.base, errors);
+        const score = levelIndex === 0 ? lv.base : calcScore(lv.timer, timeLeft, lv.base, errors);
         levelResults.push({ outcome: 'granted', score });
         sendAnalytics('win', PUZZLE.map(c => c.letter).join(''), score);
         selectedIndex = null;
@@ -2241,11 +2255,15 @@
     } else {
       if (!wrongGuesses[idx]) wrongGuesses[idx] = new Set();
       wrongGuesses[idx].add(letter);
-      errors++;
       triggerGlitch('glitch-hit', 300);
       glitchCells([idx]);
-      renderErrors();
-      if (errors >= MAX_ERRORS) {
+      if (levelIndex === 0) {
+        setHint('ЧИСЛО = БУКВА');
+      } else {
+        errors++;
+        renderErrors();
+      }
+      if (levelIndex > 0 && errors >= MAX_ERRORS) {
         clearInterval(timerInterval);
         gameState = 'over';
         levelResults.push({ outcome: 'detected', score: 0 });
@@ -2319,7 +2337,7 @@
     render();
     const first = firstUnfinished();
     if (first !== null) { selectedIndex = first; refreshCells(); refreshKeyboard(); }
-    renderErrors();
+    if (levelIndex === 0) { setHint('ЧИСЛО = БУКВА'); } else { renderErrors(); }
     cellsEntering  = false;
     if (animate) {
       setTimeout(() => {
@@ -2329,7 +2347,12 @@
         });
       }, 800);
     }
-    startTimer();
+    if (levelIndex === 0) {
+      const tw = document.querySelector('.g-timer-wrap');
+      if (tw) tw.style.visibility = 'hidden';
+    } else {
+      startTimer();
+    }
     // циклы уже запущены при инициализации
   }
 
