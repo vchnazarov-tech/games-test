@@ -814,7 +814,7 @@
     const numEl = document.getElementById('slv-tnum');
     if (numEl) {
       numEl.textContent = String(Math.floor(tLeft / 60)).padStart(2,'0') + ':' + String(tLeft % 60).padStart(2,'0');
-      numEl.className = 'slv-timer-num' + (tLeft <= 15 ? ' danger' : '');
+      numEl.className = 'slv-timer-num' + (tLeft <= 30 ? ' danger' : '');
     }
   }
 
@@ -1190,7 +1190,7 @@
           : (phase === 'draw_word' ? 'Соедините буквы в новое слово' : null))
       : null;
     const turnTwoHint = turn === 2 && !successMsg && phase === 'select_cell' && !selCell
-      ? 'Наберите как можно больше очков!'
+      ? 'Время идёт: наберите максимум очков'
       : null;
     const wordPreview = successMsg
       ? `<span class="slv-success-inline">${successMsg}</span>`
