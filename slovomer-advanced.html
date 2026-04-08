@@ -1190,7 +1190,7 @@
           : (phase === 'draw_word' ? 'Соедините буквы в новое слово' : null))
       : null;
     const turnTwoHint = turn === 2 && !successMsg && phase === 'select_cell' && !selCell
-      ? 'Время идёт: наберите максимум очков'
+      ? 'Время пошло ⏳  Наберите максимум очков!'
       : null;
     const wordPreview = successMsg
       ? `<span class="slv-success-inline">${successMsg}</span>`
