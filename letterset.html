@@ -1,0 +1,15232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vc.ru Card Template</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #edeef0;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 84px 16px 24px;
+  }
+
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 60px;
+    background: #FFE5EA;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+  }
+
+  .site-logo {
+    display: flex;
+    align-items: center;
+    width: 52px;
+    height: 52px;
+  }
+
+  /* Карточка */
+  .post-card {
+    width: 640px;
+    max-width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .post-inner {
+    padding: 0 24px;
+  }
+
+  /* Шапка */
+  .post-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0 12px;
+  }
+
+  .author-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Аватар с градиентом */
+  .avatar-wrap {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .avatar-main {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 90deg,
+      #6ed0ff 0deg,
+      #61a1ff 42deg,
+      #9d70ff 89deg,
+      #ff60c7 137deg,
+      #ff483e 180deg,
+      #ff9400 223deg,
+      #ffde48 270deg,
+      #7ae632 306deg,
+      #6fd1ff 359deg,
+      #6ed0ff 360deg
+    );
+    outline: 1px solid rgba(0,0,0,0.10);
+    outline-offset: -1px;
+  }
+
+  /* vc.ru-бейдж */
+  .avatar-badge {
+    position: absolute;
+    bottom: -2px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #1693E5;
+    border: 2px solid #fff;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .author-name-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .author-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #000;
+    line-height: 22px;
+  }
+
+  .author-name-badge {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .author-name-badge-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .reaction-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .reaction-icon-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+
+  .author-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .author-section {
+    font-size: 13px;
+    font-weight: 400;
+    color: #000;
+    line-height: 18px;
+  }
+
+  .author-time {
+    font-size: 13px;
+    color: #595959;
+    line-height: 18px;
+  }
+
+  /* Кнопки справа */
+  .header-actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-subscribe {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #000;
+    background: #F4F4F4;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 10px;
+    height: 28px;
+    cursor: pointer;
+    line-height: 18px;
+  }
+  .btn-subscribe:hover { background: #e8e8e8; }
+
+  .btn-more {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 9px 8px;
+  }
+  .btn-more:hover { background: #f4f4f4; }
+
+  /* Заголовок */
+  .post-title-row {
+    padding-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .post-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: #000;
+    line-height: 30px;
+  }
+
+  /* Контент-блок */
+  .post-content {
+    width: 592px;
+    height: 592px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.10);
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #bbb;
+    font-size: 14px;
+  }
+
+  .game-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  .letterset-game {
+    --ink: #111111;
+    --paper: #f2f4f6;
+    --panel: #ffffff;
+    --blue: #2d84ff;
+    --blue-dark: #1764d8;
+    --yellow: #ffd62e;
+    --red: #ff4b58;
+    --green: #44b84d;
+    --pink: #ffd8e7;
+    --mint: #dff8ec;
+    --cyan: #dff4ff;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    color: var(--ink);
+    background-color: var(--paper);
+    background-image: radial-gradient(rgba(17,17,17,0.18) 1px, transparent 1px);
+    background-size: 16px 16px;
+    border-radius: 10px;
+    padding: 16px;
+    font-family: 'Roboto', sans-serif;
+    user-select: none;
+  }
+
+  .letterset-game button {
+    font-family: inherit;
+  }
+
+  .game-shell {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto;
+    gap: 12px;
+  }
+
+  .game-top {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .game-title,
+  .game-stat {
+    min-height: 46px;
+    border: 4px solid var(--ink);
+    border-radius: 12px;
+    background: var(--panel);
+    box-shadow: 5px 5px 0 var(--ink);
+    display: flex;
+    align-items: center;
+  }
+
+  .game-title {
+    padding: 6px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .game-kicker {
+    font-size: 10px;
+    line-height: 1;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0;
+  }
+
+  .game-name {
+    font-size: 20px;
+    line-height: 22px;
+    font-weight: 900;
+  }
+
+  .game-stat {
+    min-width: 108px;
+    padding: 5px 10px;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .game-stat-label {
+    font-size: 10px;
+    line-height: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .game-stat-value {
+    font-size: 22px;
+    line-height: 22px;
+    font-weight: 900;
+  }
+
+  .word-slots {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+  }
+
+  .word-slot {
+    position: relative;
+    height: 50px;
+    border: 3px dashed rgba(17,17,17,0.42);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.68);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    line-height: 1;
+    font-weight: 900;
+  }
+
+  .word-slot.has-letter {
+    border-style: solid;
+    border-color: var(--ink);
+    background: var(--blue);
+    box-shadow: 4px 4px 0 var(--ink);
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  .word-slot-letter {
+    position: relative;
+    z-index: 1;
+  }
+
+  .word-slot-value {
+    position: absolute;
+    right: 6px;
+    bottom: 5px;
+    z-index: 1;
+    font-size: 10px;
+    line-height: 10px;
+    font-weight: 900;
+  }
+
+  .power-badge {
+    position: static;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 17px;
+    line-height: 1;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .power-word {
+    color: #d83f93;
+  }
+
+  .power-letter {
+    color: #168fc8;
+  }
+
+  .word-slot.has-power {
+    border-color: currentColor;
+  }
+
+  .word-slot.has-power-shift {
+    color: #22a763;
+    background: linear-gradient(#dff8ec99, #dff8ec99);
+  }
+
+  .word-slot.has-power-word {
+    color: #d83f93;
+    background: linear-gradient(#ffd8e799, #ffd8e799);
+  }
+
+  .word-slot.has-power-letter {
+    color: #168fc8;
+    background: linear-gradient(#dff4ff99, #dff4ff99);
+  }
+
+  .word-slot.has-letter .power-badge {
+    display: none;
+  }
+
+  .game-message {
+    min-height: 44px;
+    border: 4px solid var(--ink);
+    border-radius: 12px;
+    background: var(--panel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 900;
+  }
+
+  .tile-grid-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+
+  .tile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 72px);
+    grid-template-rows: repeat(3, 72px);
+    gap: 10px;
+  }
+
+  .letter-tile {
+    position: relative;
+    border: 4px solid var(--ink);
+    border-radius: 12px;
+    background: var(--blue);
+    box-shadow: 5px 5px 0 var(--ink);
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    line-height: 1;
+    font-weight: 900;
+    text-transform: uppercase;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+  }
+
+  .letter-tile:hover,
+  .letter-tile:focus-visible {
+    transform: translate(-1px, -1px);
+    box-shadow: 6px 6px 0 var(--ink);
+    outline: none;
+  }
+
+  .letter-tile.is-selected {
+    transform: translate(4px, 4px);
+    box-shadow: 1px 1px 0 var(--ink);
+    filter: saturate(0.85);
+  }
+
+  .letter-tile.is-empty {
+    background: #ffffff;
+    box-shadow: none;
+    color: transparent;
+    pointer-events: none;
+  }
+
+  .letter-tile.is-vacated {
+    background: #ffffff;
+    box-shadow: 3px 3px 0 var(--ink);
+    color: transparent;
+  }
+
+  .letter-tile.is-vacated:hover,
+  .letter-tile.is-vacated:focus-visible {
+    transform: none;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .letter-tile.is-empty .letter-value,
+  .letter-tile.is-vacated .letter-value {
+    display: none;
+  }
+
+  .letter-value {
+    position: absolute;
+    right: 7px;
+    bottom: 6px;
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: 900;
+  }
+
+  .game-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.25fr;
+    gap: 10px;
+  }
+
+  .game-action {
+    height: 46px;
+    border: 4px solid var(--ink);
+    border-radius: 14px;
+    box-shadow: 5px 5px 0 var(--ink);
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 26px;
+    line-height: 1;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .game-action:hover,
+  .game-action:focus-visible {
+    transform: translate(-1px, -1px);
+    box-shadow: 6px 6px 0 var(--ink);
+    outline: none;
+  }
+
+  .game-action:active {
+    transform: translate(4px, 4px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+
+  .action-clear { background: var(--red); }
+  .action-shuffle { background: var(--yellow); color: var(--ink); }
+  .action-submit { background: var(--green); }
+
+  .game-reset {
+    margin-left: 10px;
+    border: 3px solid var(--ink);
+    border-radius: 10px;
+    background: var(--yellow);
+    color: var(--ink);
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .morph-modal {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: rgba(17,17,17,0.36);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+  }
+
+  .morph-modal.is-open {
+    display: flex;
+  }
+
+  .morph-panel {
+    width: min(420px, 100%);
+    border: 4px solid var(--ink);
+    border-radius: 14px;
+    background: var(--panel);
+    box-shadow: 7px 7px 0 var(--ink);
+    padding: 14px;
+  }
+
+  .morph-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .morph-title {
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: 900;
+  }
+
+  .morph-close {
+    width: 34px;
+    height: 34px;
+    border: 3px solid var(--ink);
+    border-radius: 10px;
+    background: var(--red);
+    color: #ffffff;
+    font-size: 19px;
+    line-height: 1;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .morph-letters {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+  }
+
+  .morph-letter {
+    height: 34px;
+    border: 3px solid var(--ink);
+    border-radius: 8px;
+    background: var(--blue);
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 17px;
+    line-height: 1;
+    font-weight: 900;
+  }
+
+  .letter-tile.is-popping {
+    animation: letterset-tile-pop 260ms cubic-bezier(.2, 1.45, .35, 1) both;
+  }
+
+  .word-slot.is-popping {
+    animation: letterset-slot-pop 220ms cubic-bezier(.2, 1.35, .38, 1) both;
+  }
+
+  .power-badge.is-popping {
+    animation: letterset-bonus-pop 260ms cubic-bezier(.18, 1.45, .3, 1) both;
+  }
+
+  .game-message.is-success {
+    animation: letterset-submit-success 780ms ease both;
+  }
+
+  .game-message.is-error {
+    animation: letterset-submit-error 520ms ease both;
+  }
+
+  .game-stat-value.is-rolling {
+    animation: letterset-counter-roll 220ms ease both;
+  }
+
+  .game-stat-value.is-bumping {
+    animation: letterset-counter-bump 360ms cubic-bezier(.2, 1.45, .35, 1) both;
+  }
+
+  @keyframes letterset-tile-pop {
+    0% { transform: scale(0.72) rotate(-3deg); opacity: 0; }
+    62% { transform: scale(1.12) rotate(1deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+  }
+
+  @keyframes letterset-slot-pop {
+    0% { transform: scale(0.84) translateY(4px); }
+    65% { transform: scale(1.08) translateY(-1px); }
+    100% { transform: scale(1) translateY(0); }
+  }
+
+  @keyframes letterset-bonus-pop {
+    0% { transform: scale(0.2) rotate(-12deg); opacity: 0; }
+    62% { transform: scale(1.22) rotate(4deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+  }
+
+  @keyframes letterset-submit-success {
+    0% { background: var(--panel); color: var(--ink); transform: scale(1); }
+    12% { background: #22c55e; color: #ffffff; transform: scale(1.035); }
+    64% { background: #22c55e; color: #ffffff; transform: scale(1); }
+    100% { background: var(--panel); color: var(--ink); transform: scale(1); }
+  }
+
+  @keyframes letterset-submit-error {
+    0%, 100% { transform: translateX(0); background: var(--panel); color: var(--ink); }
+    12% { transform: translateX(-8px); background: #ef4444; color: #ffffff; }
+    24% { transform: translateX(7px); }
+    36% { transform: translateX(-5px); }
+    48% { transform: translateX(4px); }
+    62% { transform: translateX(-2px); background: #ef4444; color: #ffffff; }
+  }
+
+  @keyframes letterset-counter-roll {
+    0% { transform: translateY(55%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes letterset-counter-bump {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.24); }
+    100% { transform: scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .letter-tile,
+    .game-action {
+      transition: none;
+    }
+
+    .letter-tile.is-popping,
+    .word-slot.is-popping,
+    .power-badge.is-popping,
+    .game-message.is-success,
+    .game-message.is-error,
+    .game-stat-value.is-rolling,
+    .game-stat-value.is-bumping {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .letterset-game {
+      padding: 10px;
+    }
+
+    .game-shell {
+      gap: 8px;
+    }
+
+    .game-top {
+      grid-template-columns: 1fr 82px 82px;
+      gap: 6px;
+    }
+
+    .game-title,
+    .game-stat {
+      min-height: 40px;
+      border-width: 3px;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .game-name {
+      font-size: 16px;
+      line-height: 18px;
+    }
+
+    .game-stat {
+      min-width: 0;
+      padding: 4px 7px;
+    }
+
+    .game-stat-label {
+      font-size: 8px;
+      line-height: 10px;
+    }
+
+    .game-stat-value {
+      font-size: 17px;
+      line-height: 18px;
+    }
+
+    .word-slots {
+      gap: 5px;
+    }
+
+    .word-slot {
+      height: 40px;
+      border-width: 2px;
+      font-size: 20px;
+    }
+
+    .power-badge {
+      top: -9px;
+      right: -6px;
+      min-width: 23px;
+      height: 18px;
+      font-size: 9px;
+      line-height: 11px;
+    }
+
+    .game-message {
+      min-height: 36px;
+      border-width: 3px;
+      font-size: 12px;
+      line-height: 14px;
+    }
+
+    .tile-grid {
+      grid-template-columns: repeat(3, minmax(0, 62px));
+      grid-template-rows: repeat(3, minmax(0, 62px));
+      gap: 7px;
+    }
+
+    .letter-tile {
+      border-width: 3px;
+      font-size: 30px;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .game-action {
+      height: 40px;
+      border-width: 3px;
+      font-size: 22px;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .morph-letters {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  .post-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Реакции */
+  .reactions-bar {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .reaction {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 80px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 22px;
+    color: #595959;
+  }
+
+  .reaction-active {
+    background: #0B5DD7;
+    color: #fff;
+  }
+
+  .reaction-inactive {
+    background: #F5F5F5;
+  }
+  .reaction-inactive:hover { background: #ebebeb; }
+
+  .reaction-add {
+    background: #F5F5F5;
+    border-radius: 80px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #595959;
+  }
+  .reaction-add:hover { background: #ebebeb; }
+
+  /* Экшен-бар */
+  .action-bar {
+    padding: 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .action-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px 4px 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 56px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    color: #595959;
+    line-height: 22px;
+  }
+  .action-btn:hover { background: #f4f4f4; }
+
+  .action-icon-btn {
+    width: 36px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 4px 8px;
+  }
+  .action-icon-btn:hover { background: #f4f4f4; }
+
+  .action-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding-left: 12px;
+    color: #595959;
+    font-size: 15px;
+    line-height: 22px;
+  }
+
+  /* Адаптив */
+  @media (max-width: 640px) {
+    body { padding: 60px 0 0; }
+    .site-header { padding: 0 16px; }
+    .post-card { border-radius: 0; }
+    .post-content {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      min-height: 0;
+    }
+  }
+
+  /* Темная тема */
+
+  /* Плавные переходы */
+  body, .site-header, .post-card, .post-title, .author-name, .author-time, .author-section,
+  .btn-subscribe, .reaction-inactive, .reaction-add, .action-btn, .action-right,
+  .post-content {
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  /* Страница и карточка */
+  [data-theme="dark"] body { background: #18191a; }
+  [data-theme="dark"] .post-card { background: #242526; }
+  [data-theme="dark"] .author-name { color: #e4e6eb; }
+  [data-theme="dark"] .author-section { color: #e4e6eb; }
+  [data-theme="dark"] .author-time { color: #b0b3b8; }
+  [data-theme="dark"] .btn-subscribe { background: #3a3b3c; color: #e4e6eb; }
+  [data-theme="dark"] .btn-subscribe:hover { background: #4e4f50; }
+  [data-theme="dark"] .btn-more:hover { background: #3a3b3c; }
+  [data-theme="dark"] .btn-more svg circle { fill: #b0b3b8; }
+  [data-theme="dark"] .post-title { color: #e4e6eb; }
+  [data-theme="dark"] .post-content { background: #2d2e30; border-color: rgba(255,255,255,0.06); color: #555; }
+  [data-theme="dark"] .avatar-badge { border-color: #242526; }
+
+  /* Реакции и экшен-бар */
+  [data-theme="dark"] .reaction { color: #b0b3b8; }
+  [data-theme="dark"] .reaction-inactive { background: #3a3b3c; }
+  [data-theme="dark"] .reaction-inactive:hover { background: #4e4f50; }
+  [data-theme="dark"] .reaction-inactive svg path { fill: #b0b3b8; }
+  [data-theme="dark"] .reaction-add { background: #3a3b3c; }
+  [data-theme="dark"] .reaction-add:hover { background: #4e4f50; }
+  [data-theme="dark"] .reaction-add svg path { fill: #b0b3b8; }
+  [data-theme="dark"] .action-btn { color: #b0b3b8; }
+  [data-theme="dark"] .action-btn:hover { background: #3a3b3c; }
+  [data-theme="dark"] .action-btn svg path { fill: #b0b3b8; }
+  [data-theme="dark"] .action-icon-btn:hover { background: #3a3b3c; }
+  [data-theme="dark"] .action-icon-btn svg path { fill: #b0b3b8; }
+  [data-theme="dark"] .action-right { color: #b0b3b8; }
+  [data-theme="dark"] .action-right svg path { fill: #b0b3b8; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-logo" aria-label="Логотип">
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g clip-path="url(#clip0_24133_20602)">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M34.5684 24.8497C36.8808 24.8497 38.6215 23.8743 39.9057 22.178L38.1906 20.8529C37.3202 22.0054 36.0019 22.6657 34.5684 22.6657C32.0598 22.6657 30.2423 20.5983 30.2423 18.0604C30.2423 15.5224 32.0299 13.3384 34.6409 13.3384C35.8014 13.3384 36.6205 13.6147 37.3373 14.0636V16.295H39.4961V13.0406L39.0822 12.7126C37.8962 11.7673 36.083 11.2667 34.5684 11.2667C30.8652 11.2667 27.8531 14.3139 27.8531 18.0604C27.8531 21.8025 30.8652 24.8497 34.5684 24.8497ZM39.0481 38.2515L38.9713 35.1223V27.4912H34.4703V29.6752H36.6973V34.8547C36.6973 37.0862 35.0121 38.6659 33.3141 38.6659C31.6161 38.6659 30.7287 37.4746 30.7287 35.2431V27.4912H26.522V29.6752H28.4547V35.623C28.4547 38.6486 30.1314 40.7333 33.1221 40.7333C34.8415 40.7333 36.1512 39.7708 36.932 38.2817H36.9661L37.2733 40.3621H40.7333V38.2558H39.0481V38.2515ZM27.354 11.5861H23.6038L20.34 21.1724H20.2888L17.0421 11.5861H13.0445V13.7701H15.2929L19.1625 24.6987H21.2189V24.6944L25.2549 13.7701H27.354V11.5861ZM9.53333 40.3885H11.7561V38.1393H9.53333V40.3885ZM18.1216 30.0249H18.096L17.9552 27.4913H13.9875V29.481H16.0993V38.2515H13.9875V40.3578H23.7959V38.2904H18.3349V32.9987C18.5823 31.0823 20.003 29.4465 21.94 29.4465H21.9741L21.9357 31.406H24.0945V27.4524H22.388C20.434 27.4481 18.9834 28.5185 18.1216 30.0249Z" fill="black"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_24133_20602">
+          <rect width="52" height="52" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+  </div>
+</header>
+
+<div class="post-card">
+  <div class="post-inner">
+
+    <!-- Шапка -->
+    <div class="post-header">
+      <div class="author-block">
+        <div class="avatar-wrap">
+          <div class="avatar-main"></div>
+          <div class="avatar-badge"></div>
+        </div>
+        <div class="author-info">
+          <div class="author-name-row">
+            <div class="author-name">Название проекта</div>
+            <div class="author-name-badge">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <g clip-path="url(#clip0_26708_34256)">
+                  <path d="M2.06588 6.68558C2.60273 4.70211 4.16383 2.95898 6.802 2.95898C9.77842 2.95898 11 5.22972 11 5.22972C11 5.22972 12.3653 2.95898 15.1981 2.95898C18.0309 2.95898 19.3974 4.70211 19.9342 6.68558C21.1367 11.1284 17.5903 14.987 14.3477 17.2689C13.4576 17.8954 12.4776 18.6201 11.4327 18.9642C11.3613 18.9877 11.1937 19.041 11 19.041C10.8064 19.041 10.6388 18.9877 10.5674 18.9642C9.5121 18.6166 8.5539 17.9034 7.65237 17.2689C4.40983 14.987 0.863367 11.1284 2.06588 6.68558Z" fill="url(#paint0_linear_26708_34256)"/>
+                </g>
+                <defs>
+                  <linearGradient id="paint0_linear_26708_34256" x1="11" y1="2.95898" x2="11" y2="19.041" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#FF5D6D"/>
+                    <stop offset="1" stop-color="#F35565"/>
+                  </linearGradient>
+                  <clipPath id="clip0_26708_34256">
+                    <rect width="22" height="22" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+          </div>
+          <div class="author-meta">
+            <span class="author-section">Раздел</span>
+            <span class="author-time">2ч</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-subscribe">Подписаться</button>
+        <button class="btn-more">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="4.58" cy="11" r="1.83" fill="#595959"/>
+            <circle cx="11" cy="11" r="1.83" fill="#595959"/>
+            <circle cx="17.42" cy="11" r="1.83" fill="#595959"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Заголовок -->
+    <div class="post-title-row">
+      <span class="post-title">Заголовок поста</span>
+    </div>
+
+    <!-- Контент-блок: сюда вставляется содержимое карточки -->
+    <div class="post-content" id="card-content">
+      <div class="letterset-game" id="letterset-game">
+        <div class="game-shell">
+          <div class="game-top">
+            <div class="game-title">
+              <span class="game-name">БУКВОСЕТ #1</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label">буквы</span>
+              <span class="game-stat-value" id="letters-left">25</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label">счет</span>
+              <span class="game-stat-value" id="game-score">0</span>
+            </div>
+          </div>
+
+          <div class="word-slots" id="word-slots" aria-label="Текущее слово"></div>
+
+          <div class="game-message" id="game-message">Длиннее слово — больше очков</div>
+
+          <div class="tile-grid-wrap">
+            <div class="tile-grid" id="tile-grid" aria-label="Буквы на поле"></div>
+          </div>
+
+          <div class="game-actions">
+            <button class="game-action action-clear" id="clear-word" type="button" aria-label="Очистить слово">×</button>
+            <button class="game-action action-shuffle" id="shuffle-grid" type="button" aria-label="Перемешать буквы">↻</button>
+            <button class="game-action action-submit" id="submit-word" type="button" aria-label="Отправить слово">✓</button>
+          </div>
+        </div>
+
+        <div class="morph-modal" id="morph-modal" role="dialog" aria-modal="true" aria-labelledby="morph-title">
+          <div class="morph-panel">
+            <div class="morph-head">
+              <div class="morph-title" id="morph-title">Выбери букву для джокера</div>
+              <button class="morph-close" id="morph-close" type="button" aria-label="Закрыть выбор буквы">×</button>
+            </div>
+            <div class="morph-letters" id="morph-letters"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Реакции -->
+    <div class="reactions-bar">
+      <!-- Активная реакция (лайк) -->
+      <div class="reaction reaction-active">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M1.878 6.078C2.366 4.275 3.785 2.69 6.184 2.69C8.889 2.69 10 4.754 10 4.754C10 4.754 11.241 2.69 13.816 2.69C16.392 2.69 17.634 4.275 18.122 6.078C19.215 10.117 15.991 13.625 13.043 15.699C12.234 16.268 11.343 16.927 10.393 17.24C10.328 17.261 10.176 17.31 10 17.31C9.824 17.31 9.672 17.261 9.607 17.24C8.647 16.924 7.776 16.276 6.957 15.699C4.009 13.625 0.785 10.117 1.878 6.078Z" fill="url(#heartGrad)"/>
+          <defs>
+            <linearGradient id="heartGrad" x1="10" y1="2.69" x2="10" y2="17.31" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FF5D6D"/>
+              <stop offset="1" stop-color="#F35565"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span style="color:#fff;font-weight:400">100</span>
+      </div>
+
+      <!-- Огонь -->
+      <div class="reaction reaction-inactive">
+        <span class="reaction-icon reaction-fire-icon">
+          <svg width="17" height="20" viewBox="0 0 17 20" fill="none">
+            <path d="M0.026 13.631C0.026 13.631 0.606 19.838 7.887 19.986C15.169 20.135 16.708 12.413 15.512 10.799C15.512 10.799 15.198 11.848 14.854 11.975C14.854 11.975 14.736 6.545 12.271 4.787C12.271 4.787 12.372 5.802 11.987 5.819C11.987 5.819 9.69 0.778 4.616 0C4.616 0 6.568 3.34 4.142 6.502C1.717 9.665 1.815 10.961 1.815 10.961C1.815 10.961 1.048 10.329 1.175 9.881C1.175 9.881 -0.207 10.766 0.026 13.631Z" fill="url(#fireGrad)"/>
+            <defs>
+              <radialGradient id="fireGrad" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(4 11.82) scale(10.6)">
+                <stop stop-color="#FFAB1D"/>
+                <stop offset="1" stop-color="#FB4201"/>
+              </radialGradient>
+            </defs>
+          </svg>
+        </span>
+        <span>23</span>
+      </div>
+
+      <!-- Кнопка добавить реакцию / переключить тему -->
+      <div class="reaction-add" id="theme-toggle" title="Переключить тему">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke="#595959" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="8" cy="8" r="2.5" stroke="#595959" stroke-width="1.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Экшен-бар -->
+    <div class="action-bar">
+      <div class="action-left">
+        <!-- Комментарии -->
+        <button class="action-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M17.48 9.78C17.48 5.28 13.83 2.5 9.78 2.5C5.74 2.5 2.1 5.27 2.08 9.75C2.07 14.24 5.64 17.06 9.78 17.06C10.87 17.06 11.74 17 12.8 16.58C12.96 16.52 13.22 16.52 13.47 16.6L16.01 17.44C16.61 17.63 17.14 17.34 17.44 17.04C17.76 16.73 18.03 16.2 17.87 15.59L17.06 13.08C16.95 12.75 16.95 12.38 17.02 12.19L17.06 12.06C17.29 11.42 17.48 10.89 17.48 9.78ZM9.78 4.17C6.46 4.17 3.75 6.38 3.75 9.78C3.75 13.18 6.46 15.39 9.78 15.39C10.8 15.39 11.42 15.34 12.18 15.04C12.79 14.79 13.47 14.84 14 15.02L16.16 15.74L15.43 13.56C15.29 13.01 15.22 12.25 15.45 11.62L15.5 11.48C15.7 10.91 15.82 10.6 15.82 9.78C15.82 6.38 13.1 4.17 9.78 4.17Z" fill="#595959"/>
+          </svg>
+          76
+        </button>
+
+        <!-- Репост -->
+        <button class="action-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.74 3.578C13.07 3.253 13.6 3.253 13.92 3.578L18.09 7.744C18.41 8.07 18.41 8.597 18.09 8.923L13.92 13.09C13.6 13.415 13.07 13.415 12.74 13.09C12.42 12.764 12.42 12.237 12.74 11.911L15.42 9.234C12.84 9.015 9.97 9.331 7.66 10.203C4.98 11.214 3.33 12.843 3.33 15C3.33 15.46 2.96 15.834 2.5 15.834C2.04 15.833 1.67 15.46 1.67 15C1.67 11.797 4.15 9.746 7.07 8.643C9.64 7.674 12.76 7.336 15.56 7.573L12.74 4.756C12.42 4.43 12.42 3.903 12.74 3.578Z" fill="#595959"/>
+          </svg>
+          10
+        </button>
+
+        <!-- Закладка -->
+        <button class="action-icon-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M3.33331 5.83333C3.33331 3.99238 4.8257 2.5 6.66665 2.5H13.3333C15.1743 2.5 16.6666 3.99238 16.6666 5.83333V15.8712C16.6666 17.2271 15.1039 17.9867 14.0377 17.1489L10.4376 14.3203C10.1808 14.1185 9.81921 14.1185 9.56236 14.3203L5.96227 17.1489C4.89606 17.9867 3.33331 17.2271 3.33331 15.8712V5.83333ZM6.66665 4.16667C5.74617 4.16667 4.99998 4.91286 4.99998 5.83333V15.7854L8.53265 13.0098C9.39386 12.3331 10.6061 12.3331 11.4673 13.0098L15 15.7854V5.83333C15 4.91286 14.2538 4.16667 13.3333 4.16667H6.66665Z" fill="#595959"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Просмотры -->
+      <div class="action-right">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M2.6551 9.99998C3.51286 11.3377 4.32593 12.5193 5.37099 13.409C6.49234 14.3637 7.90686 15 10 15C12.0932 15 13.5077 14.3637 14.6291 13.409C15.6741 12.5193 16.4872 11.3377 17.345 9.99998C16.4872 8.66223 15.6741 7.48067 14.6291 6.59094C13.5077 5.63623 12.0932 4.99998 10 4.99998C7.90686 4.99998 6.49234 5.63623 5.37099 6.59094C4.32593 7.48067 3.51286 8.66223 2.6551 9.99998ZM4.29055 5.3219C5.7126 4.1112 7.50989 3.33331 10 3.33331C12.4902 3.33331 14.2875 4.1112 15.7095 5.3219C17.0929 6.49969 18.0937 8.0692 19.0367 9.55301C19.21 9.82578 19.21 10.1742 19.0367 10.4469C18.0937 11.9308 17.0929 13.5003 15.7095 14.6781C14.2875 15.8888 12.4902 16.6666 10 16.6666C7.50989 16.6666 5.7126 15.8888 4.29055 14.6781C2.90716 13.5003 1.90635 11.9308 0.963382 10.4469C0.790038 10.1742 0.790038 9.82578 0.963382 9.55301C1.90635 8.0692 2.90716 6.49969 4.29055 5.3219ZM10 8.54165C9.19463 8.54165 8.54171 9.19456 8.54171 9.99998C8.54171 10.8054 9.19463 11.4583 10 11.4583C10.8055 11.4583 11.4584 10.8054 11.4584 9.99998C11.4584 9.19456 10.8055 8.54165 10 8.54165ZM6.87504 9.99998C6.87504 8.27409 8.27415 6.87498 10 6.87498C11.7259 6.87498 13.125 8.27409 13.125 9.99998C13.125 11.7259 11.7259 13.125 10 13.125C8.27415 13.125 6.87504 11.7259 6.87504 9.99998Z" fill="white"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M2.6551 9.99998C3.51286 11.3377 4.32593 12.5193 5.37099 13.409C6.49234 14.3637 7.90686 15 10 15C12.0932 15 13.5077 14.3637 14.6291 13.409C15.6741 12.5193 16.4872 11.3377 17.345 9.99998C16.4872 8.66223 15.6741 7.48067 14.6291 6.59094C13.5077 5.63623 12.0932 4.99998 10 4.99998C7.90686 4.99998 6.49234 5.63623 5.37099 6.59094C4.32593 7.48067 3.51286 8.66223 2.6551 9.99998ZM4.29055 5.3219C5.7126 4.1112 7.50989 3.33331 10 3.33331C12.4902 3.33331 14.2875 4.1112 15.7095 5.3219C17.0929 6.49969 18.0937 8.0692 19.0367 9.55301C19.21 9.82578 19.21 10.1742 19.0367 10.4469C18.0937 11.9308 17.0929 13.5003 15.7095 14.6781C14.2875 15.8888 12.4902 16.6666 10 16.6666C7.50989 16.6666 5.7126 15.8888 4.29055 14.6781C2.90716 13.5003 1.90635 11.9308 0.963382 10.4469C0.790038 10.1742 0.790038 9.82578 0.963382 9.55301C1.90635 8.0692 2.90716 6.49969 4.29055 5.3219ZM10 8.54165C9.19463 8.54165 8.54171 9.19456 8.54171 9.99998C8.54171 10.8054 9.19463 11.4583 10 11.4583C10.8055 11.4583 11.4584 10.8054 11.4584 9.99998C11.4584 9.19456 10.8055 8.54165 10 8.54165ZM6.87504 9.99998C6.87504 8.27409 8.27415 6.87498 10 6.87498C11.7259 6.87498 13.125 8.27409 13.125 9.99998C13.125 11.7259 11.7259 13.125 10 13.125C8.27415 13.125 6.87504 11.7259 6.87504 9.99998Z" fill="black" fill-opacity="0.65"/>
+        </svg>
+        5 281
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const badgeUploadMessage = 'Перетащите картинку в формате SVG, PNG, JPG, JPEG, WEBP или GIF.';
+  const supportedBadgeExtensions = ['svg', 'png', 'jpg', 'jpeg', 'webp', 'gif'];
+
+  (() => {
+    const initialLetters = ['Д', 'У', 'Т', 'Ы', 'Р', 'О', 'И', 'Н', 'Л'];
+    const drawLetters = ['Ц', 'О', 'Х', 'О', 'Ч', 'Ш', 'И', 'О', 'У', 'Т', 'Б', 'Я', 'Т', 'Р', 'Р', 'Н'];
+    const dictionaryText = `абажур
+абак
+абака
+аббат
+абвер
+абзац
+абонент
+абордаж
+аборт
+абразив
+абрек
+абрикос
+абрис
+абсент
+абсолют
+абсурд
+абсцесс
+абхаз
+абхазец
+абхазцы
+абхазы
+аванс
+авансы
+аварец
+авария
+аварцы
+авары
+авгур
+август
+авеню
+авиа
+авиатор
+авиация
+авиетка
+авизо
+авокадо
+авось
+авоська
+аврал
+аврора
+авто
+автобус
+автоген
+автожир
+автокар
+автомат
+автор
+авторша
+ага
+агава
+агар
+агаряне
+агат
+агент
+агитка
+агнец
+агнозия
+агония
+аграф
+агрегат
+агроном
+агу
+адажио
+адам
+адамант
+адаптер
+адат
+адвокат
+аденома
+адепт
+аджика
+адмирал
+адонис
+адрес
+адресат
+адресок
+адъюнкт
+ажан
+ажио
+ажиотаж
+ажур
+азалия
+азан
+азарт
+азбука
+азиат
+азиатка
+азиаты
+азимут
+азия
+азот
+азу
+азур
+азы
+аил
+аир
+аист
+аистиха
+аисты
+айва
+айван
+аймак
+айран
+айсберг
+акафист
+акация
+акварий
+акведук
+аквилон
+аккорд
+акмеизм
+аконит
+акр
+акрил
+акробат
+аксакал
+аксиома
+аксон
+акт
+актер
+актерка
+актив
+актинии
+актиний
+актиния
+актриса
+акты
+акула
+акулы
+акустик
+акушер
+акцент
+акцепт
+акциз
+акция
+акын
+аларм
+аларма
+алатырь
+албанец
+албанцы
+алгебра
+алеут
+алеуты
+алжирец
+алжирцы
+алиби
+алкаш
+алла
+аллах
+аллегри
+аллегро
+аллейка
+аллея
+аллюзия
+аллюр
+алмаз
+алогизм
+алоэ
+алтаец
+алтайцы
+алтарь
+алтей
+алтын
+алфавит
+алхимик
+алхимия
+алчущая
+алчущий
+алыча
+альбедо
+альбом
+альков
+альпака
+альт
+альтист
+альфа
+альфонс
+альянс
+амбар
+амбиции
+амбиция
+амбра
+амбре
+амвон
+амеба
+амебы
+америка
+аметист
+аминь
+аммиак
+аммонал
+аммоний
+амнезия
+ампер
+ампир
+амплуа
+ампула
+амулет
+амур
+амуры
+амфибия
+амфора
+анабиоз
+анализ
+аналог
+аналой
+анамнез
+ананас
+анапест
+анархия
+анатом
+анафема
+анафора
+ангар
+ангел
+ангелок
+ангина
+анданте
+анекдот
+анемия
+анемон
+анемона
+анилин
+анимизм
+анис
+анкер
+анкета
+анклав
+анналы
+аннушка
+анод
+аноним
+анонс
+ант
+антанта
+антей
+антенна
+антенны
+антиген
+антидот
+антик
+антимир
+антипод
+антифон
+антоним
+антракт
+антраша
+антре
+антураж
+анты
+анурия
+анчар
+анчоус
+анчоусы
+аншлаг
+аншлюс
+аорта
+апатит
+апатия
+апаш
+апломб
+апогей
+апокриф
+аполлон
+апорт
+апостол
+апофеоз
+аппарат
+аппетит
+апрель
+апсида
+аптека
+аптечка
+араб
+арабист
+арабка
+арабы
+арак
+аралия
+арамеи
+арап
+арапка
+арапник
+арат
+арахис
+арба
+арбалет
+арбитр
+арбуз
+арбузик
+аргамак
+арго
+аргон
+аргус
+ареал
+арена
+аренда
+ареопаг
+арест
+ариетта
+ариец
+арии
+арийцы
+ариозо
+аристон
+аритмия
+ария
+арк
+арка
+аркада
+аркадия
+аркан
+аркебуз
+арлекин
+армада
+армеец
+армия
+армяк
+армяне
+армянин
+армянка
+арника
+аромат
+ароматы
+арсенал
+артель
+артерия
+артикль
+артикул
+артист
+артишок
+артрит
+артроз
+арфа
+арфист
+архаизм
+архаика
+архалук
+архар
+архетип
+архив
+архонт
+арча
+аршин
+арык
+асбест
+асессор
+аскер
+аскет
+асмодей
+аспект
+аспид
+аспиды
+аспирин
+ассорти
+астеник
+астения
+астма
+астра
+асфальт
+асцит
+атавизм
+атака
+атаксия
+атаман
+атас
+атеизм
+атеист
+ателье
+атлант
+атлас
+атлет
+атолл
+атом
+атомизм
+атония
+атрибут
+атропин
+атрофия
+атташе
+аттик
+аудитор
+аукцион
+аул
+аура
+аут
+афазия
+афалина
+афганец
+афганка
+афганцы
+афера
+аферист
+афиша
+афоризм
+африка
+афронт
+аффект
+ахинея
+ацетат
+ацетон
+ацтек
+ацтеки
+ашуг
+аэробус
+аэрон
+баба
+бабенка
+бабища
+бабка
+бабки
+бабник
+бабочка
+бабуин
+бабуля
+бабуся
+бабушка
+бабье
+баварец
+баварцы
+багаж
+багги
+багет
+багор
+багрец
+бадан
+бадейка
+бадья
+бадьян
+баз
+база
+базальт
+базар
+базилик
+базис
+базука
+бай
+байбак
+байда
+байдара
+байка
+байрам
+бак
+бакалея
+бакан
+бакен
+бакены
+баки
+баккара
+баклан
+бакланы
+баклуши
+бакшиш
+бакштаг
+бал
+балабол
+балаган
+балагур
+баламут
+баланда
+баланс
+балахон
+балбес
+балда
+балет
+балетки
+балка
+балкон
+балл
+баллада
+балласт
+баллон
+балок
+балык
+балычок
+бальза
+бальзам
+бамбук
+бампер
+банан
+бананы
+банда
+бандаж
+бандажи
+банджо
+бандит
+бандура
+бандюга
+бани
+банк
+банка
+банкет
+банки
+банкир
+банкнот
+банкрот
+банник
+баночка
+баночки
+бант
+бантик
+банту
+банчок
+банщик
+банщица
+банька
+баньян
+баня
+баобаб
+баптизм
+баптист
+бар
+барабан
+барак
+баран
+баранка
+баранта
+барахло
+барашек
+барашки
+барбос
+бард
+бардак
+баржа
+барий
+барин
+баритон
+барич
+барк
+барка
+баркан
+баркас
+бармен
+бармы
+барокко
+барон
+баронет
+барраж
+баррель
+барс
+барство
+барсук
+бархан
+барханы
+бархат
+барчук
+барщина
+барыга
+барыня
+барыш
+барышня
+барьер
+бас
+басист
+баск
+баска
+баскак
+баски
+басмач
+басни
+басня
+басок
+бассейн
+бастард
+бастион
+басы
+баталия
+батарея
+батат
+батист
+батман
+батник
+батог
+батон
+батрак
+батут
+батыр
+батырь
+батька
+батько
+батюшка
+батя
+баул
+бахвал
+бахилы
+бахрома
+бахус
+бахча
+бацилла
+бачки
+бачок
+башенка
+башка
+башкир
+башкиры
+башлык
+башмак
+башмаки
+башнер
+башня
+баштан
+баян
+баянист
+бдение
+беби
+бег
+бега
+бегемот
+беглая
+беглец
+беглый
+бегония
+беготня
+бегство
+бегун
+бегунки
+бегунок
+бегуны
+бегунья
+беда
+бедлам
+бедная
+беднота
+бедный
+бедняга
+бедняк
+бедра
+бедро
+бедуин
+бедуины
+беженец
+беженка
+бездарь
+бездна
+безе
+безик
+безмен
+безумец
+безумие
+бей
+бейсбол
+бейт
+бек
+бекар
+бекас
+бекасы
+бекеша
+бекон
+бел
+белая
+белек
+белена
+бели
+белизна
+белила
+беличьи
+белка
+белки
+белое
+белозор
+белок
+белорус
+белоус
+белочка
+белуга
+белуджи
+белуха
+белые
+белый
+бель
+белье
+бельмо
+беляк
+беляки
+беляна
+белянка
+белянки
+беляш
+беляши
+бемоль
+бенгали
+бенефис
+бензин
+бензол
+бербер
+берберы
+бердан
+бердана
+бердо
+бердыш
+берег
+бережок
+береза
+березка
+берека
+беремя
+берест
+береста
+берет
+беретик
+беретка
+берилл
+беркут
+берлин
+берлина
+берлога
+бес
+беседа
+беседка
+бесенок
+бесовка
+бестер
+бестия
+бета
+бетель
+бетон
+бетонка
+бечева
+бечевка
+бешеная
+бешеный
+бешмет
+бзик
+биатлон
+библия
+бивак
+бивень
+бивни
+бивуак
+бигуди
+бидон
+биение
+биения
+бизань
+бизнес
+бизон
+бикини
+бикс
+билет
+билетер
+билетик
+билль
+било
+бильярд
+бимс
+бинокль
+бином
+бинт
+биограф
+биолог
+бионика
+биопсия
+биоритм
+биотоки
+биплан
+биржа
+бирка
+бирюза
+бирюк
+бирюч
+бис
+бисер
+бисквит
+бистро
+бит
+бита
+битва
+битка
+битки
+битник
+биток
+биточки
+битум
+битый
+битье
+битюг
+бицепс
+бич
+блага
+благо
+благое
+блажь
+бланк
+блат
+блатная
+блатной
+блейзер
+блеск
+блесна
+блестка
+блестки
+блеф
+блеяние
+ближние
+ближний
+близкие
+близкое
+близнец
+близь
+блик
+блин
+блиндаж
+блинки
+блинт
+блинчик
+блины
+блистер
+блиц
+блок
+блокада
+блокнот
+блонда
+блондин
+блоха
+блошка
+блуд
+блудник
+блуза
+блузка
+блюдо
+блюдце
+блюз
+блюм
+блюминг
+блямба
+бляха
+бляшка
+бляшки
+боа
+боб
+бобер
+бобик
+бобина
+бобо
+бобовые
+бобок
+бобр
+бобрик
+бобриха
+бобы
+бобыль
+бог
+богатая
+богатей
+богатый
+богач
+богачка
+богема
+богиня
+богомаз
+богомил
+богомол
+бодяга
+боевик
+боек
+боец
+божба
+божница
+божок
+бой
+бойкий
+бойкот
+бойлер
+бойница
+бойня
+бок
+бокал
+бокс
+боксер
+болван
+болгары
+болезнь
+болеро
+боливар
+болид
+болонка
+болонья
+болото
+болотце
+болт
+болтик
+болтун
+боль
+больная
+больное
+больной
+большак
+большее
+большое
+большой
+болячка
+болящий
+бомба
+бомж
+бомонд
+бон
+бона
+бондарь
+бонза
+бонна
+боны
+бор
+бора
+бордель
+бордеро
+бордо
+бордюр
+борей
+борение
+борец
+боржом
+боржоми
+борзая
+борзый
+боров
+боровик
+борода
+бородач
+бородка
+борозда
+борок
+борона
+борт
+бортик
+бортник
+борть
+борщ
+борьба
+босота
+босс
+бостон
+босяк
+бот
+ботало
+ботаник
+ботва
+ботик
+ботики
+ботинки
+ботинок
+ботфорт
+боты
+боцман
+бочаг
+бочажок
+бочар
+бочка
+бочки
+бочок
+бочонок
+боязнь
+боярин
+боярыня
+бра
+бравада
+браво
+брага
+брада
+бражка
+бражник
+бразды
+брак
+браман
+брамин
+брандер
+брань
+брас
+браслет
+брасс
+брат
+братан
+братва
+братец
+братик
+братина
+братия
+браток
+братья
+брахман
+брашна
+брашно
+бревно
+брег
+брегет
+бред
+бредень
+бредни
+брезент
+брелок
+бремя
+бренди
+бретер
+брех
+брехня
+брехун
+брешь
+бриг
+бригада
+бридж
+бриджи
+бриз
+брика
+брикет
+бриль
+бритва
+бритт
+бритты
+бритье
+брифинг
+бричка
+бровка
+бровь
+брод
+бродни
+бродяга
+бройлер
+брокер
+бром
+бронза
+бронник
+бронх
+бронхи
+бронхит
+броня
+бросок
+брошка
+брошь
+брошюра
+брудер
+брус
+брусок
+брусья
+брыжи
+брызги
+брынза
+брюзга
+брюква
+брюки
+брюнет
+брюхо
+брючина
+брючки
+брюшина
+брюшко
+бряк
+бубен
+бубенец
+буби
+бублик
+бубна
+бубны
+бубон
+бугай
+бугор
+бугорок
+буддизм
+буддист
+будка
+будни
+будочка
+будуар
+будущее
+буек
+буер
+буерак
+буза
+бузина
+бузотер
+буй
+буйвол
+буйство
+бук
+бука
+букашка
+буква
+букварь
+буквица
+буквоед
+букет
+букетик
+буки
+букле
+буклет
+букли
+букля
+буковка
+буковые
+букс
+букса
+буксир
+булава
+булавка
+буланая
+буланый
+булат
+булка
+булла
+булочка
+булыга
+бульвар
+бульдог
+бульон
+бум
+бумага
+бумаги
+бумажка
+бунгало
+бунд
+бункер
+бунт
+бунтарь
+бунчук
+бур
+бура
+бурав
+бурак
+бураки
+буран
+бурбон
+бург
+бурда
+бурдюк
+бурелом
+бурение
+буренка
+буржуа
+буржуй
+буриме
+бурка
+буркалы
+бурки
+бурлак
+бурлеск
+бурнус
+буровая
+бурса
+бурсак
+бурсит
+бурт
+бурун
+буруны
+бурш
+буры
+бурьян
+буря
+бурят
+буряты
+бус
+бусина
+бусинка
+буссоль
+бустер
+бусы
+бут
+бутан
+бутафор
+бутон
+бутса
+бутсы
+бутуз
+бутылка
+бутыль
+буфер
+буфет
+буфф
+буханка
+бухта
+буцефал
+буча
+бушель
+бушлат
+бушмен
+бушмены
+бушприт
+буян
+бывалая
+бывалый
+быдло
+бык
+быки
+былина
+былинка
+былое
+быль
+быт
+бытие
+бытовик
+бытовка
+бытье
+бычки
+бычок
+бэр
+бювар
+бюджет
+бюргер
+бюро
+бюст
+бюстик
+бязь
+бяка
+вавилон
+вага
+вагант
+ваганты
+вагон
+важ
+важа
+важенка
+важное
+ваза
+вазелин
+вазон
+вазочка
+вайя
+вак
+вакса
+вакуоли
+вакуум
+вакх
+вакцина
+вал
+валах
+валахи
+валек
+валенки
+валенок
+валер
+валет
+валидол
+валик
+валка
+валки
+валлон
+валлоны
+валок
+валуй
+валун
+вальс
+валюта
+валяние
+вамп
+вампир
+ванадий
+вандал
+вандалы
+ванилин
+ваниль
+ванна
+ванная
+ванны
+ванты
+вар
+варан
+варвар
+варево
+варежка
+варежки
+варенец
+варение
+вареник
+вареное
+варенье
+вариант
+варка
+варнак
+варьете
+варяг
+варяги
+василек
+вассал
+вата
+ватага
+ватажка
+ватин
+ватка
+ватман
+ватник
+ватт
+вафля
+вахлак
+вахта
+вахтер
+ваш
+ваша
+ваше
+ваши
+ваяние
+ваятель
+ввод
+ввоз
+вдова
+вдовая
+вдовец
+вдовица
+вдовый
+вдох
+веда
+ведение
+ведерко
+веди
+ведомая
+ведомый
+ведро
+ведун
+ведунья
+ведущая
+ведущий
+веды
+ведьма
+ведьмак
+веер
+вежа
+вежды
+везение
+век
+веки
+веко
+вексель
+вектор
+векша
+веление
+великан
+великий
+великое
+величие
+вельбот
+вельвет
+велюр
+вена
+венгр
+венгры
+венды
+венеды
+венера
+венеты
+венец
+вензель
+веник
+веничек
+вено
+венок
+веночек
+вентиль
+венчик
+вены
+вепрь
+вепс
+вепсы
+вера
+веранда
+верба
+вербена
+верблюд
+вервь
+вердикт
+веревка
+веред
+верес
+вереск
+верея
+верзила
+вериги
+верк
+верки
+верлибр
+вермут
+верняк
+версия
+верста
+верстак
+верстка
+вертел
+вертеп
+вертун
+верфь
+верх
+верха
+верхи
+верша
+вершина
+вершки
+вершок
+вес
+веселка
+веселое
+веселье
+весло
+весна
+весовая
+вест
+вестерн
+вестник
+весть
+весы
+весь
+ветврач
+ветвь
+ветер
+ветеран
+ветерок
+ветка
+ветла
+вето
+веточка
+ветошь
+ветр
+ветрило
+ветрище
+ветры
+ветряк
+ветчина
+вех
+веха
+вехи
+вече
+вечер
+вечерка
+вечерня
+вечерок
+вечеря
+вешала
+вешалка
+вешка
+вешняк
+вещание
+вещее
+вещи
+вещизм
+вещица
+вещичка
+вещун
+вещунья
+вещь
+веяние
+взблеск
+взбучка
+взвар
+взвесь
+взвизг
+взвод
+взгляд
+взгорок
+взгорье
+вздор
+вздох
+вздутие
+взлет
+взлобок
+взлом
+взмах
+взморье
+взмыв
+взнос
+взор
+взрыв
+взятие
+взятка
+взяток
+виадук
+вибрион
+виварий
+виг
+вигвам
+виги
+вид
+видение
+видео
+видик
+видимое
+видок
+виды
+виза
+визави
+визаж
+визг
+визгун
+визир
+визирь
+визит
+визитер
+визитка
+вика
+викарий
+викинг
+виконт
+вилайет
+вилка
+вилла
+виллан
+вилок
+вилочка
+вилы
+виляние
+вина
+вини
+винишко
+винище
+винкель
+винница
+вино
+винодел
+винокур
+винт
+винтер
+винтик
+винцо
+виола
+вира
+вираж
+виртуоз
+вирус
+вирусы
+вирши
+вис
+висение
+виски
+висмут
+висок
+височки
+виссон
+вист
+витамин
+вития
+виток
+витраж
+витрина
+витязь
+вихор
+вихры
+вихрь
+вишенка
+вишня
+вишняк
+вклад
+вкладка
+вкладыш
+вклейка
+вкус
+влага
+владыка
+влас
+власти
+власть
+власы
+влет
+влияние
+вмятина
+внешнее
+внук
+внука
+внуки
+внучата
+внучек
+внучка
+внучок
+вобла
+вогул
+вогулы
+вода
+водица
+водичка
+водка
+водник
+водовод
+водовоз
+водоем
+водолаз
+водолей
+водомет
+водонос
+водопад
+водопой
+водород
+водочка
+воды
+водь
+водяная
+водяник
+водянка
+водяной
+воевода
+военком
+военное
+военный
+военрук
+вожак
+вожатая
+вожатый
+вождь
+вожжа
+вожжи
+воз
+возврат
+возглас
+воздух
+возка
+возница
+возня
+возок
+возраст
+возчик
+воин
+воитель
+вой
+войлок
+война
+войска
+войско
+войт
+вокал
+вокзал
+вол
+волан
+волга
+волгарь
+волдырь
+волк
+волна
+волны
+воловик
+волок
+волокно
+волос
+волоски
+волосок
+волость
+волосы
+волхв
+волчиха
+волчица
+волчище
+волчок
+волынка
+вольер
+вольера
+вольная
+вольный
+вольт
+вольта
+воля
+вона
+вонища
+вонь
+вонючка
+вопли
+вопль
+вопрос
+вор
+ворвань
+воришка
+воробей
+воровка
+ворог
+ворожба
+ворожей
+ворожея
+ворон
+ворона
+вороная
+воронец
+воронка
+вороной
+воронье
+ворот
+ворота
+воротца
+ворох
+ворс
+ворчун
+ворье
+ворюга
+воск
+восток
+восторг
+восход
+восьмая
+восьмой
+вотум
+вотчина
+вотяки
+вошь
+вояж
+вояка
+впадина
+впрыск
+враг
+врагиня
+вражда
+вражина
+враки
+враль
+вранье
+врата
+вратарь
+врач
+врачиха
+вред
+вредина
+врезка
+время
+вретище
+врио
+врун
+врунья
+вруша
+врушка
+всадник
+вскрик
+вспашка
+всплеск
+всполох
+вспышка
+вставка
+встреча
+всхлип
+всход
+всходы
+всхрап
+всякая
+всякие
+всякий
+всякое
+всячина
+втора
+вторая
+вторник
+второе
+второй
+втулка
+втык
+вуаль
+вуз
+вулкан
+вход
+вчера
+въезд
+выбоина
+выбор
+выборка
+выборки
+выборы
+выброс
+выбросы
+выбытие
+выверт
+вывеска
+вывих
+вывод
+выводка
+выводок
+выводы
+вывоз
+выворот
+выгиб
+выговор
+выгода
+выгон
+выгул
+выдача
+выдел
+выделка
+выдох
+выдра
+выдув
+выдумка
+выезд
+выемка
+выжига
+выжимка
+выжимки
+вызов
+выигрыш
+выкидыш
+выкрест
+выкрик
+выкуп
+вылазка
+вылет
+вылов
+вымпел
+вымысел
+вымя
+вынос
+выпад
+выпал
+выпас
+выпечка
+выпивка
+выпивон
+выписка
+выплата
+выплеск
+выпот
+выпуск
+выпушка
+выпь
+вырез
+вырезка
+выродок
+вырост
+вырубка
+выручка
+высадка
+высадок
+высверк
+выселок
+выси
+выслуга
+высокое
+высота
+высотка
+выстрел
+выступ
+высылка
+высь
+выть
+вытье
+вытяжка
+выучка
+выхлоп
+выход
+выходец
+выходка
+выходы
+вычет
+вычеты
+вычитка
+вышивка
+вышина
+вышка
+выя
+вьюга
+вьюк
+вьюн
+вьюнок
+вьюрок
+вьюшка
+вяз
+вязание
+вязанка
+вязка
+вязок
+вязь
+вялость
+вятич
+вятичи
+вятка
+вяхирь
+габарит
+габбро
+гаваец
+гавайцы
+гавана
+гавань
+гавот
+гаврик
+гаврики
+гага
+гагара
+гагары
+гагат
+гад
+гадалка
+гадание
+гадания
+гаденыш
+гадина
+гадости
+гадость
+гады
+гадюка
+гадюки
+гаер
+гаечка
+газ
+газават
+газель
+газета
+газетка
+газик
+газовик
+газон
+газы
+гай
+гайдук
+гайка
+гак
+галдеж
+галера
+галерея
+галерка
+галеры
+галета
+галеты
+галиот
+галифе
+галка
+галл
+галлий
+галлон
+галлы
+гало
+галоп
+галочка
+галоша
+галоши
+галс
+галстук
+галун
+галушка
+галушки
+галька
+гальюн
+гам
+гамак
+гамаши
+гамбит
+гамлет
+гамма
+гаммы
+ганглий
+гандбол
+ганза
+ганка
+гантель
+гаолян
+гараж
+гарант
+гарда
+гардина
+гарем
+гармонь
+гарнец
+гарнир
+гарпия
+гарпун
+гарсон
+гарт
+гарус
+гарь
+гастрит
+гать
+гаубица
+гаусс
+гафель
+гашение
+гашиш
+гвалт
+гвардия
+гвоздик
+гвоздь
+гегемон
+геенна
+гейзер
+гейм
+гейша
+геккон
+гекконы
+гектар
+гелий
+геликон
+гель
+гематит
+гемма
+гемолиз
+ген
+генезис
+генерал
+генетик
+гений
+генотип
+геноцид
+генштаб
+географ
+геолог
+геометр
+георгий
+георгин
+гепард
+гепарин
+гепатит
+герань
+герб
+герма
+гермес
+героизм
+героика
+героин
+героиня
+герой
+герольд
+герр
+герц
+герцог
+гестапо
+гетера
+гетман
+гетры
+гетто
+гешефт
+гжель
+гиацинт
+гиббон
+гиббоны
+гибель
+гибка
+гибрид
+гигант
+гигиена
+гид
+гидра
+гидрант
+гидры
+гиена
+гиены
+гик
+гиль
+гильдия
+гильза
+гиляк
+гиляки
+гименей
+гимн
+гимнаст
+гинекей
+гинея
+гипноз
+гипофиз
+гипс
+гирька
+гиря
+гит
+гитара
+гичка
+глава
+главарь
+главбух
+главк
+главка
+главком
+главреж
+глагол
+глаголь
+глад
+гладкая
+гладкий
+гладыш
+гладь
+глажка
+глаз
+глазищи
+глазок
+глазурь
+гланды
+глас
+гласный
+глетчер
+глечик
+глина
+глиссер
+глист
+глиста
+глобулы
+глобус
+глосса
+глот
+глотка
+глоток
+глубина
+глубины
+глубь
+глум
+глупая
+глупец
+глупый
+глупыш
+глухари
+глухарь
+глухота
+глушь
+глыба
+глюкоза
+глянец
+гнев
+гнедая
+гнедко
+гнедой
+гнездо
+гнейс
+гнет
+гнида
+гниение
+гниль
+гнилье
+гнильца
+гноище
+гной
+гнойник
+гном
+гнома
+гномик
+гномон
+гностик
+гну
+гнус
+гнусь
+гобелен
+гобоист
+гобой
+говор
+говорок
+говорун
+гоголь
+гогот
+год
+года
+годик
+година
+годок
+годы
+гол
+голавль
+голая
+голгофа
+голень
+голец
+голиаф
+голик
+голова
+голован
+головач
+головка
+головки
+головня
+голод
+гололед
+голос
+голосок
+голуба
+голубец
+голуби
+голубка
+голубки
+голубое
+голубок
+голубцы
+голубь
+голый
+голыш
+голь
+гольд
+гольды
+гольф
+гольфы
+гольцы
+голяк
+гоми
+гомон
+гон
+гонг
+гондола
+гонение
+гонец
+гонка
+гонки
+гонор
+гонорар
+гонорея
+гонт
+гончар
+гончая
+гонщик
+гоньба
+гопак
+гопник
+гора
+горб
+горбач
+горбик
+горбун
+горбуша
+горбыли
+горбыль
+гордец
+гордон
+гордыня
+горе
+горелка
+горелки
+горелое
+горение
+горести
+горесть
+горец
+горечь
+горилка
+горилла
+горка
+горком
+горлан
+горлач
+горлица
+горло
+гормон
+гормоны
+горн
+горнило
+горнист
+горница
+горно
+горняк
+город
+городки
+городок
+горох
+горошек
+горстка
+горсть
+гортань
+горушка
+горчак
+горчица
+горшок
+горы
+горькая
+горюн
+горючее
+горюшка
+горюшко
+горянка
+горячее
+горячка
+госплан
+господа
+господь
+госпожа
+гость
+гостья
+готика
+готовка
+готовое
+готы
+граб
+грабеж
+грабен
+грабли
+граве
+гравер
+гравий
+гравюра
+град
+градина
+градус
+грай
+грамм
+грамота
+гран
+гранат
+граната
+гранаты
+гранд
+гранит
+граница
+границы
+грань
+граф
+графа
+график
+графика
+графин
+графиня
+графит
+грация
+грач
+гребень
+гребец
+гребля
+гребок
+греза
+грезы
+грейдер
+грейфер
+грек
+греки
+грелка
+грена
+гренки
+гренок
+грех
+греча
+гречиха
+гречка
+грешник
+грешное
+грешок
+гриб
+грибник
+грибок
+грибы
+грива
+гривка
+гривна
+гридень
+гридин
+гридня
+гридь
+гриль
+грим
+гримаса
+гример
+грипп
+гриф
+грифель
+грифон
+гроб
+гробик
+грог
+гроза
+гроздь
+гром
+громада
+громила
+гросс
+грот
+гротеск
+грохот
+грош
+гроши
+грошик
+грубиян
+груда
+грудина
+грудка
+грудной
+грудь
+груз
+груздь
+грузило
+грузин
+грузины
+грузчик
+грум
+грунт
+группа
+группка
+грусть
+груша
+грушина
+грушка
+грыжа
+грызло
+грызня
+грызун
+грызуны
+грымза
+гряда
+грядка
+грязи
+грязища
+грязь
+гуано
+гуашь
+губа
+губан
+губка
+губки
+губной
+губы
+гугенот
+гуд
+гудение
+гудок
+гудрон
+гуж
+гузка
+гузно
+гук
+гул
+гулена
+гульба
+гульден
+гуля
+гуляка
+гуляние
+гулянка
+гуляш
+гулящая
+гулящий
+гумми
+гумно
+гумус
+гунн
+гунны
+гунтер
+гуран
+гурда
+гурия
+гурман
+гурт
+гурьба
+гусак
+гусар
+гусек
+гусенок
+гуситы
+гусли
+гусляр
+густера
+густота
+гусыня
+гусь
+гута
+гуталин
+гуцул
+гуща
+гущина
+гюйс
+гюрза
+гяур
+даба
+давило
+давка
+давнее
+дактиль
+далеко
+далекое
+дали
+даль
+дама
+дамба
+дамка
+дамочка
+данайцы
+данник
+данные
+дансинг
+дантист
+дань
+дар
+дарение
+дармоед
+дары
+дарящий
+дата
+датчане
+датчик
+даур
+дауры
+дафния
+дача
+дачка
+дачник
+дачница
+даяние
+два
+дверка
+дверца
+дверь
+движок
+двоение
+двоица
+двойка
+двойник
+двойня
+двор
+дворец
+дворик
+дворище
+дворник
+дворня
+двушка
+дебаты
+дебет
+дебил
+дебит
+дебош
+дебошир
+дебри
+дебют
+дева
+деваха
+деверь
+девиз
+девиза
+девица
+девичья
+девка
+девон
+девочка
+девство
+девушка
+девчата
+девясил
+девятая
+девятка
+девятый
+деготь
+дегтярь
+дед
+деда
+дедка
+дедок
+дедуля
+дедуня
+дедушка
+деды
+дежа
+дежурка
+деизм
+действо
+дек
+дека
+декабрь
+декада
+декан
+деканат
+декокт
+декор
+декорум
+декрет
+дела
+делание
+делегат
+дележ
+дележка
+деление
+деления
+делец
+делимое
+делишки
+дело
+дельное
+дельта
+дельфин
+дельце
+деляга
+делянка
+демагог
+демарш
+демиург
+демон
+демос
+демпинг
+демпфер
+денди
+дендизм
+денежка
+денежки
+денек
+денечек
+денник
+денница
+дентин
+денщик
+день
+деньга
+деньги
+депеша
+депо
+депозит
+депутат
+дер
+дерби
+дервиш
+дергач
+дергун
+деревня
+дерево
+деревце
+деревцо
+дереза
+дерен
+держава
+дерн
+деррик
+дерьмо
+дерюга
+дерюжка
+десант
+десерт
+десна
+десница
+деспот
+десть
+десятая
+десятка
+десятки
+десяток
+десятый
+деталь
+детвора
+детдом
+детеныш
+дети
+детина
+детинец
+детишки
+детище
+детка
+детки
+деточка
+деточки
+детрит
+детсад
+детская
+детство
+детушки
+дефект
+дефиле
+дефис
+дефицит
+децибел
+децима
+дешевка
+деяние
+деятель
+джаз
+джейран
+джем
+джемпер
+джентри
+джерси
+джига
+джигит
+джидда
+джин
+джинн
+джинсы
+джип
+джихад
+джок
+джокер
+джонка
+джоуль
+джунгли
+джут
+дзета
+дзот
+дзюдо
+диабет
+диагноз
+диадема
+диакон
+диалект
+диалог
+диамант
+диаметр
+диана
+диатез
+див
+диван
+дивизия
+диво
+дивчина
+диез
+диета
+дизайн
+дизель
+дикарка
+дикарь
+дикая
+дикий
+дикость
+диктант
+диктат
+диктор
+дикция
+дилемма
+дилогия
+дина
+динамик
+динамит
+динамо
+динар
+динарий
+динго
+диод
+диоксид
+дионис
+диорама
+диплом
+диптих
+дирижер
+диск
+дискант
+дисконт
+дисплей
+диспут
+дите
+дитя
+дитятко
+дичина
+дичок
+дичь
+длань
+длина
+дневка
+дневник
+дни
+днище
+дно
+добавка
+добавок
+добро
+доброе
+доброта
+добряк
+добыча
+доверие
+довесок
+довод
+доводка
+дог
+догадка
+догляд
+догма
+догмат
+догмы
+договор
+дож
+дождик
+дождь
+доза
+дозатор
+дозор
+дойка
+док
+дока
+докер
+доклад
+доктор
+докука
+дол
+долг
+долгота
+долдон
+должник
+должное
+должок
+долина
+долинка
+доллар
+доломан
+доломит
+долото
+долька
+дольмен
+дольник
+доля
+дом
+домен
+домино
+домишко
+домище
+домком
+домкрат
+домна
+домовик
+домовой
+домосед
+домысел
+дон
+донг
+донец
+донжон
+донжуан
+донка
+донна
+донник
+донор
+донос
+донце
+донцы
+донышко
+донья
+допинг
+доплата
+доппаек
+допрос
+допуск
+допуски
+дора
+дорийцы
+дорка
+дормез
+дорога
+дорогая
+дорогое
+дорогой
+дорожка
+дортуар
+досада
+доска
+досмотр
+доспехи
+доступ
+досуг
+досье
+дот
+дотация
+дофин
+доха
+дохляк
+доход
+доцент
+дочерь
+дочка
+дочурка
+дочушка
+дочь
+дощаник
+дощечка
+доярка
+драга
+драгун
+драже
+драка
+дракон
+драма
+дранка
+дрань
+драп
+драпри
+дратва
+драхма
+драч
+драчка
+драчун
+дребезг
+древко
+древние
+древо
+дрезина
+дрейф
+дрек
+дрель
+дрема
+дремота
+дренаж
+дриада
+дрифтер
+дробина
+дробь
+дрова
+дровни
+дроги
+дрожжи
+дрожки
+дрожь
+дрозд
+дрок
+дрот
+дротик
+дрофа
+друг
+другая
+другое
+другой
+дружба
+дружина
+дружище
+дружка
+дружки
+дружок
+друз
+друза
+друзы
+друид
+друиды
+дрязги
+дрянцо
+дрянь
+дуайен
+дуализм
+дуб
+дубец
+дубина
+дубинка
+дубка
+дублер
+дублет
+дублон
+дубль
+дубляж
+дубняк
+дубовик
+дубок
+дубонос
+дубрава
+дубье
+дувал
+дуга
+дуда
+дударь
+дудка
+дудник
+дудочка
+дудочки
+дужка
+дукат
+дулебы
+дуло
+дуля
+дума
+думание
+думка
+дунгане
+дундук
+дупель
+дуплет
+дупло
+дура
+дурак
+дуралей
+дурачок
+дурачье
+дурашка
+дурдом
+дурень
+дуреха
+дуриан
+дурило
+дурища
+дурка
+дурман
+дурное
+дурнота
+дуролом
+дурость
+дурочка
+дурра
+дуршлаг
+дурында
+дурь
+дуст
+дуся
+дутье
+дух
+духан
+духи
+духовка
+духота
+дуче
+душ
+душа
+душевая
+душегуб
+душечка
+душица
+душка
+душок
+душонка
+дуэль
+дуэлянт
+дуэнья
+дуэт
+дщерь
+дыба
+дылда
+дым
+дымарь
+дымка
+дымок
+дымокур
+дымоход
+дыня
+дыра
+дырища
+дырка
+дырокол
+дырочка
+дых
+дыхало
+дыхание
+дышло
+дьявол
+дьяк
+дьякон
+дьячиха
+дьячок
+дюгонь
+дюжина
+дюйм
+дюк
+дюна
+дюны
+дюраль
+дюшес
+дягиль
+дядечка
+дядька
+дядюшка
+дядя
+дятел
+ева
+евнух
+евразия
+евреи
+еврей
+еврейка
+евро
+европа
+егерь
+егоза
+еда
+единица
+единицы
+единый
+едкость
+едок
+ежевика
+ежик
+ежиха
+езда
+ездовой
+ездок
+ектения
+елей
+елец
+елина
+елка
+елочка
+ель
+ельник
+емеля
+емкость
+енот
+епанча
+епархия
+епископ
+ера
+ералаш
+ересь
+еретик
+ерик
+ермолка
+ерофеич
+ерофей
+ерошка
+ерунда
+ерш
+ершик
+еры
+есаул
+есть
+ефимок
+ехидна
+жаба
+жабо
+жабры
+жабы
+жавель
+жад
+жадеит
+жадина
+жадюга
+жажда
+жакан
+жакет
+жакетик
+жакетка
+жако
+жакоб
+жало
+жалоба
+жалость
+жальник
+жалюзи
+жандарм
+жанр
+жар
+жара
+жаргон
+жареное
+жарища
+жарка
+жарки
+жаркое
+жаровня
+жарок
+жарынь
+жасмин
+жатва
+жбан
+жвачка
+жвачные
+жгут
+жгутик
+жгуты
+жевание
+жезл
+желание
+желатин
+желвак
+желе
+железа
+железка
+железо
+железы
+желоб
+желобок
+желток
+желтуха
+желтый
+желудок
+желудь
+желчь
+жемчуг
+жена
+женатик
+женатый
+жених
+женишок
+женка
+женолюб
+женушка
+женщина
+жердина
+жердь
+жеребец
+жерех
+жерло
+жернов
+жернова
+жертва
+жест
+жесть
+жетон
+жжение
+живете
+живец
+живица
+живодер
+живое
+живой
+живость
+живот
+животик
+животы
+живущая
+живущий
+живчик
+жига
+жид
+жидкое
+жидовка
+жижа
+жизнь
+жила
+жилет
+жилетка
+жилец
+жилица
+жиличка
+жилище
+жилка
+жило
+жилое
+жилочка
+жилье
+жим
+жинка
+жир
+жираф
+жирафа
+жиро
+жировик
+жирок
+жиронда
+жиры
+житель
+житие
+житник
+житница
+жито
+житуха
+житье
+жмот
+жмурки
+жмых
+жнец
+жнея
+жнивье
+жнитво
+жница
+жокей
+жом
+жонглер
+жонкиль
+жор
+жох
+жратва
+жребий
+жрец
+жрица
+жуир
+жук
+жуки
+жулик
+жулье
+жупан
+жупел
+журавли
+журавль
+журка
+журнал
+жуть
+жучка
+жучок
+забава
+забег
+забияка
+забой
+забор
+забота
+забрало
+заброс
+забытье
+зав
+завал
+заваль
+заварка
+завгар
+завеса
+завесь
+завет
+завивка
+завидки
+зависть
+завиток
+завком
+завод
+заводик
+заводь
+завоз
+заворот
+завтра
+завтрак
+завуч
+завхоз
+завязка
+завязь
+загадка
+загар
+загиб
+заговор
+загон
+загород
+загорье
+загс
+загул
+зад
+задание
+задатки
+задаток
+задача
+задачка
+задел
+заделка
+задик
+задира
+задний
+задник
+задница
+задняя
+задок
+задор
+задумка
+зады
+заезд
+заезжая
+заезжий
+заем
+заемщик
+зажим
+зазноба
+зазор
+заика
+заимка
+заинька
+зайка
+займище
+зайцы
+зайчик
+зайчиха
+заказ
+закал
+закалка
+закат
+закачка
+закись
+заклад
+заколка
+закон
+законы
+закорки
+закрой
+закром
+закрома
+закуп
+закупка
+закуска
+закусь
+закут
+закутка
+закуток
+зал
+зала
+залежи
+залежь
+залесье
+залет
+залив
+заливка
+зализа
+зало
+залог
+залом
+залп
+зальца
+зальце
+зальчик
+зам
+замазка
+замах
+замена
+замер
+замес
+замет
+заметка
+заметки
+заминка
+замок
+замор
+заморыш
+заморье
+замочек
+замочка
+замша
+замысел
+замять
+занавес
+заначка
+заноза
+занос
+зануда
+занятие
+занятия
+запад
+западня
+запал
+запарка
+запас
+запасец
+запаска
+запах
+запашка
+запашок
+запев
+запинка
+записка
+записки
+запись
+заплата
+заплот
+заплыв
+запой
+заполье
+запонка
+запор
+запрет
+запрос
+запросы
+запруда
+запуск
+запятая
+запятки
+зараза
+зарево
+зарез
+заречье
+зарница
+зарод
+зародыш
+зарок
+заросль
+зарубка
+заря
+заряд
+зарядка
+зарянка
+засада
+засев
+засека
+засечка
+засилье
+заскок
+заслон
+заслуга
+заслуги
+засов
+засол
+засоня
+засос
+застава
+застил
+застой
+заступ
+заступа
+засуха
+засылка
+засыпка
+затвор
+затеи
+затек
+затея
+затишье
+затон
+затор
+заточка
+затрата
+затраты
+затылок
+затычка
+затяжка
+заумь
+захват
+заход
+зацеп
+зацепа
+зацепка
+зачатие
+зачатки
+зачаток
+зачес
+зачет
+зачин
+защелка
+защита
+заявка
+заяц
+звание
+званый
+звезда
+звено
+зверек
+зверина
+зверь
+зверье
+зверюга
+звон
+звонарь
+звонок
+звук
+звяк
+здание
+здешний
+здешняя
+здравие
+зебра
+зебу
+зев
+зевака
+зевание
+зевок
+зевота
+зевс
+зеленка
+зеленые
+зелень
+зеленя
+зело
+зелье
+зельц
+земец
+землица
+земля
+земляк
+земляне
+земное
+земский
+земство
+земщина
+земь
+зенит
+зенитка
+зеница
+зенки
+зеркало
+зерно
+зернь
+зеро
+зерцала
+зерцало
+зет
+зефир
+зигзаг
+зигота
+зима
+зимник
+зимовка
+зимовье
+зипун
+зияние
+злак
+злаки
+злато
+зло
+злоба
+злобное
+злодей
+злое
+злость
+злотый
+злыдень
+злыдни
+злыдня
+злюка
+злючка
+змеевик
+змеелов
+змееныш
+змей
+змейка
+змея
+змий
+знайка
+знак
+знамя
+знание
+знания
+знаток
+знать
+знахарь
+значок
+зной
+зоб
+зов
+зодиак
+зодчий
+зоил
+зола
+золовка
+золотко
+золото
+золотой
+золотце
+золушка
+зомби
+зона
+зонд
+зондаж
+зонт
+зонтик
+зоолог
+зоопарк
+зоосад
+зорька
+зразы
+зрачок
+зрелище
+зрение
+зритель
+зрячая
+зрячий
+зуав
+зуб
+зубатка
+зубатки
+зубец
+зубик
+зубило
+зубной
+зубодер
+зубок
+зубр
+зубрила
+зубцы
+зубчик
+зуд
+зуда
+зудение
+зуй
+зулу
+зулус
+зулусы
+зуммер
+зурна
+зыбка
+зыбун
+зыбь
+зык
+зыряне
+зюзя
+зюйд
+зяблик
+зябь
+зятек
+зять
+ибер
+иберы
+ибис
+ибисы
+ива
+иваси
+ивина
+ивка
+ивняк
+ивовые
+иволга
+иврит
+ивушка
+игла
+иглу
+иго
+иголка
+игра
+игрек
+игрище
+игрок
+игрун
+игрушка
+игумен
+идальго
+идеал
+идейка
+идеолог
+идея
+идиллия
+идиом
+идиома
+идиот
+идиотка
+идиш
+идол
+идолище
+иды
+иезуит
+иена
+иерарх
+иерей
+иже
+ижица
+изба
+избенка
+избушка
+избыток
+изверг
+известь
+извет
+извив
+извод
+извоз
+изгиб
+изгой
+издание
+издевка
+изделие
+изжога
+излишек
+излом
+изм
+измена
+измор
+измы
+изнанка
+изножье
+износ
+изо
+изограф
+изотоп
+изотопы
+изразец
+изразцы
+изувер
+изумруд
+изъян
+изъятие
+изыск
+изюбр
+изюм
+изящное
+икание
+икебана
+икона
+иконка
+икорка
+икота
+икра
+икринка
+икры
+икс
+иллюзия
+илот
+илька
+ильм
+ильма
+ильмень
+имам
+имбирь
+имение
+именины
+имечко
+имидж
+империя
+импорт
+импульс
+имущие
+имя
+имярек
+иная
+инвазия
+инвалид
+инвар
+ингуш
+ингуши
+индеец
+индейка
+индейки
+индейцы
+индекс
+индивид
+индиго
+индиец
+индий
+индийцы
+индикт
+индуизм
+индуист
+индус
+индуска
+индусы
+индюк
+индюшка
+иней
+инерция
+инженер
+инженю
+инжир
+инициал
+инкассо
+инки
+иное
+иной
+инок
+инока
+инокиня
+иноходь
+инсулин
+инсульт
+интерес
+интерн
+интим
+интрига
+инулин
+инфант
+инфанта
+инфаркт
+иод
+ион
+ионийцы
+иония
+иордань
+ипотека
+иприт
+иракцы
+иранец
+иранцы
+ирбис
+ирга
+иридий
+ирис
+ириска
+ирмос
+ирод
+ирокез
+ирокезы
+ирония
+иск
+искание
+искомое
+искорка
+искра
+искус
+ислам
+испанец
+испанка
+испанцы
+испод
+исполин
+испуг
+иссоп
+истерик
+истерия
+истец
+истина
+истица
+исток
+истоки
+истома
+историк
+история
+истукан
+истфак
+исход
+исчадие
+италики
+итог
+иуда
+иудаизм
+иудеи
+иудей
+иудейка
+иудушка
+ичиги
+ишак
+ишачок
+ишемия
+ишиас
+ищейка
+июль
+июнь
+йог
+йога
+йогурт
+йод
+йоркшир
+йот
+йота
+кабак
+кабала
+кабан
+кабарга
+кабаре
+кабачок
+каббала
+кабель
+каберне
+кабина
+кабинет
+кабинка
+каблук
+кабошон
+кабул
+кавалер
+каверза
+каверна
+кавун
+кавычки
+кагал
+каган
+каганат
+каганец
+кагор
+кадастр
+кадет
+кади
+кадий
+кадило
+кадка
+кадмий
+кадр
+кадриль
+кадры
+кадушка
+кадык
+кадь
+каемка
+каждая
+каждый
+казак
+казакин
+казан
+казанка
+казанки
+казанок
+казарма
+казах
+казахи
+казачка
+казачок
+казашка
+казеин
+каземат
+казимир
+казино
+казна
+казнь
+казус
+каик
+каин
+кайен
+кайзер
+кайла
+кайло
+кайма
+каймак
+кайман
+кайманы
+кайра
+кайф
+какаду
+какао
+како
+кактус
+кал
+калан
+каланча
+калач
+калачик
+калган
+калека
+календы
+калибр
+калий
+калика
+калина
+калинка
+калитка
+калиф
+калла
+калмык
+калмыки
+калоша
+калоши
+калуга
+калым
+калька
+кальмар
+кальций
+кальцит
+кальян
+камас
+камбала
+камбуз
+камедь
+камелек
+камелия
+каменка
+камень
+камера
+камешек
+камея
+камзол
+камин
+камка
+камлот
+камора
+каморка
+камрад
+камса
+камушек
+камфара
+камфора
+камыш
+камыши
+кан
+канава
+канавка
+канадец
+канадка
+канадцы
+канал
+каналья
+канапе
+канат
+канва
+кандалы
+канкан
+канон
+каноник
+канонир
+канотье
+каноэ
+кант
+кантата
+кантеле
+кантон
+кантор
+канты
+канун
+канцлер
+канцона
+каньон
+канюк
+каолин
+кап
+капели
+капелла
+капель
+капер
+каперсы
+капитал
+капитан
+капитул
+капище
+капкан
+капли
+каплун
+капля
+капо
+капонир
+капор
+капот
+каппа
+капрал
+каприз
+каприс
+капрон
+капсула
+капсюль
+капсюля
+капуста
+капуцин
+капюшон
+кара
+карабин
+каравай
+караван
+карагач
+караим
+караимы
+карапуз
+карасик
+карась
+карат
+каратэ
+караул
+карачун
+карбас
+карбид
+карга
+карда
+кардан
+каре
+карел
+карелы
+карета
+каретка
+кариб
+карибы
+кариес
+каркас
+карлик
+карлица
+карман
+кармин
+карниз
+каротин
+карп
+карст
+карт
+карта
+картель
+картер
+картечь
+картина
+картон
+картоха
+картуз
+картуш
+карты
+карцер
+карьер
+карьера
+касание
+касатик
+касатка
+касатки
+каска
+каскад
+касса
+кассета
+кассир
+кассия
+каста
+кастет
+кастор
+кастрат
+кат
+катализ
+каталка
+каталог
+катание
+катанки
+катар
+катер
+катерок
+катет
+катетер
+катод
+каток
+католик
+каторга
+катран
+катрен
+катушка
+катышек
+катюша
+каупер
+каурая
+каурка
+каурый
+каучук
+кафе
+кафедра
+кафель
+кафтан
+кацап
+качалка
+качание
+качели
+качка
+каша
+кашалот
+кашевар
+кашель
+кашемир
+кашица
+кашка
+кашне
+кашпо
+каштан
+кащей
+каюк
+каюр
+каюта
+каютка
+каяк
+квадрат
+квазар
+квакер
+квакеры
+квант
+кварк
+кварки
+кварта
+квартал
+квартет
+кварц
+квас
+квасок
+квасцы
+квашня
+квестор
+квинта
+квинтет
+квириты
+квиток
+кворум
+квота
+квочка
+кеб
+кегель
+кегли
+кегль
+кегля
+кедр
+кедрач
+кедрик
+кеды
+кейф
+кекс
+келарь
+кельнер
+кельт
+кельты
+келья
+кемпинг
+кенар
+кенарь
+кенгуру
+кенотаф
+кентавр
+кепи
+кепка
+кепочка
+кератит
+кержак
+керн
+кернер
+керогаз
+керосин
+кесарь
+кессон
+кета
+кетгут
+кетмень
+кетч
+кефаль
+кефир
+кечуа
+кибитка
+кивание
+кивер
+киви
+кивок
+кизил
+кизяк
+кий
+кика
+кикс
+кил
+кила
+киллер
+кило
+киль
+килька
+кильки
+кимвал
+кимвры
+кимоно
+кинжал
+кинза
+киник
+кино
+киновед
+кинозал
+кинолог
+киношка
+киоск
+киоскер
+киот
+кипа
+кипарис
+кипение
+кипень
+кипер
+кипрей
+киприот
+кипяток
+кираса
+кирасир
+киргиз
+киргизы
+кирза
+кирзач
+кирзачи
+кирка
+кирпич
+кирха
+киса
+кисель
+кисет
+кисея
+киска
+кислица
+кислота
+кисляй
+киста
+кистень
+кисть
+кит
+китаец
+китайцы
+китель
+китобой
+кифара
+кифоз
+кишение
+кишка
+кишки
+кишлак
+кишмиш
+клавир
+клавиш
+клавиша
+клад
+кладезь
+кладка
+кладь
+клака
+клаксон
+клан
+клапан
+кларет
+кларнет
+класс
+классик
+классы
+клев
+клевер
+клевета
+клеврет
+клеенка
+клей
+клеймо
+клекот
+клемма
+клен
+клепка
+клерк
+клест
+клетка
+клеть
+клецки
+клеш
+клешня
+клещ
+клещи
+кливер
+клиент
+клизма
+клик
+клика
+клико
+кликуша
+климакс
+климат
+клин
+клиника
+клинкер
+клинок
+клип
+клипер
+клипс
+клипса
+клипсы
+клир
+клирик
+клирос
+клистир
+клич
+кличка
+клише
+клоака
+клобук
+клозет
+клок
+клон
+клоп
+клопик
+клот
+клотик
+клоун
+клочка
+клочок
+клуб
+клубень
+клубок
+клумба
+клуня
+клуша
+клык
+клыки
+клюв
+клювик
+клюз
+клюка
+клюква
+ключ
+ключарь
+ключик
+ключица
+ключник
+клюшка
+клякса
+клянча
+кляп
+кляссер
+клятва
+кляуза
+кляча
+кнели
+кнехт
+кнехты
+книга
+книжица
+книжка
+книжник
+книксен
+кнопка
+кнут
+кныш
+княгиня
+княжата
+княжич
+княжна
+князек
+князь
+коала
+кобальт
+кобелек
+кобель
+кобзарь
+кобольд
+кобра
+кобура
+кобчик
+кобыла
+кобылка
+ков
+коваль
+ковач
+ковбой
+ковер
+ковка
+коврига
+коврик
+ковчег
+ковш
+ковшик
+ковы
+ковыль
+когорта
+коготок
+коготь
+когти
+код
+кода
+кодеин
+кодекс
+кожа
+кожан
+кожанка
+кожица
+кожура
+кожух
+кожушок
+коза
+козел
+козелок
+козерог
+козлик
+козлина
+козлище
+козлы
+козни
+козодой
+козочка
+козырек
+козырь
+козявка
+койка
+койне
+койот
+кок
+кока
+кокаин
+кокарда
+кокетка
+кокки
+коклюш
+кокон
+кокос
+кокотка
+кокс
+кол
+кола
+колба
+колбаса
+колдун
+колдуны
+коленка
+колено
+коленце
+колер
+колесо
+колет
+колечко
+колея
+колибри
+колик
+колика
+колики
+колит
+колка
+коллаж
+коллапс
+коллега
+колледж
+коллеж
+колли
+коло
+колобок
+колода
+колодец
+колодка
+колодки
+колок
+колокол
+колон
+колония
+колонка
+колонна
+колонок
+колорит
+колос
+колосок
+колосс
+колотун
+колоть
+колотье
+колпак
+колтун
+колумб
+колун
+колхоз
+колчан
+колышек
+колье
+кольт
+кольца
+кольцо
+колючка
+колюшка
+коляда
+коляска
+ком
+кома
+команда
+комар
+комара
+комарик
+комары
+комарье
+комбайн
+комбат
+комбриг
+комдив
+комедия
+комедь
+комель
+комета
+коми
+комизм
+комик
+комикс
+комингс
+комитет
+комкор
+комми
+коммуна
+комната
+комод
+комодик
+комок
+комочек
+компас
+компасы
+комплот
+компост
+компот
+комроты
+комсорг
+комфорт
+комэск
+кон
+конвент
+конверт
+конвоир
+конвой
+кондак
+кондер
+кондор
+кондуит
+конек
+конец
+коник
+конина
+конка
+конклав
+конкурс
+конная
+конник
+конница
+конный
+коновал
+коновод
+конопля
+консоль
+консоме
+консул
+контакт
+контора
+контра
+контры
+контур
+конунг
+конура
+конус
+конфета
+конфуз
+концерн
+концерт
+кончик
+кончина
+конь
+коньки
+коньяк
+конюх
+конюший
+конюшня
+коняга
+коняка
+копа
+копал
+копание
+копейка
+копер
+копи
+копиист
+копилка
+копир
+копирка
+копия
+копна
+копоть
+копра
+копт
+копты
+копуша
+копчик
+копыл
+копыто
+копытце
+копь
+копье
+копьецо
+кора
+корабел
+корабль
+коралл
+коран
+корвет
+корд
+корда
+кордон
+кореец
+корейка
+корейцы
+корень
+коренья
+кореш
+корешки
+корешок
+корж
+коржик
+корзина
+корзно
+коридор
+корифей
+корица
+корка
+корм
+корма
+кормило
+кормчий
+кормщик
+корнер
+корнет
+короб
+коробка
+коробок
+корова
+коровка
+коровяк
+короед
+королек
+короли
+король
+корона
+коронка
+короста
+коротыш
+корочка
+корпус
+коррида
+корсаж
+корсак
+корсар
+корсет
+корт
+кортеж
+кортесы
+кортик
+корунд
+корча
+корчага
+корчи
+корчма
+коршун
+корысть
+корыто
+корытце
+корь
+корье
+корюшка
+коряга
+коряк
+коряки
+коса
+косарь
+косатка
+косатки
+косач
+косая
+косец
+косилка
+косинус
+косица
+косичка
+космач
+космос
+космы
+косное
+косогор
+косой
+костел
+костер
+кости
+костра
+костыль
+кость
+костюм
+костяк
+косуля
+косуха
+косынка
+косьба
+косье
+косяк
+косячок
+кот
+котел
+котелок
+котенок
+котик
+котики
+котище
+котлета
+котомка
+котофей
+коттедж
+котурны
+коты
+кофе
+кофеек
+кофеин
+кофей
+кофейня
+кофий
+кофр
+кофта
+коча
+кочан
+кочевье
+кочегар
+кочерга
+кочет
+кочка
+кош
+кошара
+кошачьи
+кошевой
+кошелек
+кошелка
+кошель
+кошечка
+кошка
+кошки
+кошма
+кошмар
+кошт
+кощей
+краб
+крабы
+кравчий
+крага
+краги
+краевед
+краешек
+кража
+краина
+край
+краля
+крамола
+кран
+кранец
+краник
+крап
+крапива
+крапп
+краса
+красава
+краска
+краски
+красная
+красные
+красота
+красоты
+кратер
+кратера
+кратное
+крах
+крахмал
+крачка
+краюха
+краюшка
+кредит
+кредо
+крез
+крейсер
+крейцер
+крекер
+крем
+кремень
+кремль
+кремний
+крен
+креозот
+креол
+креолка
+креп
+крепеж
+крепыш
+крепь
+кресало
+кресла
+кресло
+кресс
+крест
+крестец
+крести
+крестик
+кретин
+кречет
+кривая
+кривда
+кривой
+кривуля
+криз
+кризис
+крик
+крикет
+крикун
+криль
+крин
+криница
+кринка
+крипта
+криптон
+критик
+критика
+кров
+кровать
+кровища
+кровля
+кровник
+кровное
+кровные
+кровь
+крой
+крокет
+кроки
+крокус
+кролик
+кроль
+кромка
+кромлех
+крон
+крона
+кропило
+кросс
+крот
+кроха
+крохаль
+крохи
+крошево
+крошка
+круг
+кругляк
+кругляш
+кружало
+кружева
+кружево
+кружка
+кружок
+круиз
+круп
+крупа
+крупина
+крупица
+крупка
+крупье
+крутояр
+круть
+круча
+кручина
+крушина
+крылан
+крыло
+крыльца
+крыльце
+крыльцо
+крынка
+крыса
+крыша
+крышка
+крюк
+крючок
+крюшон
+кряж
+кряжина
+кряк
+кряква
+ксендз
+ксении
+ксенон
+ксерокс
+кси
+ксилит
+куафер
+куб
+кубанка
+кубарь
+кубизм
+кубик
+кубики
+кубинец
+кубинка
+кубинцы
+кубло
+кубок
+кубрик
+кубышка
+кувалда
+кувшин
+кувырок
+куга
+кугуар
+кудель
+кудри
+кудряш
+кузен
+кузина
+кузнец
+кузница
+кузня
+кузов
+кузовок
+кузька
+кукан
+кукиш
+кукла
+куколка
+куколь
+кукушка
+кукша
+кулак
+кулан
+кулачка
+кулачок
+кулачье
+кулек
+кулема
+кулечек
+кулеш
+кули
+кулик
+кулики
+кулинар
+кулиса
+кулисы
+кулич
+куличик
+кулон
+кулуар
+кулуары
+куль
+кульбит
+кульман
+культ
+культя
+кум
+кума
+куманек
+кумач
+кумган
+кумир
+кумирня
+кумушка
+кумыки
+кумыс
+кун
+кунак
+кунгас
+кунжут
+куница
+кунтуш
+куньи
+купа
+купава
+купала
+купало
+купание
+купе
+купель
+купец
+купидон
+купило
+купина
+куплет
+куплеты
+купля
+купол
+купон
+купорос
+купчая
+купчик
+купчина
+купчиха
+купюра
+кур
+кура
+курага
+кураж
+курай
+курант
+куранты
+кураре
+куратор
+курган
+курд
+курды
+курдюк
+курево
+курение
+курень
+куржак
+курилка
+куриные
+курица
+курия
+курка
+куркуль
+куркума
+курник
+курок
+курорт
+курочек
+курочка
+курс
+курсант
+курсив
+курсы
+куртина
+куртка
+куры
+курьез
+курьер
+курящий
+кус
+кусака
+кусачки
+кусище
+кусок
+кусочек
+куст
+кустарь
+кустик
+кут
+кутеж
+кутенок
+кутила
+куток
+кутья
+кутюрье
+кухарка
+кухарь
+кухня
+кухта
+куча
+кучер
+кучка
+куш
+кушак
+кушанье
+кушетка
+куща
+кхмер
+кхмеры
+кьянти
+кьят
+кювет
+кюре
+кюри
+лабаз
+лава
+лаванда
+лаваш
+лавина
+лавка
+лавочка
+лавр
+лавра
+лавры
+лаг
+лагерь
+лагун
+лагуна
+лад
+лада
+ладан
+ладанка
+ладонь
+ладоши
+ладошка
+ладошки
+ладушка
+ладушки
+лады
+ладья
+лажа
+лаз
+лазание
+лазарет
+лазейка
+лазер
+лазурит
+лазурь
+лазы
+лай
+лайба
+лайда
+лайка
+лайнер
+лак
+лакей
+лаки
+лакмус
+лакомка
+лакрица
+лактоза
+лакуна
+лал
+лама
+ламаизм
+лампа
+лампада
+лампас
+лампасы
+ламы
+лан
+лангет
+лангуст
+ландвер
+ландо
+ландрат
+ландрин
+ландтаг
+ланды
+ландыш
+ланиты
+ланка
+ланолин
+ланочка
+лансье
+ланцет
+лань
+лапа
+лапища
+лапка
+лапки
+лапник
+лапоть
+лапочка
+лапта
+лапушка
+лапша
+лар
+ларго
+ларек
+ларец
+ларчик
+лары
+ларь
+ласа
+ласка
+лассо
+ласт
+ластик
+ласты
+латания
+латекс
+латины
+латка
+латник
+латук
+латунь
+латы
+латынь
+латыш
+латыши
+латышка
+лауреат
+лафа
+лафет
+лафит
+лахтак
+лацкан
+лачуга
+лгун
+лгунья
+лебеда
+лебедка
+лебедь
+лев
+левада
+левак
+левит
+левкас
+левкой
+левша
+левые
+левый
+легавые
+легавый
+легат
+легато
+легенда
+легион
+легкие
+легкое
+лед
+леденец
+леди
+ледник
+ледок
+ледокол
+ледопад
+ледоруб
+ледоход
+ледышка
+леер
+лежак
+лежание
+лежанка
+лежачая
+лежачий
+лежбище
+лежка
+леза
+лезвие
+лезгин
+лезгины
+леи
+лей
+лейка
+лейкоз
+лек
+лекало
+лекарка
+лекарь
+лексема
+лексика
+лектор
+лекции
+лекция
+лемех
+лемма
+лемминг
+лемур
+лемуры
+лен
+ленивая
+ленивец
+ленивый
+ленинец
+ленник
+ленок
+леность
+лента
+лентяй
+ленца
+ленч
+ленчик
+лень
+леопард
+лепет
+лепешка
+лепка
+лепнина
+лепота
+лепра
+лепта
+лерка
+лес
+леса
+лесенка
+лесина
+леска
+лесник
+лесовик
+лесовод
+лесовоз
+лесовой
+лесок
+лесоруб
+лесочек
+лесс
+лестное
+лесть
+лесхоз
+лет
+лета
+летка
+летнаб
+летник
+лето
+леток
+летун
+летуны
+летунья
+летучка
+летчик
+летчица
+летяга
+лецитин
+лечение
+лечо
+лешак
+леший
+лещ
+лещина
+лея
+лжа
+лжец
+лиана
+либерал
+либерти
+ливан
+ливанец
+ливанцы
+ливень
+ливер
+ливонцы
+ливр
+ливрея
+лига
+лидер
+лизин
+лизоцим
+лизун
+лик
+ликбез
+ликер
+ликтор
+лилея
+лилипут
+лилия
+лиман
+лимб
+лимит
+лимита
+лимон
+лимонад
+лимонка
+лимузин
+лимфа
+линейка
+линек
+линза
+линия
+линкор
+лино
+линт
+линь
+линька
+липа
+липец
+липка
+липовые
+липочка
+липси
+липучка
+лира
+лиризм
+лирик
+лирика
+лис
+лиса
+лисенок
+лисица
+лисичка
+лиска
+лисовин
+лист
+листва
+листик
+листок
+литавры
+литания
+литва
+литвин
+литвины
+литер
+литера
+литий
+лития
+литовец
+литовка
+литовцы
+литр
+литфонд
+литье
+лиф
+лифт
+лифтер
+лифчик
+лихач
+лихо
+лиходей
+лихость
+лихтер
+лицедей
+лицеист
+лицей
+лицемер
+лицо
+личико
+личина
+личинка
+личное
+лишай
+лишение
+лишения
+лишнее
+лоб
+лобан
+лобби
+лоббизм
+лоббист
+лобзик
+лобик
+лобок
+лов
+ловелас
+ловец
+ловкач
+ловля
+ловушка
+ловчий
+ловчила
+лог
+логик
+логика
+логист
+логово
+логопед
+лоджия
+лодка
+лодочка
+лодочки
+лодыжка
+лодыжки
+лодырь
+ложа
+ложбина
+ложе
+ложечка
+ложечки
+ложка
+ложки
+ложок
+ложь
+лоза
+лозина
+лозняк
+лозунг
+локатор
+локаут
+локация
+локон
+локоток
+локоть
+лом
+ломака
+ломаная
+ломание
+ломбард
+ломбер
+ломик
+ломка
+ломовик
+ломовой
+ломонос
+ломота
+ломоть
+ломтик
+ломщик
+лоно
+лопари
+лопарь
+лопасть
+лопата
+лопатка
+лопух
+лопушок
+лорд
+лордоз
+лори
+лорнет
+лосенок
+лосины
+лосиха
+лоск
+лоскут
+лосось
+лось
+лосьон
+лот
+лотерея
+лото
+лоток
+лотос
+лох
+лоханка
+лохань
+лохмач
+лохмы
+лоция
+лоцман
+лошади
+лошадка
+лошадь
+лошак
+лощина
+лощинка
+луб
+лубок
+лубянка
+луг
+луда
+луддиты
+лужа
+лужайка
+лужина
+лужица
+лужок
+луза
+лузга
+луидор
+лук
+лука
+лукавец
+лукавый
+луковка
+луковые
+лукошко
+луна
+лунатик
+лунка
+лунник
+луноход
+лунь
+лупа
+луч
+лучи
+лучик
+лучина
+лучинка
+лучник
+лучница
+лучок
+лучшее
+лучший
+лыжа
+лыжи
+лыжина
+лыжник
+лыжница
+лыжня
+лыко
+лысина
+лысинка
+лысуха
+лысый
+лытка
+лычки
+лычко
+львенок
+львица
+льгота
+льдина
+льдинка
+льды
+лье
+льстец
+люба
+любая
+любимая
+любимец
+любимый
+любка
+любовь
+любое
+любой
+любушка
+любящий
+люд
+люди
+людишки
+людоед
+людская
+люк
+люкс
+люлька
+люмбаго
+люминал
+люмпен
+люнет
+люпин
+люпус
+люстра
+лютик
+лютнист
+лютня
+лютость
+люфт
+люцерна
+люцифер
+лючок
+лягавый
+лягва
+лягуха
+лягушка
+ляда
+ляжка
+лязг
+лямка
+ляп
+ляпис
+ляпсус
+лярва
+лярвы
+лярд
+лясы
+лях
+ляхи
+мавр
+мавры
+маг
+магазин
+магарыч
+магизм
+магик
+магистр
+магия
+магма
+магнат
+магнето
+магний
+магнит
+магомет
+мадам
+мадама
+мадера
+мадонна
+мадьяр
+мадьяры
+маета
+маечка
+мажор
+маз
+мазанка
+мазар
+мазепа
+мазер
+мазила
+мазка
+мазня
+мазок
+мазур
+мазурик
+мазурка
+мазуры
+мазут
+мазь
+маис
+май
+майдан
+майер
+майка
+майна
+майонез
+майор
+майоран
+майорат
+майорша
+майя
+мак
+макака
+макао
+маквис
+макет
+маки
+макияж
+маклак
+маклер
+маковка
+маковые
+макраме
+макрель
+макса
+макси
+максим
+максима
+макуха
+макушка
+мала
+малага
+малаец
+малайка
+малайцы
+малахай
+малахит
+малек
+малец
+малик
+малина
+малинка
+малка
+маловер
+малое
+малость
+малый
+малыш
+малышка
+малышня
+малышок
+мальва
+мальма
+мальчик
+малютка
+малявка
+маляр
+малярия
+мама
+мамай
+маман
+маманя
+мамаша
+мамашка
+мамба
+мамбо
+мамелюк
+мамзель
+мамка
+мамлюк
+мамон
+мамона
+мамонт
+мамочка
+мамуля
+мамуся
+мамушка
+манатки
+мангал
+манго
+мангры
+мангуст
+мандат
+мандраж
+маневр
+маневры
+манеж
+манекен
+манер
+манера
+манеры
+манжета
+мание
+маникюр
+манилов
+маниок
+маниока
+манишка
+мания
+манка
+манко
+манна
+манок
+манси
+мант
+мантия
+манто
+манты
+манул
+маны
+маньяк
+маори
+мар
+мара
+марабу
+марабут
+маразм
+марал
+марала
+маран
+мараны
+маратхи
+марафет
+марафон
+марго
+марево
+марена
+маренго
+мари
+марийка
+марийцы
+марина
+маринад
+маринка
+марка
+маркер
+маркиз
+маркиза
+марля
+мародер
+марочка
+марс
+марсала
+марсель
+март
+мартен
+мартини
+мартын
+марш
+маршал
+маршрут
+марь
+марьяж
+масаи
+маска
+масла
+маслина
+маслице
+масло
+масон
+масоны
+масса
+массаж
+массив
+массы
+мастак
+мастер
+мастика
+мастит
+масть
+масштаб
+мат
+матадор
+материк
+материя
+матерок
+матерь
+матица
+матка
+матрас
+матрац
+матрица
+матрона
+матрос
+матушка
+матч
+мать
+маузер
+мафиози
+мафиозо
+мафия
+мах
+махало
+махан
+махание
+махаон
+махина
+маховик
+махорка
+махра
+махры
+маца
+мацони
+мачете
+мачеха
+мачта
+машбюро
+машина
+машинка
+маэстро
+маяк
+маятник
+маячок
+мга
+мгла
+меандр
+мебель
+мегалит
+мегафон
+мегера
+мед
+медаль
+медбрат
+медведь
+меджлис
+медиана
+медик
+медиум
+медичка
+медник
+медовик
+медок
+медонос
+медресе
+медуза
+медь
+медяк
+медянка
+медяшка
+межа
+межевой
+межень
+мезозой
+мезон
+мезонин
+мекка
+мел
+меламед
+меланж
+меланин
+мелисса
+мелкота
+мелодия
+мелок
+меломан
+мелос
+мелочь
+мель
+мельник
+мелюзга
+мемуары
+мена
+менгир
+мениск
+мент
+ментик
+ментол
+ментор
+менуэт
+меньшая
+меньшее
+меньшой
+меню
+меняла
+мера
+мергель
+мерило
+мерин
+меринос
+мерка
+мертвая
+мертвец
+мертвое
+мертвый
+мертвяк
+меры
+меря
+месиво
+месса
+мессия
+места
+местная
+местный
+место
+месть
+месье
+месяц
+месяцок
+мета
+металл
+метан
+метание
+метелка
+метель
+метеор
+метил
+метис
+метиска
+метка
+метла
+метод
+метода
+метр
+метраж
+метрика
+метрики
+метро
+мех
+механик
+меценат
+меццо
+меч
+мечеть
+мечник
+мечта
+мечты
+мешок
+мешочек
+мещане
+мещанин
+мещанка
+мещера
+мещеряк
+мзда
+миазмы
+миг
+мигалка
+мигалки
+мигание
+мигрант
+мигрень
+миди
+мидия
+мизгирь
+мизер
+мизинец
+микадо
+микитки
+микроб
+микрон
+миксер
+микст
+милашка
+милая
+миледи
+миленок
+милиция
+милка
+миллион
+милое
+милок
+милорд
+милость
+милочка
+милушка
+милый
+мильт
+мильтон
+миля
+миляга
+мим
+мимик
+мимика
+мимоза
+мина
+минарет
+миндаль
+минер
+минерал
+минерва
+мини
+минимум
+министр
+минога
+миномет
+минор
+минтай
+минус
+минута
+минутка
+миньон
+миокард
+миома
+миопия
+миоцен
+мир
+мираб
+мираж
+мирза
+мириада
+мириады
+мирика
+миро
+мировая
+мировой
+мироед
+мирок
+мирон
+мирр
+мирра
+мирское
+мирской
+мирт
+мирта
+миряне
+мирянин
+миса
+миска
+мисочка
+мисс
+миссис
+миссия
+мистер
+мистик
+мистика
+мистрис
+митенки
+митинг
+миткаль
+митоз
+митра
+миф
+мицелий
+мичман
+миша
+мишень
+мишка
+мишук
+мишура
+младшая
+младший
+млеко
+мнение
+мних
+многие
+многое
+мобиль
+моветон
+могила
+могилка
+могол
+моголы
+могучая
+могучий
+мода
+модель
+модерн
+модник
+модница
+модуль
+модус
+мое
+мозаика
+мозг
+мозги
+мозгляк
+мозель
+мозоль
+мои
+мой
+мойка
+мойра
+мойщик
+мокасин
+мокко
+мокрец
+мокрица
+мокрота
+мокша
+мол
+молва
+молвь
+молебен
+моление
+молитва
+моллюск
+молния
+молодая
+молодец
+молодка
+молодой
+молодые
+молодь
+молока
+молокан
+молоки
+молоко
+молот
+молоток
+молох
+молочай
+молочко
+молчок
+молчун
+моль
+мольба
+моляр
+момент
+монада
+монарх
+монах
+монашек
+монашка
+монгол
+монголы
+монета
+монетка
+монизм
+монист
+монисто
+монитор
+монокль
+монолит
+монолог
+монстр
+монтаж
+монтер
+мопед
+мопс
+мор
+мораль
+морг
+морген
+моргун
+морда
+мордаха
+мордва
+мордвин
+море
+морель
+морена
+мореход
+морж
+мориски
+морковь
+мормон
+мормоны
+мороз
+морозец
+морозко
+морозы
+морок
+морока
+морось
+морошка
+морс
+мортира
+морф
+морфей
+морфема
+морфий
+морфин
+морщина
+моряк
+моряна
+морячка
+морячок
+москали
+москаль
+москит
+мосол
+мост
+мостик
+мостки
+мосток
+мосье
+моська
+мот
+мотание
+мотель
+мотив
+мотка
+мотня
+мотобот
+мотовоз
+моток
+мотор
+моторка
+мотыга
+мотылек
+мотыль
+мох
+мохер
+мохнач
+моховик
+моцион
+моча
+мочалка
+мочало
+мочка
+мочь
+мошка
+мошкара
+мошна
+мошонка
+мощение
+мощи
+мощь
+моя
+мразь
+мрак
+мрамор
+мсье
+муар
+мудрая
+мудрец
+мудрила
+мудрый
+муж
+муженек
+мужик
+мужичка
+мужичок
+мужичье
+мужлан
+мужчина
+муза
+музей
+музеум
+музыка
+мука
+мукомол
+мул
+мулат
+мулатка
+мулине
+мулла
+мультик
+мульча
+муляж
+мумие
+мумия
+мундир
+мура
+мурава
+муравей
+мураш
+мурашка
+мурашки
+мурена
+мурза
+мурин
+мурло
+мурлыка
+мурома
+мускат
+мускул
+мускулы
+мускус
+муслин
+мусор
+мусс
+муссон
+мустанг
+мутаген
+мутант
+мутация
+мутон
+муть
+муфлон
+муфта
+муфтий
+муха
+мухолов
+мухомор
+мучение
+мученик
+мучник
+мучное
+мушка
+мушкет
+муштра
+муэдзин
+мхи
+мщение
+мыза
+мыло
+мыловар
+мымра
+мыс
+мыслете
+мысли
+мысль
+мысок
+мыт
+мытарь
+мытник
+мыто
+мытье
+мычание
+мышей
+мышелов
+мышка
+мышонок
+мышца
+мышь
+мышьяк
+мэр
+мэрия
+мэтр
+мюзикл
+мюон
+мюрид
+мягкий
+мякина
+мякиш
+мякоть
+мяло
+мямля
+мясник
+мясное
+мясной
+мясо
+мясоед
+мясцо
+мята
+мятеж
+мятлик
+мяч
+набат
+набег
+набивка
+набоб
+набор
+навага
+навал
+навар
+наваха
+навес
+навет
+навис
+наводка
+навоз
+навой
+наволок
+навык
+навь
+нагайка
+наган
+нагар
+нагель
+нагиб
+наглец
+наглеца
+наговор
+нагоняй
+нагорье
+нагота
+награда
+нагрев
+наддув
+надежда
+надел
+надзор
+надир
+надлом
+надоеда
+надой
+надолб
+надолбы
+надпись
+надрез
+надрыв
+надув
+наезд
+наезжая
+наем
+наемник
+нажатие
+наждак
+нажива
+наживка
+нажим
+назубок
+наиб
+наигрыш
+наитие
+наймит
+найтов
+наказ
+накал
+накат
+накачка
+накидка
+накипь
+наклон
+наколка
+накра
+накры
+нактоуз
+наладка
+наледь
+налет
+налив
+наливка
+налим
+наличие
+налог
+налой
+намаз
+намек
+намет
+наметка
+нанаец
+нанаи
+нанайцы
+нанду
+нани
+нанка
+нанос
+нападки
+напалм
+напасть
+напев
+напиток
+наплыв
+напой
+напор
+нарвал
+наргиле
+нард
+нарезка
+наречие
+нарзан
+наркоз
+нарком
+народ
+народец
+нарост
+нарта
+нарты
+наручи
+нарцисс
+нары
+нарыв
+наряд
+насад
+насадка
+наседка
+насест
+насечка
+насилие
+наскок
+насморк
+насос
+наст
+настил
+настой
+настриг
+настрой
+насыпь
+натиск
+наточка
+натр
+натрий
+натура
+натяг
+натяжка
+наука
+наушник
+нафта
+нахал
+нахалка
+находка
+нахрап
+наценка
+нацизм
+нацист
+нация
+начала
+начало
+начатки
+начатое
+начаток
+начес
+начет
+начин
+начинка
+наш
+наше
+наши
+нашивка
+наяда
+небеса
+небо
+небушко
+небыль
+небытие
+невежа
+невежда
+невер
+неверие
+невеста
+невод
+неволя
+неврит
+невроз
+невыход
+нега
+негатив
+неги
+неглиже
+негодяй
+негр
+негры
+негус
+неделя
+недобор
+недолет
+недоля
+недород
+недосуг
+недосып
+недочет
+недра
+недруг
+недуг
+неженка
+нежилое
+нежить
+нейлон
+нейрон
+нейтрал
+нейтрон
+некроз
+нектар
+нелады
+нелепое
+нельма
+нелюди
+нелюдим
+немалое
+немая
+немец
+немка
+немой
+немота
+немочка
+немочь
+немощь
+немцы
+немчик
+немчура
+ненец
+ненцы
+неолит
+неон
+неофит
+неохота
+непокой
+непосед
+нептун
+нерв
+нервное
+нервы
+нереида
+нереиды
+нерест
+неровня
+нерпа
+неряха
+несение
+неслух
+несушка
+нет
+неуд
+неудача
+неумеха
+неуспех
+неуч
+нефрит
+нефть
+нечет
+нечисть
+неявка
+неясное
+неясыть
+нива
+нижнее
+нижние
+низ
+низина
+низинка
+низка
+низкое
+низовой
+низовье
+низок
+низость
+низшие
+низы
+никель
+никотин
+никто
+нимб
+нимфа
+ниобий
+ниппель
+нирвана
+нистагм
+нитка
+ниточка
+нитрат
+нитриты
+нить
+ничто
+ничья
+ниша
+нищая
+нищенка
+нищета
+нищий
+нобили
+нобиль
+новатор
+новация
+новелла
+новизна
+новик
+новинка
+новичок
+новое
+новосел
+новость
+новь
+нога
+ногаи
+ногайцы
+ноготки
+ноготок
+ноготь
+нож
+ножик
+ножичек
+ножка
+ножницы
+ножны
+ножовка
+ноздрев
+ноздря
+нойон
+нок
+нокаут
+нокдаун
+ноктюрн
+нолик
+ноль
+ном
+нома
+номад
+номады
+номарх
+номер
+номерок
+номинал
+нона
+нонсенс
+нора
+норд
+норка
+норма
+нормаль
+норманн
+норов
+нос
+носарь
+носач
+носик
+носилки
+носище
+носка
+носки
+носовой
+носок
+носорог
+носочек
+носочки
+нота
+нотация
+нотка
+ноты
+ноумен
+ночевка
+ночка
+ночлег
+ночник
+ночница
+ночное
+ночь
+ноша
+ношение
+нощь
+ноябрь
+нрав
+нравы
+нубиец
+нубийцы
+нувориш
+нуга
+нуда
+нудизм
+нудист
+нужда
+нужник
+нужное
+нукер
+нулик
+нуль
+нунций
+нут
+нутрия
+нутро
+нырок
+ныряло
+ныряние
+нытик
+нытье
+нэп
+нэпман
+нюанс
+нюни
+нюня
+нюх
+нянечка
+нянька
+нянюшка
+няня
+оазис
+обалдуй
+обаяние
+обвал
+обвес
+обвод
+обводка
+обвязка
+обгон
+обдув
+обед
+обедня
+обелиск
+обер
+оберег
+обертка
+обертон
+обет
+обжиг
+обжог
+обжора
+обзор
+обивка
+обида
+обидчик
+обилие
+обирала
+обитель
+обиход
+обкатка
+обком
+облава
+облако
+область
+облатка
+облачко
+облет
+облик
+обличье
+обложка
+облом
+обломов
+обломок
+облучок
+обмазка
+обман
+обманка
+обмен
+обмена
+обмер
+обмолот
+обморок
+обмотка
+обмотки
+обмыв
+обмылки
+обмылок
+обновка
+обнос
+обноски
+обогрев
+обод
+ободок
+обоз
+обозник
+обозный
+обои
+обой
+обойма
+обойщик
+обол
+оболонь
+оболтус
+оборвыш
+оборина
+оборка
+оборки
+обормот
+оборона
+оборот
+обочина
+образ
+образец
+образок
+обрат
+обрез
+обрезка
+обрезок
+оброк
+обрубка
+обрубок
+обруч
+обручье
+обры
+обрыв
+обрывок
+обряд
+обстрел
+обсчет
+обувка
+обувь
+обуза
+обух
+обушок
+обхват
+обход
+обшивка
+обшлаг
+общее
+общение
+община
+объедки
+объезд
+объект
+объем
+объятие
+объятия
+обыск
+обычай
+овал
+овация
+овен
+овес
+овечка
+овин
+овод
+овощ
+овощи
+овраг
+овражек
+овсы
+овсюг
+овсянка
+овца
+овцебык
+овчар
+овчарка
+овчарня
+овчина
+овчинка
+огарок
+огласка
+оглобля
+оглядка
+огневик
+огневка
+огнемет
+огниво
+огнище
+огнь
+оговор
+оголец
+огонек
+огонь
+огород
+ограда
+оградка
+огранка
+огрех
+огрызок
+огузок
+огурец
+огурчик
+ода
+одежа
+одежда
+одежка
+одер
+одеяло
+одеяние
+один
+одинец
+одиссея
+одно
+однолюб
+одр
+одрина
+одурь
+одышка
+ожог
+озерко
+озеро
+озерцо
+озимь
+озноб
+озон
+озорник
+оказия
+окалина
+океан
+окись
+оклад
+оклик
+окно
+око
+оковка
+оковы
+окоем
+околица
+околыш
+оконце
+окоп
+окопник
+окопчик
+окорок
+окот
+окошко
+окраина
+окрас
+окраска
+окрик
+окрошка
+округ
+округа
+октава
+октаэдр
+октоих
+октябрь
+окулист
+окуляр
+окуляры
+окунь
+окурок
+оладья
+олеандр
+оленина
+оленуха
+олень
+олешек
+олива
+оливин
+оливка
+оливки
+олигарх
+олимп
+олифа
+олово
+олух
+ольха
+омар
+омега
+омела
+омет
+омлет
+омнибус
+омофор
+омуль
+омут
+она
+онагр
+онанизм
+онанист
+ондатра
+онер
+оникс
+онколог
+опал
+опала
+опара
+опаска
+опахало
+опашень
+опека
+опекун
+опенок
+опера
+опий
+опилки
+описка
+опись
+опиум
+оплата
+оплетка
+оплеуха
+оплечье
+оплот
+опора
+опорки
+опоссум
+оправа
+опрос
+опт
+оптик
+оптика
+оптимум
+оптовик
+опус
+опухоль
+опушка
+опыт
+орава
+оракул
+орала
+орало
+оранжад
+орарь
+оратор
+орбита
+оргазм
+орган
+оргия
+орда
+орден
+орденок
+ордер
+ордынец
+орел
+ореол
+орех
+орешек
+орешина
+орешки
+орешник
+оркестр
+орлан
+орленок
+орлик
+орлица
+орочи
+орс
+орт
+ортопед
+орудие
+оружие
+орун
+орхидея
+орясина
+оса
+осада
+осадка
+осадки
+осадок
+осанка
+осанна
+осек
+осел
+оселок
+осень
+осетин
+осетины
+осетр
+осечка
+осина
+осинка
+осинник
+оскал
+осколок
+осленок
+ослик
+ослица
+ослы
+осман
+османы
+осмий
+осмос
+осмотр
+основа
+основы
+особа
+особняк
+особь
+осока
+осокорь
+осот
+оспа
+ост
+останец
+останки
+останов
+остатки
+остаток
+остготы
+остов
+остолоп
+острие
+остров
+острог
+острога
+острота
+остряк
+ость
+остяки
+осы
+осыпь
+ось
+отава
+отара
+отбив
+отблеск
+отбой
+отбор
+отброс
+отбросы
+отбытие
+отвага
+отвал
+отвар
+отвес
+ответ
+отвод
+отводок
+отводы
+отворот
+отгадка
+отгон
+отгул
+отдание
+отдача
+отдел
+отделка
+отдых
+отек
+отел
+отелло
+отель
+отец
+отжиг
+отжим
+отзвук
+отзыв
+отказ
+откат
+откачка
+отклик
+откол
+откорм
+откос
+откуп
+отладка
+отлет
+отлив
+отливка
+отливок
+отличие
+отлично
+отлов
+отлуп
+отлучка
+отмашка
+отмель
+отмена
+отметка
+отмычка
+отнорок
+отнятие
+оторопь
+отпад
+отпал
+отписка
+отпор
+отпрыск
+отпуск
+отпуст
+отрава
+отрада
+отрасль
+отребье
+отрез
+отрезка
+отрезки
+отрезок
+отрепье
+отрепья
+отрог
+отродье
+отрок
+отруб
+отруби
+отрыв
+отрывок
+отрыжка
+отряд
+отсвет
+отсев
+отсек
+отсечка
+отсидка
+отскок
+отсос
+отстой
+отстрел
+отступ
+отсчет
+отсылка
+оттенка
+оттенок
+оттиск
+отток
+оттяжка
+отход
+отходы
+отцы
+отчет
+отчизна
+отчим
+отчина
+отъезд
+отъем
+отыгрыш
+офеня
+офицер
+официоз
+офорт
+охабень
+охапка
+охват
+охи
+охота
+охотник
+охра
+охрана
+охранка
+оцелот
+оценка
+оценщик
+очаг
+очажок
+очередь
+очерет
+очерк
+очес
+очи
+очистка
+очистки
+очки
+очко
+ошейник
+ошибка
+ошкуй
+ошметки
+ошметок
+ощупь
+пава
+павиан
+павлин
+паводок
+павшая
+павший
+пагода
+пагуба
+падаль
+падеж
+падение
+падишах
+падуб
+падун
+падучая
+падшая
+падший
+падь
+паек
+паж
+пажить
+паз
+пазуха
+паинька
+пай
+пайка
+пайщик
+пак
+пакгауз
+пакет
+пакетик
+пакля
+пакость
+пакт
+пал
+паладин
+палас
+палата
+палатин
+палатка
+палаты
+палаццо
+палач
+палаш
+палех
+палец
+палея
+пали
+палисад
+палитра
+палица
+палия
+палка
+палки
+палочка
+палочки
+палтус
+палуб
+палуба
+паль
+пальба
+пальма
+пальто
+пальчик
+паля
+пампа
+пампасы
+памфлет
+памятка
+память
+пан
+панагия
+панама
+панамка
+панацея
+пандан
+пандус
+панель
+паненка
+панер
+пани
+паника
+паникер
+панна
+панно
+пансион
+панство
+пантеон
+пантера
+панты
+панцирь
+папа
+папайя
+папаня
+папах
+папаха
+папахен
+папаша
+папашка
+паперть
+папирус
+папка
+папочка
+паприка
+папство
+папуас
+папуасы
+пар
+пара
+парад
+парадиз
+паразит
+паралич
+парапет
+парафин
+параша
+парашка
+парашют
+парвеню
+пард
+пардон
+пардус
+парез
+паренек
+парение
+парень
+пари
+парии
+парик
+парилка
+парина
+паритет
+паричок
+пария
+парк
+парка
+паркет
+парки
+парнас
+парная
+парник
+парнище
+парня
+парняга
+паровик
+паровоз
+пародия
+парок
+пароле
+пароли
+пароль
+паром
+паротит
+пароход
+парочка
+парс
+парсек
+парта
+партер
+партиец
+партия
+партком
+партнер
+парторг
+парубок
+парус
+парфяне
+парча
+парша
+пары
+паря
+пас
+пасека
+паскуда
+паслен
+паспорт
+пасс
+пассаж
+пассат
+пассив
+пассия
+пассы
+паста
+паства
+пастель
+пастила
+пастор
+пастух
+пастырь
+пасть
+пасха
+пасынок
+пасьянс
+пасюк
+пат
+патан
+пате
+патент
+патер
+патера
+патерик
+патефон
+патина
+патио
+патлы
+патока
+патолог
+патриот
+патрон
+патруль
+пауза
+паук
+паул
+паут
+паутина
+паучиха
+паучок
+пафос
+пах
+пахарь
+пахлава
+пахота
+пахта
+пацан
+пациент
+пачка
+пачкун
+пачули
+паша
+пашина
+пашня
+паштет
+пащенок
+паяц
+пеан
+певец
+певица
+певичка
+певун
+певунья
+певчий
+пегас
+педагог
+педаль
+педант
+педель
+педиатр
+педикюр
+педофил
+пейджер
+пейзаж
+пейзан
+пейс
+пейсы
+пек
+пекан
+пекарня
+пекарь
+пекло
+пелагия
+пелена
+пеленг
+пеленка
+пелены
+пелерин
+пеликан
+пемза
+пена
+пенал
+пенаты
+пенек
+пение
+пенис
+пенка
+пенни
+пенник
+пенное
+пеночка
+пенс
+пенсион
+пенсия
+пенсне
+пентюх
+пень
+пенье
+пенька
+пеньки
+пеньюар
+пеня
+пеон
+пепел
+пепси
+пепсин
+первак
+первач
+первая
+первое
+первые
+первый
+перга
+перебой
+перебор
+перевал
+перевес
+перевод
+перевоз
+перегар
+перегиб
+перегон
+перегуд
+перед
+передел
+передок
+передых
+переезд
+перекат
+перекоп
+перекос
+перекур
+перекус
+перелаз
+перелет
+перелив
+перелом
+перемет
+перенос
+перепад
+перепев
+перепел
+перерез
+перерыв
+пересев
+пересек
+переход
+перец
+перешиб
+пери
+перигей
+перила
+перилла
+перина
+период
+перка
+перл
+перло
+пермяк
+пермяки
+пернач
+перо
+перрон
+перс
+перси
+персик
+персона
+перст
+персть
+персы
+перун
+перуны
+перфект
+перхоть
+перчик
+перш
+перышко
+перье
+пес
+песенка
+песец
+песик
+пескарь
+пески
+песни
+песнь
+песня
+песок
+песочек
+пест
+пестик
+пестун
+петарда
+петит
+петиция
+петли
+петля
+петуния
+петунья
+петух
+петухи
+петушки
+петушок
+петя
+пехлеви
+пехота
+пехтура
+печаль
+печатка
+печать
+печенег
+печение
+печенка
+печенки
+печеное
+печень
+печенье
+печище
+печка
+печник
+печорин
+печурка
+печь
+пешая
+пешеход
+пеший
+пешка
+пешня
+пещер
+пещера
+пещерка
+пиала
+пианино
+пианист
+пиано
+пиастр
+пивко
+пивная
+пиво
+пивовар
+пигмеи
+пигмей
+пигмент
+пиджак
+пиетет
+пиетизм
+пижама
+пижма
+пижон
+пиит
+пиита
+пик
+пика
+пикадор
+пикап
+пике
+пикет
+пики
+пикколо
+пикник
+пикты
+пикули
+пикуля
+пикша
+пила
+пилав
+пилат
+пиление
+пилка
+пилон
+пилот
+пилотаж
+пилотка
+пилочка
+пильщик
+пилюля
+пилястр
+пим
+пима
+пимы
+пингвин
+пиндос
+пинетки
+пинна
+пинок
+пинта
+пинцет
+пинчер
+пион
+пионер
+пипа
+пипетка
+пипка
+пир
+пират
+пирит
+пирке
+пирог
+пирога
+пирожок
+пирс
+пирушка
+пируэт
+писака
+писание
+писаное
+писарь
+писец
+писк
+пискля
+пискун
+писсуар
+пистоль
+пистон
+письмо
+питание
+питомец
+питон
+питье
+пифия
+пихта
+пицца
+пичуга
+пичужка
+пишущий
+пища
+пищалка
+пищаль
+пищевод
+пищик
+пиявка
+плавка
+плавки
+плавни
+плавник
+плагиат
+плазма
+плакат
+плакса
+плакун
+пламень
+пламя
+план
+планер
+планета
+планида
+планка
+планчик
+планшет
+планшир
+пласт
+пластик
+плат
+плата
+платан
+платеж
+платина
+платно
+плато
+платок
+платье
+плафон
+плаха
+плац
+плач
+плашка
+плащ
+плащик
+плебей
+плебс
+плева
+плевел
+плевелы
+плевок
+плевра
+плеврит
+плед
+плеер
+плезир
+племя
+племяш
+плен
+плена
+пленка
+пленная
+пленник
+пленный
+пленум
+пленэр
+плес
+плесень
+плеск
+плесо
+плетень
+плетка
+плеть
+плечики
+плечико
+плечо
+плешка
+плешь
+плеяда
+плие
+плинтус
+плита
+плитка
+плов
+пловец
+плод
+пломба
+пломбир
+плот
+плотва
+плотик
+плотина
+плотник
+плоть
+плохо
+плохое
+плошка
+площадь
+плуг
+плунжер
+плут
+плутни
+плутон
+плывун
+плюмаж
+плюс
+плюха
+плюш
+плюшка
+плюшкин
+плющ
+пляж
+пляжик
+пляс
+пляска
+плясун
+побег
+победа
+победит
+победы
+побелка
+побитие
+побои
+побоище
+поборы
+побудка
+повадка
+повал
+повар
+поварня
+поверка
+поверье
+повеса
+повесть
+поветь
+повидло
+повод
+поводок
+повозка
+повой
+поворот
+повтор
+повязка
+поганец
+поганка
+погань
+погиб
+погляд
+погода
+погодка
+погон
+погона
+погоня
+погост
+погреб
+погром
+под
+подагра
+подарок
+подать
+подача
+подачка
+подбой
+подбор
+подбора
+подвал
+подвес
+подвиг
+подвид
+подвод
+подвода
+подвоз
+подвой
+подвох
+поддев
+поддел
+поддон
+поделка
+поджог
+поджога
+подзор
+подиум
+подкат
+подклет
+подкова
+подкоп
+подкуп
+подлет
+подлец
+подлеца
+подлив
+подлива
+подлиза
+подлог
+подлом
+подлюга
+подмен
+подмена
+подмога
+поднос
+подобие
+подол
+подолье
+подонки
+подонок
+подошва
+подпал
+подпись
+подпол
+подпор
+подпора
+подрез
+подрост
+подруга
+подрыв
+подряд
+подсев
+подсек
+подскок
+подсос
+подстав
+подступ
+подсчет
+подтек
+подтип
+подуст
+подушка
+подхват
+подход
+подъезд
+подъем
+поезд
+поездка
+пожар
+пожатие
+пожива
+пожилая
+пожилой
+пожитки
+поза
+поземка
+позер
+позитив
+позиции
+позиция
+позор
+позыв
+поилка
+поимка
+поиск
+поиски
+пойло
+пойма
+пойнтер
+показ
+покер
+поклажа
+поклеп
+поклон
+покои
+покой
+покос
+покров
+покрой
+покупка
+пол
+пола
+полати
+полба
+полдень
+полдник
+поле
+полевик
+полевка
+полевые
+полено
+поленце
+полесье
+полет
+полечка
+полешко
+ползун
+полив
+полива
+поливка
+полигон
+полимер
+полип
+полис
+политес
+политик
+полицай
+полиция
+полк
+полка
+полнота
+полночи
+полночь
+поло
+полова
+половец
+половик
+половой
+половцы
+полог
+полоз
+полой
+полок
+полом
+поломка
+полон
+полонез
+полоний
+полоса
+полоска
+полость
+полотер
+полотно
+полоть
+полочка
+полпред
+полпути
+полсть
+полтина
+полубак
+полубог
+полуось
+полусон
+полутон
+получка
+полушка
+полуют
+полцены
+полчаса
+полчище
+полшага
+полымя
+полынь
+полынья
+польза
+полька
+полюдье
+полюс
+полюшко
+поля
+поляк
+поляки
+поляна
+поляне
+полянка
+полячка
+помада
+помадка
+помазок
+помело
+помесь
+помет
+помета
+пометка
+помеха
+помехи
+помещик
+помидор
+помин
+поминки
+поминок
+помога
+помои
+помойка
+помол
+помор
+поморы
+поморье
+помост
+помочи
+помощь
+помпа
+помпон
+помысел
+пони
+поножи
+понос
+понтер
+понтон
+пончик
+пончо
+понюх
+понятие
+понятия
+понятой
+поп
+попа
+попадья
+попик
+попка
+попович
+поповка
+поповна
+попойка
+попона
+попрек
+поприще
+попса
+попугай
+попурри
+попытка
+пора
+порез
+порей
+поречье
+порка
+порог
+порода
+порожек
+порок
+поролон
+поросль
+порося
+порох
+пороша
+порошок
+порт
+портал
+портач
+портер
+портик
+портки
+портной
+порто
+портрет
+портшез
+порты
+портье
+поруб
+порука
+поруха
+поручи
+поручик
+поручни
+порфир
+порфира
+порция
+порча
+поршень
+поршни
+поры
+порыв
+порядки
+порядок
+посад
+посадка
+посвист
+посев
+поселок
+послед
+послух
+пособие
+посол
+посох
+посошок
+пост
+постав
+постель
+постник
+постное
+постой
+пострел
+постриг
+поступь
+посуда
+посул
+посыл
+посылка
+пот
+поташ
+потек
+потемки
+потение
+потери
+потеря
+потеха
+потир
+потник
+поток
+потолок
+потомки
+потомок
+потоп
+потреба
+потроха
+потуги
+похвала
+поход
+походка
+похоть
+поцелуй
+початок
+почва
+почерк
+почести
+почесть
+почет
+почечуй
+почин
+починка
+почка
+почки
+почта
+почтамт
+почтарь
+пошив
+пошлина
+пошлое
+пошляк
+пощада
+поэзия
+поэма
+поэт
+поэтика
+поющий
+пояс
+поясок
+права
+правая
+правда
+правила
+правило
+правка
+правнук
+право
+правота
+правша
+правые
+правый
+прадед
+прадеды
+практик
+пралине
+праотец
+праотцы
+прапор
+прасол
+прах
+прачка
+праща
+пращник
+пращур
+праязык
+предел
+пределы
+предки
+предлог
+предмет
+предок
+прежнее
+презент
+прелат
+прель
+премия
+премьер
+прение
+прения
+препона
+прерия
+пресное
+пресс
+пресса
+престиж
+престо
+престол
+претор
+префект
+префикс
+прибой
+прибор
+прибыль
+привал
+привес
+привет
+привкус
+привод
+привоз
+привой
+привязь
+пригляд
+придел
+придира
+придурь
+приезд
+прием
+приемка
+приемы
+приемыш
+прижим
+приз
+призвук
+призер
+призма
+признак
+призрак
+призыв
+прииск
+приказ
+приклад
+прикол
+прикорм
+прикрыт
+прикуп
+прикус
+прилет
+прилив
+прима
+примак
+примас
+примат
+приматы
+пример
+примесь
+примет
+примета
+приметы
+примула
+примус
+принтер
+принц
+принцип
+приор
+припай
+припас
+припасы
+припев
+припек
+припека
+приплод
+припой
+природа
+прирост
+присев
+присест
+присные
+пристав
+приступ
+присуха
+присяга
+притвор
+приток
+притон
+притча
+приход
+прихоть
+прицел
+прицеп
+причал
+причет
+причина
+причт
+причуда
+пришлая
+пришлец
+пришлый
+прищур
+приют
+приязнь
+проба
+пробег
+пробел
+пробка
+пробник
+пробой
+пробор
+пробст
+провал
+провод
+проводы
+провоз
+прогал
+прогиб
+прогноз
+прогон
+прогоны
+прогрев
+прогул
+продажа
+продел
+продмаг
+продол
+продув
+продукт
+проезд
+проект
+проем
+прожект
+проза
+прозаик
+прозор
+происки
+прок
+проказа
+прокат
+прокол
+прокоп
+прокорм
+пролаз
+пролаза
+пролет
+пролив
+пролог
+пролом
+промах
+промер
+промыв
+промысл
+прононс
+пронос
+проныра
+пропажа
+пропан
+пропил
+прописи
+пропись
+проплыв
+пропой
+пропуск
+прораб
+прорва
+прорез
+прорезь
+прореха
+пророк
+прорубь
+проруха
+прорыв
+просвет
+проседь
+просек
+просека
+просо
+простак
+простец
+прости
+простое
+простой
+простор
+просчет
+просьба
+протеже
+протез
+протеин
+протек
+протест
+против
+проток
+протока
+протон
+проулок
+профан
+профи
+профиль
+профит
+профос
+проход
+процент
+процесс
+прочее
+прочерк
+прочие
+прошлое
+пруд
+прудик
+прудок
+пружина
+прус
+прусак
+прусс
+пруссак
+пруссы
+прут
+прутик
+пруток
+прыгун
+прыгуны
+прыжок
+прыть
+прыщ
+прыщик
+пря
+прядка
+прядь
+пряжа
+пряжка
+прялка
+прямая
+прямота
+пряник
+прясло
+прятки
+пряха
+псалом
+псарня
+псарь
+пси
+псина
+псих
+психея
+психика
+психоз
+псовая
+птаха
+пташка
+птенец
+птенчик
+птица
+птичка
+птичник
+пуант
+пуанты
+публика
+пугало
+пугач
+пуговка
+пуд
+пудель
+пудинг
+пудра
+пузан
+пузо
+пузырек
+пузырь
+пук
+пул
+пула
+пулемет
+пуловер
+пулька
+пульман
+пульпа
+пульс
+пульт
+пуля
+пума
+пункт
+пунктик
+пунктир
+пункция
+пунш
+пуп
+пупок
+пупс
+пупсик
+пупырь
+пураны
+пурга
+пурген
+пурпур
+пурпура
+пуск
+пусто
+пустое
+пустота
+пустоты
+пустошь
+пустынь
+пустыня
+пустырь
+пустяк
+путана
+путаник
+путевка
+путеец
+пути
+путина
+путник
+путница
+путное
+путч
+путы
+путь
+пуф
+пуфик
+пух
+пухляк
+пуховик
+пучина
+пучка
+пучок
+пушечка
+пушинка
+пушка
+пушкарь
+пушнина
+пушок
+пуща
+пфенниг
+пчела
+пчелка
+пшеница
+пшенка
+пшено
+пшик
+пыж
+пыжик
+пыл
+пылесос
+пылинка
+пылища
+пыль
+пыльник
+пыльца
+пырей
+пытка
+пых
+пышечка
+пышка
+пьеро
+пьеса
+пьеска
+пьющий
+пьяная
+пьяница
+пьянка
+пьяный
+пэр
+пюпитр
+пюре
+пядь
+пяльцы
+пясть
+пята
+пятак
+пятачок
+пятая
+пятерик
+пятерка
+пятерня
+пятина
+пятка
+пятна
+пятница
+пятно
+пяток
+пятый
+пять
+раб
+раба
+рабкрин
+работа
+работка
+работы
+рабочая
+рабочий
+рабство
+рабфак
+рабыня
+раввин
+равелин
+равная
+равнина
+равный
+рагу
+рада
+радар
+радение
+раджа
+радиант
+радий
+радикал
+радио
+радиола
+радист
+радиус
+радон
+радость
+радуга
+радужка
+радушие
+раек
+раж
+раз
+разбег
+разбой
+разбор
+разброд
+разброс
+развал
+развалы
+развес
+развив
+развод
+разводы
+разврат
+разгар
+разгон
+разгром
+разгул
+раздача
+раздел
+раздол
+раздор
+раздув
+раззява
+разик
+разиня
+разлад
+разлет
+разлив
+разлом
+разлука
+размах
+размен
+размер
+размыв
+разница
+разное
+разнос
+разовые
+разок
+разор
+разочек
+разрез
+разруха
+разрыв
+разряд
+разум
+разъезд
+разъем
+раина
+рай
+район
+рак
+рака
+ракета
+ракетка
+ракита
+ракия
+ракурс
+ракушка
+ракша
+рало
+рама
+рамадан
+рамазан
+рамка
+рамки
+рамочка
+рампа
+рамс
+рана
+ранг
+рангоут
+рандеву
+раненая
+ранение
+раненый
+ранет
+ранец
+ранжир
+ранка
+рант
+рантье
+рань
+рапа
+рапира
+рапорт
+рапс
+рапсод
+раритет
+раса
+расизм
+расист
+раскат
+раскаты
+расклад
+раскол
+раскрой
+распад
+распев
+распил
+расплав
+расплод
+распор
+распря
+распыл
+рассада
+рассвет
+рассказ
+рассол
+раствор
+растр
+раструб
+растяпа
+расход
+расходы
+расцвет
+расчет
+расщеп
+ратай
+ратин
+ратник
+ратные
+ратуша
+рать
+раунд
+раус
+раут
+рафинад
+рахит
+рацион
+рация
+рачки
+рачок
+рашпиль
+рванина
+рвань
+рванье
+рвач
+рвение
+рвота
+рвотное
+реагент
+реактив
+реактор
+реакция
+реал
+реализм
+реалист
+реалия
+ребе
+ребенок
+ребро
+ребус
+ребята
+ребятки
+ребятня
+рев
+рева
+реванш
+ревень
+реверс
+ревизия
+ревизор
+ревком
+ревун
+ревю
+регалии
+регата
+регби
+регбист
+регент
+регион
+регистр
+реглан
+регресс
+регулы
+редан
+редерер
+редис
+редиска
+редкий
+редут
+редька
+реестр
+режим
+рез
+резак
+резеда
+резерв
+резец
+резина
+резинка
+резка
+резник
+резня
+резон
+резонер
+резчик
+резчица
+резь
+резьба
+резюме
+рей
+рейд
+рейдер
+рейка
+рейс
+рейтар
+рейтер
+рейтинг
+рейтузы
+река
+реквием
+реклама
+рекорд
+рекрут
+ректор
+реле
+религия
+реликт
+рельеф
+рельс
+рельса
+рельсы
+реляция
+ремарка
+ремез
+ремень
+ремесло
+ремешок
+ремиз
+ремни
+ремонт
+рената
+ренегат
+ренет
+рений
+реноме
+рента
+рентген
+реостат
+репа
+репей
+репер
+репка
+реплика
+реприза
+репринт
+ресивер
+ресница
+ресницы
+респект
+рессора
+ресурс
+ресурсы
+ретивое
+реторта
+ретушь
+реферат
+рефери
+рефлекс
+реформа
+рефрен
+рецепт
+рецидив
+речение
+речка
+речник
+речонка
+речушка
+речь
+решение
+решетка
+решето
+решка
+рея
+ржа
+ржание
+риал
+риваль
+рига
+ригель
+ригодон
+риза
+ризница
+ризотто
+рикошет
+рикша
+римляне
+ринг
+ринит
+ринк
+рис
+риск
+риска
+рислинг
+рисовка
+рисунок
+ритм
+ритмика
+ритор
+ритуал
+риф
+рифма
+рифмач
+ришелье
+роба
+роббер
+робкий
+робость
+робот
+ров
+ровик
+ровня
+рог
+рога
+рогалик
+рогатка
+рогатки
+рогатый
+рогач
+рогожа
+рогоз
+рогоза
+род
+родимец
+родимые
+родимый
+родина
+родинка
+родины
+родич
+родная
+родник
+родное
+родной
+родные
+родня
+родство
+роды
+роение
+рожа
+рожица
+рожок
+рожон
+рожь
+роза
+розан
+розарий
+розга
+розги
+роздых
+розетка
+розетта
+розлив
+розмысл
+розница
+рознь
+розовое
+розовые
+розочка
+розыск
+рой
+ройка
+рок
+рокер
+рококо
+рокот
+рокфор
+рол
+ролик
+ролики
+ролл
+роллер
+роль
+ром
+роман
+романс
+ромашка
+ромб
+рондо
+ропот
+роса
+росинка
+роскошь
+роспись
+роспуск
+росс
+россыпи
+россыпь
+рост
+ростбиф
+ростки
+росток
+ростры
+росчерк
+росянка
+рот
+рота
+ротация
+ротик
+ротный
+ротозей
+роток
+ротонда
+ротор
+рохля
+роща
+рощица
+роялист
+рояль
+ртуть
+рубака
+рубанок
+рубаха
+рубашка
+рубеж
+рубель
+рубец
+рубидий
+рубило
+рубин
+рубище
+рубка
+рублик
+рубль
+рубрика
+рубчик
+рубщик
+руга
+ругань
+руда
+рудник
+рудники
+рудовоз
+рудокоп
+ружье
+ружьецо
+руина
+руины
+рука
+рукав
+руки
+рукоять
+рулада
+рулевой
+руление
+рулет
+рулетка
+рулон
+руль
+румб
+румба
+румпель
+румын
+румынка
+румыны
+румяна
+румяная
+румянец
+румяный
+руна
+рунд
+рундук
+руно
+руны
+рупия
+рупор
+русак
+русалии
+русалка
+русин
+русины
+русло
+русофоб
+русс
+русская
+русские
+русский
+руст
+рустика
+русь
+рута
+руте
+рутина
+рухлядь
+ручеек
+ручей
+ручища
+ручка
+ручки
+ручник
+ручонка
+рушение
+рцы
+рыба
+рыбак
+рыбалка
+рыбарь
+рыбачка
+рыбец
+рыбешка
+рыбина
+рыбка
+рыбник
+рыбное
+рыболов
+рыбы
+рывок
+рыдание
+рыдван
+рыжий
+рыжик
+рыжина
+рык
+рыло
+рыльце
+рым
+рында
+рынок
+рысак
+рысенок
+рыскало
+рысь
+рытвина
+рытье
+рыцарь
+рычаг
+рычажок
+рычание
+рэкет
+рэкетир
+рюкзак
+рюмка
+рюмочка
+рюха
+рюш
+рябая
+рябина
+рябинка
+рябой
+рябчик
+рябь
+ряд
+ряда
+рядно
+рядовой
+рядок
+ряды
+ряженка
+ряженый
+ряса
+ряска
+саадак
+саам
+саами
+саамы
+саба
+сабан
+сабины
+сабли
+сабля
+сабо
+саботаж
+сабур
+саван
+саванна
+саванны
+сага
+сагиб
+саго
+сад
+садизм
+садик
+садист
+садовод
+садок
+сажа
+саженец
+сажень
+саз
+сазан
+саиб
+сайга
+сайгак
+сайда
+сайка
+сайра
+сак
+саквояж
+саккос
+сакля
+сакс
+саксаул
+саксы
+сакура
+салазки
+салака
+салат
+салатик
+салинг
+салки
+салма
+сало
+салон
+салоп
+сальдо
+сальник
+сальто
+сальце
+салют
+салями
+сам
+сама
+саман
+самба
+самбист
+самбо
+самец
+самка
+саммит
+самниты
+самовар
+самогон
+самодур
+самоед
+самоеды
+самокат
+самолет
+самопал
+самосад
+самость
+самосуд
+самотек
+самоход
+самочка
+самум
+самурай
+самшит
+сан
+санация
+санбат
+сандал
+сандвич
+сандрик
+сани
+санитар
+санки
+санкция
+саночки
+сантим
+санузел
+сап
+сапа
+сапер
+сапог
+сапоги
+сапожки
+сапожок
+сапсан
+сапфир
+сарай
+сарана
+саранча
+сарафан
+сарацин
+сарган
+сард
+сардар
+сардина
+сардины
+саржа
+сари
+сарказм
+саркома
+сармат
+сарматы
+сарыч
+сарыча
+сатана
+сатин
+сатир
+сатира
+сатирик
+сатрап
+сатурн
+сауна
+сафари
+сафьян
+сахар
+сахара
+сахарин
+сахарок
+сахары
+сачок
+саше
+саян
+сбег
+сбитень
+сбой
+сбор
+сбора
+сборище
+сборка
+сборки
+сборная
+сборник
+сборное
+сборщик
+сборы
+сброд
+сброс
+сбруя
+сбыт
+свадьба
+свалка
+сван
+сваны
+свара
+сварка
+сварщик
+сват
+сватья
+сваха
+свая
+свежак
+свекла
+свекор
+сверка
+сверло
+свертка
+сверток
+сверчок
+свес
+свет
+светец
+светик
+светило
+светляк
+светоч
+свеча
+свечка
+свинарь
+свинец
+свинина
+свинка
+свинтус
+свинья
+свирель
+свист
+свисток
+свистун
+свита
+свитер
+свитка
+свиток
+свих
+свищ
+свобода
+свод
+сводка
+сводник
+сводня
+свое
+свои
+свой
+сволок
+сволота
+сволочь
+свора
+своя
+свояк
+связи
+связист
+связка
+связная
+связник
+связной
+связь
+святая
+святки
+святой
+святоша
+святцы
+святые
+святыня
+сгиб
+сглаз
+сговор
+сгон
+сгусток
+сдача
+сдвиг
+сделка
+сдоба
+сдобное
+сдув
+сеанс
+сев
+север
+севр
+севрюга
+сегмент
+сегодня
+седина
+седины
+седло
+седмица
+седок
+седьмая
+седьмой
+сезам
+сезон
+сеид
+сей
+сейид
+сейм
+сейнер
+сейф
+секатор
+секач
+секвойя
+секира
+секрет
+секс
+секста
+секстет
+секта
+сектант
+сектор
+секунда
+секутор
+секция
+селадон
+селедка
+селен
+селена
+селенга
+селение
+селенит
+селин
+селитра
+селище
+село
+сель
+сельва
+сельдь
+сельмаг
+сельпо
+сельцо
+селянин
+селянка
+сема
+семафор
+семга
+семейка
+семена
+семерка
+семестр
+семечки
+семечко
+семик
+семинар
+семит
+семиты
+семья
+семя
+сенат
+сенатор
+сенечки
+сени
+сенки
+сенник
+сено
+сеновал
+сенокос
+сенцы
+сень
+сеньор
+сеньора
+сепия
+сепсис
+септима
+сера
+сераль
+серафим
+серая
+серб
+сербы
+серв
+сервант
+сервиз
+сервис
+сердар
+сердце
+сердюк
+серебро
+середка
+сережка
+сережки
+сержант
+сериал
+серина
+серия
+серка
+серко
+сермяга
+серна
+серое
+серость
+серп
+серпик
+серсо
+серый
+серьга
+серьез
+сессия
+сестра
+сет
+сети
+сетка
+сеточка
+сеттер
+сеть
+сеча
+сечение
+сечка
+сеялка
+сеяние
+сеятель
+сжатие
+сиамец
+сиамцы
+сибарит
+сибилла
+сибиряк
+сивая
+сивер
+сиверко
+сивилла
+сивка
+сивко
+сивуха
+сивуч
+сивый
+сиг
+сигара
+сигма
+сигнал
+сиделец
+сиделка
+сидение
+сиденье
+сидор
+сидр
+сидящая
+сидящий
+сие
+сиена
+сиерра
+сиеста
+сизарь
+сикомор
+сила
+силач
+силенка
+силикат
+силища
+силка
+силки
+силок
+силон
+силос
+силушка
+силуэт
+силы
+силь
+сильвин
+сильная
+сильный
+сильф
+сима
+симбиоз
+символ
+симка
+симония
+симптом
+синдик
+синдром
+синева
+синема
+синица
+синичка
+синклит
+синкопа
+синод
+синодик
+синоним
+синтез
+синус
+синь
+синька
+синьор
+синьора
+синюха
+синяк
+синяя
+сионизм
+сионист
+сип
+сипай
+сипение
+сир
+сирен
+сирена
+сирены
+сирень
+сириец
+сирийцы
+сирин
+сириус
+сирокко
+сироп
+сирота
+сиротка
+сиртаки
+сирые
+система
+сиська
+сиськи
+ситар
+ситец
+ситечко
+ситник
+ситный
+сито
+ситро
+ситчик
+сифилис
+сифон
+сия
+сияние
+сказ
+сказка
+скакун
+скакуны
+скала
+скалка
+скальд
+скальп
+скамья
+скандал
+сканер
+скарб
+скаред
+скарн
+скат
+скатка
+скаут
+скачка
+скачки
+скачок
+сквайр
+сквер
+скверик
+скверна
+скворец
+скейт
+скелет
+скепсис
+скептик
+скерцо
+скетч
+скидка
+скиния
+скип
+скипетр
+скирд
+скирда
+скит
+скиф
+скифы
+склад
+складка
+склейка
+склеп
+склероз
+склока
+склон
+склянка
+скоба
+скобарь
+скобка
+скобки
+скок
+скол
+сколиоз
+сколок
+сколоты
+скоп
+скопа
+скопец
+скопище
+скопцы
+скора
+скорбь
+скорняк
+скорый
+скос
+скот
+скотина
+скотник
+скотный
+скотч
+скребка
+скребло
+скребок
+скрежет
+скреп
+скрепа
+скрепер
+скрепка
+скрепки
+скрип
+скрипач
+скрипка
+скрытие
+скряга
+скуди
+скудо
+скука
+скукота
+скула
+скулеж
+скулы
+скунс
+скупец
+скупка
+скупой
+скупщик
+скутер
+скучища
+слабая
+слабина
+слабый
+слава
+славист
+славка
+славки
+славяне
+слад
+сладкое
+слайд
+слаксы
+слалом
+сланец
+сласти
+сласть
+слега
+след
+следок
+слежка
+слеза
+слезное
+слезы
+сленг
+слепая
+слепень
+слепец
+слепой
+слепок
+слепота
+слесарь
+слет
+слив
+слива
+сливка
+сливки
+слизень
+слизняк
+слизь
+слип
+слиток
+слияние
+слобода
+слова
+словак
+словаки
+словарь
+слово
+словцо
+слог
+слой
+слом
+сломка
+слон
+слоник
+слониха
+слуга
+служака
+служба
+службы
+служка
+слука
+слух
+слухач
+слухи
+случай
+случка
+слушок
+слюда
+слюна
+слюни
+слюнки
+слюнтяй
+слякоть
+смазка
+смазчик
+смак
+смалец
+смарагд
+смелая
+смелый
+смена
+сменщик
+смерд
+смерть
+смерч
+смесь
+смета
+сметана
+сметка
+смех
+смешки
+смешное
+смешок
+смирна
+смог
+смоква
+смокинг
+смола
+смолка
+смолы
+смоль
+сморчок
+смотр
+смрад
+смугляк
+смута
+смутьян
+смык
+смысл
+смычка
+смычок
+снайпер
+снаряд
+снасть
+снег
+снегирь
+снедь
+снежина
+снежки
+снежок
+снимок
+сноб
+снобизм
+сноп
+снопик
+снос
+сноска
+сноха
+сныть
+снятие
+соавтор
+собака
+собаки
+собачей
+собачка
+собачки
+собачьи
+собкор
+соблазн
+соболь
+собор
+собрат
+событие
+события
+сова
+совенок
+соверен
+совесть
+совет
+совка
+совок
+совочек
+совхоз
+совы
+соглас
+согрев
+сода
+содом
+сожитие
+созыв
+соитие
+сойка
+сок
+соки
+сокол
+соколик
+солдат
+соление
+соленое
+соленья
+солидол
+солист
+солитер
+солка
+солнце
+соло
+соловей
+соловый
+солод
+солодка
+солома
+соломка
+солонка
+соль
+сольдо
+солянка
+соляр
+солярий
+солярка
+сом
+сома
+сомали
+сомик
+сомина
+сомы
+сон
+соната
+сонет
+сони
+сонм
+сонмище
+сонник
+сонь
+соня
+сопение
+сопка
+сопли
+сопло
+сопля
+сопляк
+сопрано
+сор
+сорбит
+сорго
+соринка
+сорит
+сорняк
+сородич
+сорок
+сорока
+сором
+сорочка
+сорт
+сортир
+сосание
+сосед
+соседка
+сосенка
+сосиска
+сосиски
+соска
+сосна
+сосняк
+сосок
+сосочек
+состав
+сосуд
+сосудик
+сосун
+сосунок
+сот
+сотая
+соте
+сотерн
+сотка
+сотни
+сотник
+сотня
+сотский
+соты
+сотый
+соус
+соусник
+софа
+софизм
+софист
+софит
+соха
+сохатый
+сохач
+социум
+сошка
+сошки
+сошник
+союз
+союзник
+соя
+спад
+спазм
+спазма
+спай
+спайка
+спальня
+спанье
+спардек
+спаржа
+спарта
+спас
+спасибо
+спевка
+спектр
+спенсер
+сперма
+спесь
+спех
+спец
+специи
+специя
+спецкор
+спешка
+спид
+спикер
+спина
+спинет
+спинка
+спираль
+спирит
+спирт
+список
+спица
+спич
+спичка
+спички
+сплав
+сплетня
+сплин
+сполох
+спонсор
+спор
+спора
+спорт
+спорщик
+способ
+способы
+справа
+справка
+спрей
+спринт
+спрос
+спрут
+спурт
+спуск
+спутник
+спячка
+спящая
+спящий
+срам
+срамота
+сребро
+среда
+средина
+среднее
+срез
+сродник
+срок
+сруб
+срыв
+ссадина
+ссора
+ссуда
+ссылка
+став
+ставень
+ставка
+ставня
+стадий
+стадион
+стадия
+стадо
+стаж
+стажер
+стайер
+стайка
+стакан
+сталь
+стан
+станина
+станица
+станок
+станс
+стансы
+станция
+стапель
+старая
+старец
+старик
+старики
+старина
+старица
+старка
+старое
+старпом
+старт
+стартер
+старуха
+старшая
+старшие
+старший
+старшой
+старый
+старье
+статика
+статист
+статор
+статус
+статут
+статуя
+стать
+статья
+стация
+стачка
+стая
+ствол
+створ
+створка
+стеарин
+стебель
+стегно
+стежка
+стежок
+стезя
+стек
+стека
+стекло
+стела
+стеллаж
+стелька
+стен
+стена
+стенд
+стенка
+стеноз
+стены
+стеньга
+степ
+степень
+степняк
+степь
+стерва
+стервец
+стерня
+стилет
+стилист
+стило
+стиль
+стиляга
+стимул
+стирка
+стих
+стихарь
+стихи
+стихира
+стихия
+стишок
+стланик
+сто
+стог
+стожар
+стожары
+стожок
+стоик
+стойка
+стойло
+сток
+стокер
+стол
+столб
+столбец
+столбик
+столик
+столица
+столп
+столяр
+стон
+стоп
+стопа
+стопка
+стопор
+стопы
+сторож
+сторожа
+сторона
+стояк
+стояние
+стоянка
+страда
+страж
+стража
+страз
+страна
+страсти
+страсть
+стратег
+страус
+страх
+стрекот
+стрела
+стрелец
+стрелка
+стрелок
+стремя
+стрепет
+стресс
+стригун
+стриж
+стрижка
+строгач
+строй
+стройка
+строка
+строки
+строп
+стропа
+строфа
+строчка
+струг
+стружка
+струи
+струйка
+струна
+струнка
+струп
+стручок
+струя
+стряпня
+студент
+студень
+студия
+стужа
+стук
+стукач
+стул
+стулья
+ступа
+ступень
+ступка
+ступни
+ступня
+ступор
+стыд
+стыдоба
+стык
+стынь
+стычка
+стюард
+стяг
+стяжка
+суаре
+суахили
+суббота
+субчик
+субъект
+сувенир
+суверен
+сугроб
+суд
+судак
+суданцы
+сударик
+сударь
+судки
+судно
+судок
+судьба
+судья
+суета
+суетня
+суженая
+сужение
+суженый
+суицид
+сук
+сука
+сукна
+сукно
+сулема
+сулица
+сулой
+султан
+сума
+сумбур
+сумерки
+сумка
+сумма
+сумочка
+сумрак
+сундук
+сунна
+суп
+супер
+супец
+супница
+супонь
+суппорт
+супруг
+супруга
+супруги
+сура
+сургуч
+сурепка
+суржик
+сурик
+сурок
+сурьма
+суслик
+сусло
+сустав
+сутана
+сутенер
+сутки
+суть
+сутяга
+суфизм
+суфле
+суфлер
+суффикс
+сухарик
+сухарь
+суховей
+суходол
+сухость
+сухота
+сухотка
+сучки
+сучок
+сучье
+суша
+сушилка
+сушило
+сушка
+сушки
+сушняк
+сушь
+сущее
+сфера
+сфероид
+сферы
+сфинкс
+схватка
+схватки
+схема
+схизма
+схима
+схимник
+сход
+сходка
+сходни
+схоласт
+схолии
+сцена
+сценка
+сцепка
+сцепщик
+сцилла
+счастье
+счет
+счетчик
+счеты
+сшибка
+съезд
+съем
+съемка
+съемщик
+сын
+сынишка
+сынок
+сыночек
+сыны
+сыпняк
+сыпь
+сыр
+сырец
+сырник
+сырники
+сырок
+сырость
+сырт
+сырца
+сыры
+сырье
+сыск
+сыскная
+сыскное
+сыта
+сытая
+сытость
+сытый
+сыть
+сыч
+сыщик
+сэндвич
+сэр
+сюжет
+сюзерен
+сюита
+сюр
+сюрприз
+сюртук
+сяжки
+табак
+табака
+табачок
+табель
+таблица
+табло
+таблоид
+табор
+табу
+табун
+табунок
+табурет
+таверна
+таволга
+тавр
+тавро
+тавры
+таган
+таганка
+таганок
+таджик
+таджики
+таежник
+таз
+тазик
+тазы
+тайга
+тайм
+таймень
+таймер
+тайна
+тайник
+тайфун
+такелаж
+такое
+такса
+такси
+таксист
+такт
+тактик
+тактика
+такыр
+тал
+талант
+таланты
+талер
+талес
+талик
+талина
+талия
+талмуд
+талон
+таль
+тальк
+талька
+тальма
+тальник
+тамада
+тамбур
+тамга
+таможня
+тампон
+тамтам
+тангенс
+танго
+тангут
+тангуты
+тандем
+танец
+танин
+танк
+танкер
+танкист
+тантал
+танцзал
+танцор
+танцы
+тапер
+тапир
+тапка
+тапки
+тапочка
+тапочки
+тара
+таракан
+таран
+тарань
+тарарам
+тараса
+тарелка
+тарелки
+тари
+тариф
+тартар
+тартюф
+тархан
+тархун
+таска
+тат
+тата
+татами
+татарин
+татарка
+татары
+татка
+таты
+тать
+тау
+тафта
+тахта
+тачанка
+тачка
+ташка
+таяние
+тварь
+тварюка
+твердо
+твердый
+твердь
+твид
+твин
+твиндек
+твист
+твое
+твои
+твой
+творец
+творило
+творог
+твоя
+театр
+театрал
+театрик
+тевтоны
+тезис
+тезисы
+тезка
+теизм
+теин
+тек
+текинцы
+текст
+текучка
+текущее
+телега
+тележка
+телекс
+теленок
+телеса
+телефон
+телец
+телик
+телка
+теллур
+тело
+телок
+телочка
+телушка
+тельник
+тельца
+тельце
+теля
+тема
+тембр
+темень
+темечко
+темка
+темляк
+темная
+темница
+темное
+темнота
+темноты
+темп
+темпера
+темь
+темя
+тендер
+теневик
+тенек
+тенета
+тени
+теннис
+тенор
+тенорок
+тент
+тень
+теолог
+теорема
+теория
+теософ
+тепа
+теплица
+тепло
+теплое
+теплота
+теплынь
+терапия
+терем
+теремок
+терка
+терлик
+термин
+термит
+термос
+термы
+терн
+терние
+терния
+терраса
+террасы
+террор
+терц
+терция
+терьер
+терьеры
+тес
+тесак
+тесемка
+тесло
+теснина
+теснота
+тест
+тесто
+тесть
+тесьма
+тета
+тетерев
+тетерка
+тетеря
+тетечка
+тетива
+тетка
+тетрадь
+тетрарх
+тетушка
+тетя
+теургия
+тефтели
+техник
+техника
+течение
+течка
+течь
+теша
+теща
+тиамин
+тиара
+тибетец
+тибетцы
+тиверцы
+тигель
+тигр
+тигра
+тигрица
+тик
+тикание
+тильда
+тимошка
+тимпан
+тимьян
+тина
+тип
+типаж
+типикон
+типун
+типчик
+тир
+тирада
+тираж
+тиран
+тирания
+тире
+тирс
+тис
+тиски
+тисовые
+титан
+титаны
+титло
+титовка
+титр
+титул
+тиун
+тиф
+тифон
+тихоня
+тихоход
+тишина
+тишь
+ткань
+тканье
+ткацкая
+ткач
+ткачиха
+ткемали
+тлен
+тление
+тля
+тмин
+товар
+товарец
+товарищ
+товарка
+товары
+тога
+той
+тойон
+ток
+токай
+токарь
+токсин
+токсины
+тол
+толика
+толк
+толкач
+толки
+толмач
+толокно
+толпа
+толпища
+толстая
+толстый
+толстяк
+толчея
+толчки
+толчок
+толща
+толщина
+толь
+том
+томан
+томат
+томик
+тон
+тона
+тондо
+тонзура
+тоник
+тоника
+тонина
+тонкая
+тонкий
+тонна
+тоннаж
+тоннель
+тонус
+тоня
+топ
+топаз
+топик
+топика
+топка
+топливо
+топляк
+тополек
+тополь
+топоним
+топор
+топорик
+топорок
+топот
+топоток
+топтун
+топчан
+топь
+тора
+торба
+торбаза
+торбаса
+торг
+торгаш
+торги
+торгсин
+тореро
+торец
+торжище
+тори
+торий
+торит
+торк
+торки
+тормоз
+торн
+торнадо
+торос
+торпеда
+торс
+торт
+тортик
+торф
+торчок
+торшер
+тоска
+тост
+тостер
+тот
+тотем
+точечка
+точилка
+точило
+точка
+тошнота
+трава
+траверз
+траверс
+травина
+травка
+травля
+травма
+травник
+травы
+трагизм
+трагик
+трак
+тракт
+трактат
+трактир
+трактор
+трал
+трамвай
+транзит
+транс
+транш
+траншея
+трап
+трапеза
+трапп
+траппер
+трасс
+трасса
+трассер
+трата
+траулер
+траур
+трахеи
+трахея
+трахома
+треба
+требник
+требуха
+тревога
+тревоги
+трезвая
+трезвон
+трезвый
+трек
+трель
+трельяж
+тремоло
+тремор
+трен
+тренаж
+тренер
+трение
+тренинг
+трения
+тренога
+трепало
+трепанг
+трепач
+трепет
+трепка
+трепло
+треск
+треска
+трест
+треста
+третий
+треть
+третье
+третья
+третьяк
+треух
+треф
+трефа
+трефы
+трешка
+трешник
+трещина
+три
+триада
+триас
+триба
+трибун
+трибуна
+триер
+триера
+тризна
+трико
+триллер
+трио
+триодь
+триолет
+трип
+триплан
+триплет
+триппер
+триптих
+трирема
+тритий
+тритон
+триумф
+трицепс
+трог
+троечка
+троица
+тройка
+тройник
+тройня
+трок
+троллей
+тролль
+тромб
+тромбоз
+тромбон
+тромп
+трон
+троп
+тропа
+тропарь
+тропик
+тропики
+тропка
+трос
+тросик
+трость
+трот
+тротил
+тротуар
+трофей
+труба
+трубач
+трубка
+трувер
+труд
+трудное
+труды
+трудяга
+труп
+трупик
+труппа
+трус
+трусики
+трусиха
+трусы
+трут
+трутень
+труха
+трущоба
+трюизм
+трюк
+трюкач
+трюм
+трюмный
+трюмо
+трюфели
+трюфель
+тряпица
+тряпка
+тряпки
+тряпье
+трясина
+тряска
+туалет
+туаль
+туарег
+туареги
+туба
+тубус
+тувинцы
+туга
+тугай
+тугодум
+туес
+туесок
+тужурка
+туз
+туземец
+туземка
+тузик
+тук
+тукан
+туки
+тул
+тулес
+тулово
+тулуз
+тулун
+тулуп
+тулья
+тумак
+туман
+туманы
+тумба
+тун
+туна
+тунг
+тунгус
+тунгусы
+тундра
+тунец
+туника
+туннель
+тупей
+тупик
+тупица
+тупичок
+тупость
+тур
+тура
+турбаза
+турбина
+турель
+туризм
+турист
+турка
+турки
+туркмен
+турман
+турне
+турнепс
+турник
+турнир
+турнюр
+турок
+турпан
+турусы
+турчин
+тусовка
+тустеп
+тут
+тута
+тутовые
+тутти
+туф
+туфли
+туфля
+туча
+тучка
+туш
+туша
+туше
+тушение
+тушенка
+тушка
+тушкан
+тушь
+туя
+тщание
+тщета
+тыква
+тыл
+тыловик
+тылы
+тын
+тысяча
+тысячи
+тычинка
+тычок
+тьма
+тэк
+тюбик
+тюк
+тюлень
+тюль
+тюлька
+тюльпан
+тюрбан
+тюрбо
+тюрк
+тюрки
+тюрьма
+тюря
+тюряга
+тютя
+тюфяк
+тюфячок
+тюха
+тючок
+тяга
+тягач
+тягло
+тягость
+тягота
+тяготы
+тяж
+тяжба
+тяжесть
+тянучка
+тяпка
+тятька
+тятя
+уазик
+убежище
+убиение
+убийца
+убитая
+убитый
+ублюдок
+убогая
+убогий
+убой
+убойная
+убор
+уборка
+уборная
+уборщик
+убрус
+убыль
+убыток
+увал
+увалень
+увар
+увертка
+увечье
+увод
+увоз
+увязка
+угар
+углевод
+углежог
+углерод
+угловая
+угломер
+угль
+уговор
+угодник
+угодное
+угодье
+угол
+уголек
+уголок
+уголь
+угон
+угорь
+угроза
+угры
+уда
+удав
+удавка
+удалец
+удаль
+удар
+ударник
+удары
+удача
+удачник
+удел
+удила
+удилище
+удмурты
+удод
+удой
+удочка
+удушье
+удэ
+уезд
+ужас
+ужасы
+ужение
+ужик
+ужин
+уза
+узбек
+узбеки
+узбечка
+узда
+уздечка
+узел
+узелок
+узилище
+узник
+узница
+узор
+узость
+узы
+уйгур
+уйгуры
+уйма
+указ
+указка
+указчик
+уклад
+укладка
+уклейка
+уклон
+укол
+укор
+укорот
+украина
+украйна
+укроп
+укрытие
+уксус
+укус
+улан
+уланы
+улар
+улей
+улем
+улемы
+улика
+улита
+улитка
+улица
+уличи
+уличная
+уличный
+улов
+уловка
+улочка
+улус
+улы
+улыба
+улыбка
+ультра
+умбра
+умбры
+умелец
+умение
+умершая
+умерший
+умет
+умишко
+умная
+умник
+умница
+умный
+умора
+умы
+умысел
+ундина
+униаты
+уник
+уника
+уникум
+унион
+унисон
+унитаз
+уния
+унта
+унтер
+унты
+унция
+уныние
+упадок
+упек
+уплата
+упоение
+упокой
+упор
+управа
+упрек
+упряжка
+упряжь
+упрямец
+упырь
+ура
+ураган
+уралец
+уран
+урания
+урарту
+урду
+уремия
+уретрит
+урина
+урман
+урна
+уровень
+урод
+уродец
+уродина
+уродка
+урожай
+урок
+уроки
+уролог
+урон
+урочище
+урчание
+урюк
+уряд
+урядник
+усадьба
+усатый
+усач
+усердие
+усик
+усики
+усилие
+усилия
+усишки
+усищи
+услада
+условие
+условия
+услуга
+услуги
+усмешка
+усобица
+усолье
+усопшая
+усопший
+успение
+успех
+успехи
+уста
+устав
+усталая
+усталый
+устои
+устой
+устрица
+уступ
+уступка
+уступок
+устье
+усы
+утварь
+утенок
+утеря
+утес
+утеха
+утечка
+утиль
+утиные
+утица
+утка
+утконос
+уток
+утоп
+утопизм
+утопист
+утопия
+утор
+уточка
+утрата
+утреня
+утречко
+утро
+утроба
+утюг
+утюжок
+утя
+уха
+ухаб
+ухажер
+ухарь
+ухват
+ухватка
+ухмылка
+ухо
+уход
+участие
+участок
+участь
+учеба
+учебник
+учение
+ученик
+ученица
+ученый
+учет
+учетчик
+училище
+учитель
+ушан
+ушанка
+ушат
+уши
+ушиб
+ушица
+ушка
+ушки
+ушко
+ушкуй
+ушу
+ущелье
+ущерб
+уют
+фаблио
+фабра
+фабрика
+фабула
+фавн
+фавор
+фаворит
+фаги
+фагот
+фаза
+фазан
+фазенда
+фазис
+фай
+файл
+факел
+факелы
+факир
+факс
+факт
+фактик
+фактор
+фактура
+фал
+фалалей
+фаланга
+фалинь
+фалл
+фаллос
+фальцет
+фальшь
+фамилия
+фанат
+фанатик
+фанг
+фанера
+фанерка
+фанза
+фант
+фантаст
+фантик
+фантики
+фантом
+фанты
+фанфара
+фанфары
+фара
+фарад
+фарада
+фараон
+фарисеи
+фарисей
+фарс
+фарси
+фарт
+фартинг
+фартук
+фарфор
+фарш
+фас
+фасад
+фаска
+фасоль
+фасон
+фасция
+фат
+фата
+фатум
+фауна
+фашизм
+фашист
+фаэтон
+фаэтоны
+фаянс
+февраль
+феерия
+фейхоа
+фекалии
+феллах
+феллахи
+фелонь
+фелука
+фелюга
+фемида
+фен
+феникс
+фенол
+феномен
+фенотип
+фенхель
+феод
+феодал
+ферзь
+ферма
+фермент
+фермер
+фермуар
+ферт
+ферязь
+фес
+феска
+фетиш
+фетр
+фея
+фиакр
+фиал
+фиалка
+фиаско
+фиброз
+фибры
+фибула
+фиг
+фига
+фигаро
+фигли
+фигляр
+фигура
+фигурка
+фидель
+фиеста
+фижмы
+физалис
+физик
+физика
+физичка
+физия
+физмат
+физрук
+фикус
+фикция
+фила
+филарх
+филе
+филей
+филер
+филиал
+филин
+филолог
+философ
+филька
+фильм
+фильтр
+филя
+фимиам
+финал
+финансы
+финик
+финиш
+финка
+финн
+финна
+финны
+финт
+фиорд
+фирма
+фирман
+фирн
+фиск
+фискал
+фискала
+фистула
+фита
+фитилек
+фитиль
+фитин
+фифа
+фифи
+фиш
+фишка
+флаг
+флагман
+флажок
+флакон
+фламин
+фланг
+фланель
+фланец
+флаттер
+флегма
+флейт
+флейта
+флер
+флеш
+флигель
+флик
+флинт
+флинта
+флирт
+флокс
+флора
+флорин
+флорист
+флот
+флюгер
+флюид
+флюиды
+флюорит
+флюс
+фляга
+фляжка
+фоб
+фобия
+фогт
+фойе
+фок
+фокс
+фокус
+фокусы
+фол
+фолиант
+фолио
+фольга
+фомка
+фон
+фонарик
+фонарь
+фонд
+фонды
+фонема
+фонтан
+фора
+форвард
+форд
+фордик
+форель
+форзац
+форма
+формат
+формула
+формы
+форпик
+форпост
+форс
+форсаж
+форт
+форте
+фортель
+фортуна
+форум
+форшмак
+фосген
+фоска
+фосфат
+фосфаты
+фосфор
+фот
+фото
+фотон
+фофан
+фраер
+фраза
+фразер
+фрайер
+фрак
+фракиец
+фракция
+фрамуга
+франк
+франки
+франко
+франт
+француз
+фрау
+фрахт
+фрегат
+фреза
+фрекен
+френч
+фреска
+фриз
+фризы
+фрикасе
+фритюр
+фриц
+фрицы
+фронда
+фронт
+фронтон
+фру
+фрукт
+фрукты
+фря
+фтор
+фуга
+фугас
+фугаска
+фужер
+фузея
+фук
+фука
+фукс
+фуксия
+фуле
+фуляр
+фундук
+функция
+фунт
+фунтик
+фура
+фураж
+фуражка
+фургон
+фурия
+фурман
+фурор
+фуршет
+фут
+футбол
+футляр
+фуфайка
+фуфло
+фуэте
+фьорд
+фюзеляж
+фюрер
+хабар
+хабара
+хадж
+хаджи
+хадис
+хазар
+хазарин
+хазары
+хай
+хайло
+хакас
+хакасы
+хакер
+хаки
+хала
+халат
+халатик
+халва
+халда
+халдеи
+халдей
+халиф
+халифат
+халтура
+халупа
+халява
+хам
+хамит
+хамка
+хамса
+хамсин
+хамство
+хамье
+хан
+хандра
+ханжа
+ханство
+ханты
+ханша
+хаос
+хапуга
+харибда
+харизма
+харита
+хариус
+харон
+хартия
+харч
+харчи
+харчо
+харя
+хасид
+хата
+хатка
+хаха
+хахаль
+хвала
+хвастун
+хват
+хватка
+хвойные
+хворая
+хвороба
+хворост
+хворый
+хворь
+хвост
+хвостик
+хвосты
+хвощ
+хвощи
+хвоя
+хедер
+хедив
+хер
+херес
+херувим
+хетт
+хетты
+хибара
+хижина
+хилая
+хилость
+хилый
+хиляк
+химера
+химеры
+химизм
+химик
+химикат
+химичка
+химия
+хина
+хинди
+хинду
+хинин
+хиппи
+хирург
+хирурги
+хит
+хитин
+хитон
+хитоны
+хитрец
+хитреца
+хитрюга
+хищение
+хищник
+хищники
+хищница
+хищные
+хлад
+хлам
+хламида
+хлеб
+хлебец
+хлебная
+хлебник
+хлебное
+хлебово
+хлебцы
+хлев
+хлест
+хлопец
+хлопок
+хлопоты
+хлопуша
+хлопчик
+хлопья
+хлор
+хлорид
+хлориды
+хлорка
+хлыст
+хлыстик
+хлыщ
+хлюпик
+хлюст
+хлябь
+хлястик
+хмара
+хмарь
+хмель
+хмурь
+хна
+хныкала
+хобби
+хобот
+хоботок
+ход
+ходатай
+ходики
+ходок
+ходули
+ходуля
+ходунки
+ходьба
+ходячая
+ходячий
+хозяин
+хозяйка
+хоккей
+холдинг
+холера
+холерик
+холка
+холл
+холм
+холмик
+холод
+холода
+холодец
+холодок
+холоп
+холопка
+холст
+холуй
+хомут
+хомяк
+хомячок
+хон
+хоппер
+хор
+хорал
+хорват
+хорваты
+хорда
+хорей
+хорек
+хорея
+хорист
+хоровод
+хоромы
+хорошая
+хорошее
+хороший
+хорошо
+хорт
+хоругвь
+хоры
+хорь
+хота
+хотение
+хохма
+хохмач
+хохол
+хохолок
+хохот
+хохоток
+хохотун
+храбрая
+храбрец
+храбрый
+храм
+храмина
+храп
+хребет
+хрен
+хрип
+хрипота
+хрипун
+хрипы
+христос
+хром
+хромая
+хромой
+хромота
+хроник
+хроника
+хронист
+хруст
+хрущ
+хрыч
+хрюкало
+хрюшка
+хряк
+хряпа
+хряск
+хрящ
+хрящик
+худо
+худоба
+худое
+худрук
+худшая
+худшее
+худший
+худышка
+хула
+хулиган
+хунну
+хунта
+хурал
+хурма
+хутор
+хуторок
+цадик
+цапля
+царевич
+царевна
+царек
+царизм
+царица
+царство
+царь
+цаца
+цацка
+цвет
+цветень
+цветик
+цветная
+цветник
+цветное
+цветной
+цветок
+цевье
+цедра
+цезарь
+цезий
+цезура
+цейтнот
+целибат
+целик
+целина
+целое
+целость
+цель
+цемент
+цена
+ценз
+цензор
+цензура
+ценник
+ценное
+цент
+центавр
+центнер
+центр
+централ
+цеп
+цепень
+цепи
+цепочка
+цепь
+цербер
+церква
+церковь
+цесарка
+цесарь
+цех
+цехин
+цеце
+циан
+цианоз
+цибуля
+цигарка
+цикада
+цикады
+цикл
+циклон
+циклоп
+циклопы
+цикорий
+цикута
+цилиндр
+цимбалы
+цинга
+цинизм
+циник
+цинк
+цинния
+циновка
+цирк
+циркач
+циркон
+циркуль
+цирроз
+цирцея
+цистит
+цитата
+цитра
+цитрус
+цифирь
+цифра
+цифры
+цицеро
+цоколь
+цокот
+цуг
+цукаты
+цунами
+цуцик
+цыган
+цыгане
+цыганка
+цыганы
+цыпа
+цыпка
+цыпки
+цыпочка
+чабан
+чабер
+чабрец
+чага
+чад
+чадо
+чадра
+чадушко
+чадь
+чаевые
+чаек
+чаи
+чай
+чайка
+чайная
+чайник
+чайные
+чайхана
+чакан
+чал
+чалая
+чалдон
+чалка
+чалма
+чалый
+чан
+чара
+чардаш
+чарка
+чародей
+чартер
+чары
+час
+часик
+часики
+часовня
+часовой
+часок
+часочек
+частица
+частицы
+частник
+частное
+частота
+часть
+часы
+чауш
+чахотка
+чаша
+чашечка
+чашка
+чашник
+чаща
+чащоба
+чаяние
+чебак
+чебот
+чеботы
+чебурек
+чек
+чека
+чекан
+чеканка
+чекист
+чекмень
+чекушка
+челеста
+челка
+челн
+челнок
+чело
+человек
+челочка
+челюсть
+челядь
+чембало
+чемодан
+чемпион
+чепец
+чепига
+чепрак
+чепуха
+чепчик
+черва
+черви
+червы
+червь
+червяк
+чердак
+черед
+череда
+через
+черемис
+черемша
+черен
+черенок
+череп
+черепок
+черешня
+черешок
+черкес
+черкесы
+черная
+чернец
+черни
+черника
+чернила
+черница
+черное
+чернота
+чернуха
+черные
+черный
+черныш
+чернь
+черняк
+черпак
+черпало
+черт
+черта
+чертеж
+чертик
+чертог
+черты
+чертяка
+чес
+ческа
+чеснок
+чесотка
+честер
+честная
+честный
+честь
+чет
+чета
+четверг
+четка
+четки
+четыре
+чех
+чехарда
+чехи
+чехол
+чехонь
+чечен
+чеченец
+чеченка
+чеченцы
+чечены
+чечетка
+чешка
+чешуйка
+чешуя
+чибис
+чигирь
+чиж
+чижик
+чий
+чилим
+чин
+чина
+чинар
+чинара
+чинка
+чинуша
+чины
+чипсы
+чирей
+чирик
+чирки
+чирок
+число
+чистка
+чистое
+чистота
+чистые
+чистюля
+чистяк
+читалка
+читка
+чифирь
+чих
+чихание
+член
+членик
+членкор
+члены
+чох
+чрево
+чреда
+чресла
+чтение
+чтения
+чтец
+чтиво
+чтица
+чуб
+чубарый
+чубук
+чубчик
+чувал
+чуваш
+чуваши
+чувства
+чувство
+чувяки
+чугун
+чугунка
+чугунок
+чудак
+чудачка
+чудик
+чудила
+чудище
+чудная
+чудное
+чудной
+чудо
+чудодей
+чудь
+чужак
+чужачка
+чужая
+чужбина
+чужое
+чужой
+чуйка
+чукча
+чукчи
+чулан
+чулки
+чулок
+чулочки
+чум
+чума
+чумазая
+чумазый
+чумак
+чумичка
+чумная
+чумной
+чумовая
+чумовой
+чуни
+чуня
+чуприна
+чур
+чурбак
+чурбан
+чурек
+чурка
+чутье
+чуха
+чухна
+чухонец
+чухонка
+чухонцы
+чучело
+чушка
+чушки
+чушь
+шабат
+шабаш
+шабер
+шабли
+шаблон
+шавка
+шаг
+шаги
+шагомер
+шажок
+шажочек
+шайба
+шайка
+шайтан
+шакал
+шала
+шаланда
+шалаш
+шалашик
+шале
+шалман
+шалон
+шалопай
+шалопут
+шалость
+шалун
+шалунья
+шалфей
+шаль
+шаман
+шаманка
+шампань
+шампунь
+шампур
+шандал
+шанец
+шанкр
+шанс
+шансон
+шантаж
+шанц
+шапито
+шапка
+шапочка
+шапочки
+шар
+шарабан
+шарада
+шарж
+шариат
+шарик
+шарики
+шаркун
+шарлах
+шарлот
+шарм
+шарнир
+шартрез
+шарф
+шарфик
+шары
+шассе
+шасси
+шатание
+шатен
+шатенка
+шатер
+шатия
+шатун
+шафер
+шафран
+шах
+шахиня
+шахматы
+шахта
+шахтер
+шашка
+шашки
+шашлык
+шашни
+шваб
+швабра
+швабы
+шваль
+швартов
+швед
+шведка
+шведы
+швейка
+швейная
+швейцар
+швеллер
+шверт
+швец
+швея
+шебека
+шевалье
+шевро
+шеврон
+шедевр
+шезлонг
+шейк
+шейка
+шейкер
+шейпинг
+шейх
+шелест
+шелк
+шелка
+шелом
+шелуха
+шельма
+шельмец
+шельф
+шен
+шенкель
+шепот
+шепоток
+шептала
+шептун
+шербет
+шеренга
+шериф
+шерл
+шерочка
+шерп
+шерпа
+шерпы
+шерстка
+шерсть
+шершень
+шест
+шестая
+шествие
+шестой
+шесток
+шеф
+шефство
+шея
+шибздик
+шива
+шиворот
+шизик
+шиизм
+шиит
+шик
+шиллинг
+шило
+шимми
+шина
+шинель
+шинкарь
+шинок
+шиньон
+шип
+шипение
+шипучее
+шипучка
+шипы
+шипящий
+ширина
+ширинка
+ширма
+ширмы
+широкий
+широта
+широты
+ширь
+шитик
+шитье
+шифер
+шифон
+шифр
+шиш
+шишак
+шишечка
+шишига
+шишка
+шкала
+шкалик
+шканцы
+шкаф
+шкафут
+шкафчик
+шквал
+шкварки
+шкет
+шкив
+шкипер
+шкода
+школа
+школяр
+шкот
+шкура
+шкурка
+шкурник
+шлаг
+шлак
+шланг
+шлафрок
+шлейф
+шлем
+шлепка
+шлепок
+шлея
+шлиц
+шлык
+шлюз
+шлюп
+шлюпка
+шлюха
+шлягер
+шляпа
+шляпка
+шляпник
+шлях
+шляхта
+шляхтич
+шмат
+шматок
+шмель
+шнапс
+шнек
+шнека
+шнеллер
+шницель
+шнур
+шнурок
+шов
+шок
+шоколад
+шомпол
+шорник
+шорох
+шорты
+шоры
+шоссе
+шоу
+шоумен
+шофер
+шпага
+шпагат
+шпак
+шпала
+шпалера
+шпалеры
+шпалы
+шпана
+шпат
+шпатель
+шпенек
+шпик
+шпиль
+шпилька
+шпильки
+шпинат
+шпинель
+шпион
+шпионаж
+шпионка
+шпиц
+шплинт
+шпон
+шпор
+шпора
+шприц
+шпрот
+шпроты
+шпулька
+шпунт
+шпынь
+шрам
+шрамик
+шрифт
+штаб
+штабель
+штабист
+штабной
+штаг
+штадив
+штамм
+штамп
+штанга
+штанина
+штаны
+штат
+штатив
+штатный
+штаты
+штевень
+штейгер
+штейн
+штиль
+штифт
+шток
+штольня
+штопка
+штопор
+штора
+шторка
+шторм
+штос
+штосс
+штоф
+штраф
+штрек
+штрих
+штришок
+штука
+штукарь
+штурвал
+штурм
+штурман
+штуцер
+штучка
+штык
+штыка
+штыки
+штырек
+штырь
+шуба
+шубейка
+шубка
+шуга
+шугай
+шуйца
+шулер
+шум
+шумиха
+шумок
+шумы
+шурин
+шурпа
+шуруп
+шурф
+шуряк
+шустряк
+шут
+шутила
+шутиха
+шутка
+шутник
+шутница
+шуточка
+шушера
+шушун
+шхеры
+шхуна
+щавель
+щебенка
+щебень
+щебет
+щегол
+щеголь
+щедроты
+щека
+щеки
+щеколда
+щекотка
+щелевой
+щелка
+щелкун
+щелок
+щелочка
+щелочь
+щелчок
+щель
+щенок
+щеночек
+щепа
+щепка
+щепотка
+щепоть
+щепочка
+щерба
+щербина
+щетина
+щетинка
+щетинки
+щетка
+щеточка
+щечка
+щипка
+щипок
+щипцы
+щипчики
+щит
+щиток
+щука
+щуп
+щур
+щучка
+эбен
+эбонит
+эвен
+эвенк
+эвенка
+эвенки
+эвены
+эгида
+эгоизм
+эгоист
+эдем
+эдикт
+эдил
+экарте
+экватор
+экер
+экзамен
+экзарх
+экзема
+экзот
+экивоки
+экипаж
+эклер
+эклога
+эколог
+эконом
+экран
+экскурс
+эксперт
+экспорт
+экстаз
+экстра
+эксцесс
+экю
+элегия
+элемент
+элерон
+элероны
+элизиум
+элизия
+эликсир
+элита
+эллин
+эллинг
+эллины
+эллипс
+эль
+эльф
+эмаль
+эмбарго
+эмблема
+эмболия
+эмбрион
+эмир
+эмират
+эмиссар
+эмиссия
+эмитент
+эмка
+эмоции
+эмоция
+эмпиреи
+эмпирей
+эмпирик
+эмпирия
+эму
+энергия
+энзим
+энзимы
+энигма
+энтерит
+эол
+эпатаж
+эпигон
+эпиграф
+эпизод
+эпик
+эпикриз
+эпилог
+эпитет
+эпифиз
+эполет
+эполеты
+эпопея
+эпос
+эпоха
+эпсилон
+эра
+эрато
+эрг
+эре
+эрекция
+эрзац
+эрзя
+эринии
+эриния
+эритема
+эркер
+эрмитаж
+эрозия
+эрос
+эрот
+эротизм
+эротика
+эрстед
+эрудит
+эсер
+эсерка
+эскадра
+эскалоп
+эсквайр
+эскиз
+эскимо
+эскимос
+эскорт
+эскудо
+эскулап
+эсминец
+эспада
+эспри
+эссе
+эссеист
+эст
+эстамп
+эстет
+эстетик
+эстонец
+эстонка
+эстонцы
+эстрада
+эсты
+эта
+этаж
+эталон
+этан
+этап
+этапный
+этика
+этикет
+этнолог
+этноним
+этнос
+это
+этот
+этруск
+этруска
+этруски
+этуаль
+этюд
+этюдник
+эфа
+эфедрин
+эфенди
+эфес
+эфиоп
+эфиопка
+эфиопы
+эфир
+эфор
+эффект
+эффекты
+эхо
+эхолот
+эшафот
+эшелон
+юань
+юбилей
+юбиляр
+юбка
+юбочка
+юбчонка
+ювелир
+ювента
+югослав
+югра
+юдоль
+южане
+южанин
+южанка
+юкагиры
+юкка
+юла
+юмор
+юморист
+юморок
+юнак
+юнга
+юнец
+юниор
+юница
+юнкер
+юность
+юноша
+юпитер
+юра
+юрист
+юрод
+юрок
+юрт
+юрта
+юстиция
+юфть
+ябеда
+ябедник
+яблоко
+яблоня
+яблочко
+явка
+явление
+явор
+явь
+яга
+ягдташ
+ягель
+ягненок
+ягода
+ягодица
+ягодицы
+ягодка
+ягодник
+ягуар
+ядро
+ядрышко
+язва
+язык
+язычник
+язычок
+язь
+яичко
+яичник
+яичница
+яйла
+яйцо
+якорек
+якорь
+якут
+якуты
+ялик
+яма
+ямб
+ямина
+ямка
+ямочка
+ямочки
+ямщик
+январь
+янки
+янтарь
+янус
+янычар
+янычары
+японец
+японка
+японцы
+яранга
+ярд
+ярем
+ярка
+яркость
+ярлык
+ярлычок
+ярмарка
+ярмо
+яровое
+яровые
+ярость
+ярус
+ярыга
+ярыжка
+ярь
+ясак
+ясень
+ясли
+ясность
+яства
+яство
+ястреб
+ясы
+ясырь
+ятаган
+ять
+яхонт
+яхта
+яхтсмен
+ячейка
+ячмень
+яшма
+ящер
+ящерица
+ящерка
+ящеры
+ящик
+ящичек
+ящур`;
+    const dictionary = new Set(dictionaryText.split('\n'));
+    const alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'.split('');
+    const initialPowerUpCount = 3;
+    const powerUpQueue = [
+      { index: 1, label: '+1', type: 'wordShift', value: 1, className: '' },
+      { index: 3, label: '2W', type: 'wordMultiplier', value: 2, className: 'power-word' },
+      { index: 5, label: '×2', type: 'letterMultiplier', value: 2, className: 'power-letter' },
+      { index: 2, label: '+1', type: 'wordShift', value: 1, className: '' },
+      { index: 4, label: '×2', type: 'letterMultiplier', value: 2, className: 'power-letter' },
+      { index: 0, label: '2W', type: 'wordMultiplier', value: 2, className: 'power-word' },
+      { index: 6, label: '+1', type: 'wordShift', value: 1, className: '' },
+      { index: 1, label: '×2', type: 'letterMultiplier', value: 2, className: 'power-letter' },
+      { index: 3, label: '+1', type: 'wordShift', value: 1, className: '' },
+      { index: 5, label: '2W', type: 'wordMultiplier', value: 2, className: 'power-word' },
+      { index: 0, label: '+1', type: 'wordShift', value: 1, className: '' },
+      { index: 4, label: '×2', type: 'letterMultiplier', value: 2, className: 'power-letter' }
+    ];
+    const letterPoints = buildLetterPoints();
+    const nodes = {
+      score: document.getElementById('game-score'),
+      left: document.getElementById('letters-left'),
+      slots: document.getElementById('word-slots'),
+      grid: document.getElementById('tile-grid'),
+      message: document.getElementById('game-message'),
+      clear: document.getElementById('clear-word'),
+      shuffle: document.getElementById('shuffle-grid'),
+      submit: document.getElementById('submit-word'),
+      morphModal: document.getElementById('morph-modal'),
+      morphLetters: document.getElementById('morph-letters'),
+      morphClose: document.getElementById('morph-close')
+    };
+    let nextTileId = 1;
+    let board = [];
+    let queue = [];
+    let activePowerUps = {};
+    let nextPowerUpIndex = 0;
+    let selectedIds = [];
+    let score = 0;
+    let playedWords = new Set();
+    let pendingMorphId = null;
+    let isFinished = false;
+    let poppingTileIds = new Set();
+    let poppingSlotIndex = null;
+    let poppingPowerIndices = new Set();
+    let messageToneTimeoutId = null;
+    let scoreRollTimeoutIds = [];
+    let tilePopTimeoutId = null;
+    let slotPopTimeoutId = null;
+    let powerPopTimeoutId = null;
+
+    function buildLetterPoints() {
+      const groups = [
+        ['оеаинтсрвлкм', 1],
+        ['дпуяыьгзбчй', 2],
+        ['хжшюцщэфъ', 3]
+      ];
+      return groups.reduce((map, [letters, value]) => {
+        letters.split('').forEach((letter) => {
+          map[letter] = value;
+        });
+        return map;
+      }, { '?': 0 });
+    }
+
+    function normalizeWord(word) {
+      return word.toLowerCase().replaceAll('ё', 'е');
+    }
+
+    function createTile(letter) {
+      const normalized = normalizeWord(letter);
+      return {
+        id: nextTileId++,
+        letter,
+        value: letterPoints[normalized] ?? 1,
+        morphChoice: null
+      };
+    }
+
+    function clonePowerUp(powerUp, index) {
+      return {
+        ...powerUp,
+        index
+      };
+    }
+
+    function normalizeSlotIndex(index) {
+      const normalized = Math.trunc(index) % 7;
+      return normalized >= 0 ? normalized : normalized + 7;
+    }
+
+    function findNextAvailablePowerSlot(preferredIndex) {
+      const start = normalizeSlotIndex(preferredIndex);
+      for (let offset = 0; offset < 7; offset += 1) {
+        const index = (start + offset) % 7;
+        if (!activePowerUps[index]) {
+          return index;
+        }
+      }
+      return null;
+    }
+
+    function activateQueuedPowerUps(count) {
+      const revealed = [];
+      let assigned = 0;
+
+      while (assigned < count && nextPowerUpIndex < powerUpQueue.length) {
+        const powerUp = powerUpQueue[nextPowerUpIndex];
+        nextPowerUpIndex += 1;
+        if (!powerUp) continue;
+
+        const index = findNextAvailablePowerSlot(powerUp.index);
+        if (index === null) continue;
+
+        activePowerUps[index] = clonePowerUp(powerUp, index);
+        revealed.push(index);
+        assigned += 1;
+      }
+
+      return revealed;
+    }
+
+    function resetGame() {
+      clearScoreRollTimers();
+      nextTileId = 1;
+      board = initialLetters.map(createTile);
+      queue = drawLetters.map(createTile);
+      activePowerUps = {};
+      nextPowerUpIndex = 0;
+      const initialPowerIndices = activateQueuedPowerUps(initialPowerUpCount);
+      selectedIds = [];
+      score = 0;
+      playedWords = new Set();
+      pendingMorphId = null;
+      isFinished = false;
+      poppingTileIds = new Set(board.map((tile) => tile.id));
+      poppingPowerIndices = new Set(initialPowerIndices);
+      setMessage('Длиннее слово — больше очков');
+      setMessageTone(null);
+      render();
+      markPoppingTiles(board.map((tile) => tile.id));
+      markPoppingPowers(initialPowerIndices);
+    }
+
+    function selectedTiles() {
+      return selectedIds
+        .map((id) => board.find((tile) => tile && tile.id === id))
+        .filter(Boolean);
+    }
+
+    function tileText(tile) {
+      return tile.letter === '?' ? (tile.morphChoice || '?') : tile.letter;
+    }
+
+    function restartAnimation(element, className) {
+      if (!element) return;
+      element.classList.remove(className);
+      void element.offsetWidth;
+      element.classList.add(className);
+    }
+
+    function clearScoreRollTimers() {
+      scoreRollTimeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
+      scoreRollTimeoutIds = [];
+      nodes.score.classList.remove('is-rolling', 'is-bumping');
+    }
+
+    function rollScore(from, to) {
+      clearScoreRollTimers();
+
+      if (from === to) {
+        nodes.score.textContent = to;
+        return;
+      }
+
+      const direction = to > from ? 1 : -1;
+      const distance = Math.abs(to - from);
+      const step = Math.max(1, Math.ceil(distance / 18));
+      let current = from;
+
+      const tick = () => {
+        current += direction * step;
+        if ((direction > 0 && current >= to) || (direction < 0 && current <= to)) {
+          current = to;
+        }
+
+        nodes.score.textContent = current;
+        restartAnimation(nodes.score, 'is-rolling');
+
+        if (current !== to) {
+          scoreRollTimeoutIds.push(window.setTimeout(tick, 36));
+        } else {
+          scoreRollTimeoutIds.push(window.setTimeout(() => {
+            nodes.score.classList.remove('is-rolling');
+            restartAnimation(nodes.score, 'is-bumping');
+          }, 40));
+        }
+      };
+
+      tick();
+    }
+
+    function markPoppingTiles(tileIds) {
+      if (tilePopTimeoutId) {
+        window.clearTimeout(tilePopTimeoutId);
+      }
+      poppingTileIds = new Set(tileIds);
+      renderGrid();
+      tilePopTimeoutId = window.setTimeout(() => {
+        poppingTileIds = new Set();
+        render();
+      }, 280);
+    }
+
+    function markPoppingSlot(index) {
+      if (slotPopTimeoutId) {
+        window.clearTimeout(slotPopTimeoutId);
+      }
+      poppingSlotIndex = index;
+      renderSlots();
+      slotPopTimeoutId = window.setTimeout(() => {
+        poppingSlotIndex = null;
+        renderSlots();
+      }, 240);
+    }
+
+    function markPoppingPowers(indices) {
+      if (powerPopTimeoutId) {
+        window.clearTimeout(powerPopTimeoutId);
+      }
+      poppingPowerIndices = new Set(indices);
+      renderSlots();
+      powerPopTimeoutId = window.setTimeout(() => {
+        poppingPowerIndices = new Set();
+        renderSlots();
+      }, 280);
+    }
+
+    function setMessageTone(tone) {
+      if (messageToneTimeoutId) {
+        window.clearTimeout(messageToneTimeoutId);
+      }
+      nodes.message.classList.remove('is-success', 'is-error');
+      if (!tone) return;
+
+      requestAnimationFrame(() => {
+        nodes.message.classList.add(tone === 'success' ? 'is-success' : 'is-error');
+      });
+      messageToneTimeoutId = window.setTimeout(() => {
+        nodes.message.classList.remove('is-success', 'is-error');
+      }, tone === 'success' ? 820 : 560);
+    }
+
+    function setMessage(text, withReset = false) {
+      nodes.message.textContent = text;
+      if (withReset) {
+        const button = document.createElement('button');
+        button.className = 'game-reset';
+        button.type = 'button';
+        button.textContent = 'сброс';
+        button.addEventListener('click', resetGame);
+        nodes.message.appendChild(button);
+      }
+    }
+
+    function render() {
+      nodes.score.textContent = score;
+      nodes.left.textContent = board.filter(Boolean).length + queue.length;
+      renderSlots();
+      renderGrid();
+    }
+
+    function renderSlots() {
+      const tiles = selectedTiles();
+      const draft = computeDraftScore();
+      nodes.slots.innerHTML = '';
+
+      for (let index = 0; index < 7; index += 1) {
+        const slot = document.createElement('div');
+        slot.className = 'word-slot';
+        slot.setAttribute('aria-label', `Слот ${index + 1}`);
+
+        const powerUp = activePowerUps[index];
+
+        if (powerUp) {
+          slot.classList.add('has-power');
+          if (powerUp.type === 'wordShift') {
+            slot.classList.add('has-power-shift');
+          } else if (powerUp.type === 'wordMultiplier') {
+            slot.classList.add('has-power-word');
+          } else if (powerUp.type === 'letterMultiplier') {
+            slot.classList.add('has-power-letter');
+          }
+        }
+
+        if (tiles[index]) {
+          slot.classList.add('has-letter');
+          if (poppingSlotIndex === index) {
+            slot.classList.add('is-popping');
+          }
+          slot.setAttribute('role', 'button');
+          slot.setAttribute('tabindex', '0');
+          slot.setAttribute('aria-label', `Убрать букву ${tileText(tiles[index])}`);
+          slot.addEventListener('click', () => removeSelectedTile(tiles[index].id));
+          slot.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              removeSelectedTile(tiles[index].id);
+            }
+          });
+
+          const letter = document.createElement('span');
+          letter.className = 'word-slot-letter';
+          letter.textContent = tileText(tiles[index]);
+          slot.appendChild(letter);
+
+          const value = document.createElement('span');
+          value.className = 'word-slot-value';
+          value.textContent = draft.tileScores[index] ?? tiles[index].value;
+          slot.appendChild(value);
+        }
+
+        if (powerUp) {
+          const badge = document.createElement('span');
+          badge.className = `power-badge ${powerUp.className}`;
+          if (poppingPowerIndices.has(index)) {
+            badge.classList.add('is-popping');
+          }
+          badge.textContent = powerUp.label;
+          slot.appendChild(badge);
+        }
+
+        nodes.slots.appendChild(slot);
+      }
+    }
+
+    function renderGrid() {
+      nodes.grid.innerHTML = '';
+
+      board.forEach((tile) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'letter-tile';
+
+        if (!tile) {
+          button.classList.add('is-empty');
+          button.tabIndex = -1;
+          nodes.grid.appendChild(button);
+          return;
+        }
+
+        const isSelected = selectedIds.includes(tile.id);
+        if (isSelected) {
+          button.classList.add('is-vacated');
+          button.disabled = true;
+          button.tabIndex = -1;
+          button.setAttribute('aria-label', `Вернуть букву ${tileText(tile)} на поле`);
+          button.addEventListener('click', () => removeSelectedTile(tile.id));
+          nodes.grid.appendChild(button);
+          return;
+        }
+        if (poppingTileIds.has(tile.id)) {
+          button.classList.add('is-popping');
+        }
+
+        button.dataset.tileId = tile.id;
+        button.setAttribute('aria-label', `Буква ${tileText(tile)}, ${tile.value} очков`);
+        button.textContent = tileText(tile);
+
+        const value = document.createElement('span');
+        value.className = 'letter-value';
+        value.textContent = tile.value;
+        button.appendChild(value);
+        button.addEventListener('click', () => handleTileClick(tile.id));
+        nodes.grid.appendChild(button);
+      });
+    }
+
+    function handleTileClick(tileId) {
+      if (isFinished) return;
+
+      const tile = board.find((item) => item && item.id === tileId);
+      if (!tile) return;
+
+      if (selectedIds.includes(tileId)) {
+        removeSelectedTile(tileId);
+        return;
+      }
+
+      if (selectedIds.length >= 7) {
+        setMessage('В слове максимум 7 букв');
+        setMessageTone('error');
+        return;
+      }
+
+      if (tile.letter === '?' && !tile.morphChoice) {
+        pendingMorphId = tileId;
+        openMorphModal();
+        return;
+      }
+
+      selectedIds.push(tileId);
+      markPoppingSlot(selectedIds.length - 1);
+      updateDraftMessage();
+      setMessageTone(null);
+      render();
+    }
+
+    function removeSelectedTile(tileId) {
+      const tile = board.find((item) => item && item.id === tileId);
+      selectedIds = selectedIds.filter((id) => id !== tileId);
+      if (tile?.letter === '?') {
+        tile.morphChoice = null;
+      }
+      updateDraftMessage();
+      setMessageTone(null);
+      render();
+    }
+
+    function openMorphModal() {
+      nodes.morphModal.classList.add('is-open');
+      nodes.morphClose.focus();
+    }
+
+    function closeMorphModal() {
+      pendingMorphId = null;
+      nodes.morphModal.classList.remove('is-open');
+    }
+
+    function chooseMorphLetter(letter) {
+      const tile = board.find((item) => item && item.id === pendingMorphId);
+      if (!tile) {
+        closeMorphModal();
+        return;
+      }
+
+      tile.morphChoice = letter;
+      selectedIds.push(tile.id);
+      markPoppingSlot(selectedIds.length - 1);
+      closeMorphModal();
+      updateDraftMessage();
+      setMessageTone(null);
+      render();
+    }
+
+    function renderMorphLetters() {
+      nodes.morphLetters.innerHTML = '';
+      alphabet.forEach((letter) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'morph-letter';
+        button.textContent = letter;
+        button.setAttribute('aria-label', `Выбрать букву ${letter}`);
+        button.addEventListener('click', () => chooseMorphLetter(letter));
+        nodes.morphLetters.appendChild(button);
+      });
+    }
+
+    function currentWord() {
+      return selectedTiles().map(tileText).join('');
+    }
+
+    function computeDraftScore() {
+      const tiles = selectedTiles();
+      let wordShift = 0;
+      let wordMultiplier = 1;
+      const tileScores = [];
+      let subtotal = 0;
+
+      tiles.forEach((_, index) => {
+        const powerUp = activePowerUps[index];
+        if (powerUp?.type === 'wordShift') {
+          wordShift += powerUp.value ?? 1;
+        } else if (powerUp?.type === 'wordMultiplier') {
+          wordMultiplier *= powerUp.value ?? 2;
+        }
+      });
+
+      tiles.forEach((tile, index) => {
+        let tileScore = tile.value;
+        tileScore = Math.max(0, tileScore + wordShift);
+
+        const powerUp = activePowerUps[index];
+        if (powerUp?.type === 'letterMultiplier') {
+          tileScore *= powerUp.value ?? 2;
+        }
+        tileScores[index] = tileScore;
+        subtotal += tileScore;
+      });
+
+      subtotal *= wordMultiplier;
+
+      if (tiles.length === 7) {
+        subtotal += 7;
+      }
+
+      return { total: subtotal, tileScores };
+    }
+
+    function scoreCurrentWord() {
+      return computeDraftScore().total;
+    }
+
+    function formatPointsLabel(points) {
+      const value = Math.abs(points);
+      const lastTwo = value % 100;
+      const last = value % 10;
+
+      if (lastTwo >= 11 && lastTwo <= 14) {
+        return 'очков';
+      }
+      if (last === 1) {
+        return 'очко';
+      }
+      if (last >= 2 && last <= 4) {
+        return 'очка';
+      }
+      return 'очков';
+    }
+
+    function consumeCoveredPowerUps(slotCount) {
+      let consumedCount = 0;
+
+      for (let index = 0; index < slotCount; index += 1) {
+        if (!activePowerUps[index]) continue;
+        delete activePowerUps[index];
+        consumedCount += 1;
+      }
+
+      return activateQueuedPowerUps(consumedCount);
+    }
+
+    function updateDraftMessage() {
+      const word = currentWord();
+      if (!word) {
+        setMessage('Длиннее слово — больше очков');
+        return;
+      }
+      const points = scoreCurrentWord();
+      setMessage(`${word} · ${points} ${formatPointsLabel(points)}`);
+    }
+
+    function submitWord() {
+      if (isFinished) return;
+
+      const word = currentWord();
+      const normalized = normalizeWord(word);
+
+      if (word.length < 3) {
+        setMessage('Нужно минимум 3 буквы');
+        setMessageTone('error');
+        return;
+      }
+
+      if (!dictionary.has(normalized)) {
+        setMessage(`«${word}» нет в словаре`);
+        setMessageTone('error');
+        return;
+      }
+
+      if (playedWords.has(normalized)) {
+        setMessage(`«${word}» уже было`);
+        setMessageTone('error');
+        return;
+      }
+
+      const previousScore = score;
+      const gained = scoreCurrentWord();
+      playedWords.add(normalized);
+      score += gained;
+      const revealedPowerIndices = consumeCoveredPowerUps(word.length);
+      removeSelectedTiles();
+      const refilledTileIds = refillBoard();
+      selectedIds = [];
+
+      if (board.filter(Boolean).length + queue.length === 0) {
+        score += 10;
+        isFinished = true;
+        setMessage(`Финиш: ${score} очков`, true);
+      } else {
+        setMessage(`«${word}» +${gained}`);
+      }
+
+      render();
+      setMessageTone('success');
+      rollScore(previousScore, score);
+      markPoppingTiles(refilledTileIds);
+      markPoppingPowers(revealedPowerIndices);
+    }
+
+    function removeSelectedTiles() {
+      const used = new Set(selectedIds);
+      board = board.map((tile) => used.has(tile?.id) ? null : tile);
+    }
+
+    function shuffleArray(items) {
+      const shuffled = items.slice();
+      for (let index = shuffled.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+      }
+      return shuffled;
+    }
+
+    function boardHasPlayableWord(nextBoard) {
+      const counts = nextBoard.reduce((map, tile) => {
+        if (!tile) return map;
+        const letter = normalizeWord(tile.letter);
+        map[letter] = (map[letter] ?? 0) + 1;
+        return map;
+      }, {});
+
+      for (const word of dictionary) {
+        if (playedWords.has(word)) continue;
+        const needed = {};
+        let canMake = true;
+
+        for (const letter of word) {
+          needed[letter] = (needed[letter] ?? 0) + 1;
+          if (needed[letter] > (counts[letter] ?? 0)) {
+            canMake = false;
+            break;
+          }
+        }
+
+        if (canMake) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    function randomRefillAttempt() {
+      const nextBoard = board.slice();
+      const nextQueue = queue.slice();
+      const refilledTileIds = [];
+      const emptySlots = nextBoard
+        .map((tile, index) => tile ? null : index)
+        .filter((index) => index !== null);
+
+      for (const slotIndex of emptySlots) {
+        if (nextQueue.length === 0) break;
+        const queueIndex = Math.floor(Math.random() * nextQueue.length);
+        const [nextTile] = nextQueue.splice(queueIndex, 1);
+        nextBoard[slotIndex] = nextTile;
+        refilledTileIds.push(nextTile.id);
+      }
+
+      return { nextBoard, nextQueue, refilledTileIds };
+    }
+
+    function refillBoard() {
+      const emptyCount = board.filter((tile) => !tile).length;
+      if (emptyCount === 0 || queue.length === 0) {
+        return [];
+      }
+
+      const attempts = Math.min(120, Math.max(24, queue.length * emptyCount * 2));
+      let fallback = null;
+
+      for (let attempt = 0; attempt < attempts; attempt += 1) {
+        const refill = randomRefillAttempt();
+        fallback ??= refill;
+
+        const remainingLetters = refill.nextBoard.filter(Boolean).length + refill.nextQueue.length;
+        if (remainingLetters === 0 || boardHasPlayableWord(refill.nextBoard)) {
+          board = refill.nextBoard;
+          queue = refill.nextQueue;
+          return refill.refilledTileIds;
+        }
+      }
+
+      const refill = fallback ?? randomRefillAttempt();
+      board = refill.nextBoard;
+      queue = refill.nextQueue;
+      return refill.refilledTileIds;
+    }
+
+    function clearWord() {
+      selectedTiles().forEach((tile) => {
+        if (tile.letter === '?') {
+          tile.morphChoice = null;
+        }
+      });
+      selectedIds = [];
+      setMessage('Длиннее слово — больше очков');
+      setMessageTone(null);
+      render();
+    }
+
+    function shuffleGrid() {
+      if (isFinished) return;
+      clearWord();
+      const filled = board.filter(Boolean);
+
+      for (let index = filled.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [filled[index], filled[swapIndex]] = [filled[swapIndex], filled[index]];
+      }
+
+      let filledIndex = 0;
+      board = board.map((tile) => tile ? filled[filledIndex++] : null);
+      setMessage('Буквы перемешаны');
+      render();
+      markPoppingTiles(board.filter(Boolean).map((tile) => tile.id));
+    }
+
+    nodes.clear.addEventListener('click', clearWord);
+    nodes.shuffle.addEventListener('click', shuffleGrid);
+    nodes.submit.addEventListener('click', submitWord);
+    nodes.morphClose.addEventListener('click', closeMorphModal);
+    nodes.morphModal.addEventListener('click', (event) => {
+      if (event.target === nodes.morphModal) {
+        closeMorphModal();
+      }
+    });
+
+    renderMorphLetters();
+    resetGame();
+  })();
+
+  // Переключение темы
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? '' : 'dark');
+  });
+
+  function isSupportedBadgeImage(file) {
+    const extension = file.name.split('.').pop().toLowerCase();
+    return file.type.startsWith('image/') || supportedBadgeExtensions.includes(extension);
+  }
+
+  function showBadgeUploadAlert() {
+    alert(badgeUploadMessage);
+  }
+
+  function replaceImageContent(container, src, className) {
+    container.innerHTML = '';
+
+    const image = document.createElement('img');
+    image.className = className;
+    image.src = src;
+    image.alt = '';
+
+    container.appendChild(image);
+  }
+
+  document.addEventListener('dragover', (event) => {
+    event.preventDefault();
+  });
+
+  document.addEventListener('drop', (event) => {
+    event.preventDefault();
+
+    const file = event.dataTransfer.files[0];
+    if (!file || !isSupportedBadgeImage(file)) {
+      showBadgeUploadAlert();
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.addEventListener('load', () => {
+      const badge = document.querySelector('.author-name-badge');
+      const fireIcon = document.querySelector('.reaction-fire-icon');
+
+      replaceImageContent(badge, reader.result, 'author-name-badge-image');
+      replaceImageContent(fireIcon, reader.result, 'reaction-icon-image');
+    });
+
+    reader.addEventListener('error', showBadgeUploadAlert);
+    reader.readAsDataURL(file);
+  });
+</script>
+
+</body>
+</html>
