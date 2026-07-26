@@ -1,0 +1,2285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vc.ru Card Template</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #edeef0;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 84px 16px 24px;
+  }
+
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 60px;
+    background: #FFE5EA;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+  }
+
+  .site-logo {
+    display: flex;
+    align-items: center;
+    width: 52px;
+    height: 52px;
+  }
+
+  /* Карточка */
+  .post-card {
+    width: 640px;
+    max-width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .post-inner {
+    padding: 0 24px;
+  }
+
+  /* Шапка */
+  .post-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0 12px;
+  }
+
+  .author-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Аватар с градиентом */
+  .avatar-wrap {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .avatar-main {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 90deg,
+      #6ed0ff 0deg,
+      #61a1ff 42deg,
+      #9d70ff 89deg,
+      #ff60c7 137deg,
+      #ff483e 180deg,
+      #ff9400 223deg,
+      #ffde48 270deg,
+      #7ae632 306deg,
+      #6fd1ff 359deg,
+      #6ed0ff 360deg
+    );
+    outline: 1px solid rgba(0,0,0,0.10);
+    outline-offset: -1px;
+  }
+
+  /* vc.ru-бейдж */
+  .avatar-badge {
+    position: absolute;
+    bottom: -2px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #1693E5;
+    border: 2px solid #fff;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .author-name-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .author-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #000;
+    line-height: 22px;
+  }
+
+  .author-name-badge {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .author-name-badge-image {
+    display: block;
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .reaction-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .reaction-icon-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+
+  .author-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .author-section {
+    font-size: 13px;
+    font-weight: 400;
+    color: #000;
+    line-height: 18px;
+  }
+
+  .author-time {
+    font-size: 13px;
+    color: #595959;
+    line-height: 18px;
+  }
+
+  /* Кнопки справа */
+  .header-actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-subscribe {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #000;
+    background: #F4F4F4;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 10px;
+    height: 28px;
+    cursor: pointer;
+    line-height: 18px;
+  }
+  .btn-subscribe:hover { background: #e8e8e8; }
+
+  .btn-more {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 9px 8px;
+  }
+  .btn-more:hover { background: #f4f4f4; }
+
+  /* Заголовок */
+  .post-title-row {
+    padding-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .post-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: #000;
+    line-height: 30px;
+  }
+
+  /* Контент-блок */
+  .post-content {
+    width: 592px;
+    height: 592px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.10);
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #bbb;
+    font-size: 14px;
+  }
+
+  .progress-game {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    color: #000;
+    background: #fff;
+    overflow: hidden;
+    padding: 22px 32px 24px;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.24s ease;
+  }
+
+  .progress-game.is-fading {
+    opacity: 0;
+  }
+
+  .progress-shot {
+    position: relative;
+    width: 100%;
+    height: 312px;
+    border-radius: 8px;
+    background: #f4f4f4;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .progress-shot img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .progress-round {
+    order: -1;
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 16px;
+    line-height: 22px;
+    color: #595959;
+  }
+
+  .progress-game-name {
+    display: none;
+    height: 0;
+    margin-top: 0;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 500;
+    color: #000;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .progress-game-name.is-visible {
+    opacity: 1;
+  }
+
+  .progress-value {
+    margin-top: 8px;
+    font-size: 38px;
+    line-height: 44px;
+    font-weight: 500;
+    color: #000;
+  }
+
+  .progress-slider-wrap {
+    position: relative;
+    width: 100%;
+    margin-top: 8px;
+    padding: 13px 0 34px;
+  }
+
+  .progress-slider {
+    width: 100%;
+    height: 28px;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    display: block;
+  }
+
+  .progress-slider::-webkit-slider-runnable-track {
+    height: 3px;
+    border-radius: 999px;
+    background: #d9d9d9;
+  }
+
+  .progress-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    margin-top: -7.5px;
+    border: 3px solid #0b5dd7;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.22);
+  }
+
+  .progress-slider::-moz-range-track {
+    height: 3px;
+    border-radius: 999px;
+    background: #d9d9d9;
+  }
+
+  .progress-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border: 3px solid #0b5dd7;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.22);
+  }
+
+  .progress-slider:disabled {
+    cursor: default;
+  }
+
+  .progress-slider.is-revealed {
+    pointer-events: none;
+  }
+
+  .progress-slider.is-revealed::-webkit-slider-thumb {
+    opacity: 0;
+  }
+
+  .progress-slider.is-revealed::-moz-range-thumb {
+    opacity: 0;
+  }
+
+  .progress-marker {
+    position: absolute;
+    top: 7px;
+    width: 2px;
+    height: 28px;
+    transform: translateX(-1px);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .progress-marker.is-visible {
+    opacity: 1;
+  }
+
+  .progress-marker::before {
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  .progress-marker-player::before {
+    border: 3px solid #0b5dd7;
+  }
+
+  .progress-marker-correct::before {
+    border: 3px solid #20b85a;
+  }
+
+  .progress-marker-label {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 3px 7px;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  }
+
+  .progress-marker-player .progress-marker-label {
+    color: #0b5dd7;
+  }
+
+  .progress-marker-correct .progress-marker-label {
+    color: #0c8f43;
+  }
+
+  .progress-button {
+    margin-top: 0;
+    border: 0;
+    border-radius: 16px;
+    background: #0b5dd7;
+    color: #fff;
+    min-width: 132px;
+    height: 42px;
+    padding: 0 18px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .progress-button:hover {
+    background: #0952bf;
+  }
+
+  .progress-button:focus-visible,
+  .progress-slider:focus-visible {
+    outline: 2px solid #0b5dd7;
+    outline-offset: 3px;
+  }
+
+  .progress-button.is-hidden {
+    visibility: hidden;
+  }
+
+  .progress-reveal-info {
+    margin-top: 0;
+    height: 42px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .progress-reveal-title {
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 500;
+    color: #000;
+  }
+
+  .progress-reveal-meta {
+    margin-top: 2px;
+    font-size: 14px;
+    line-height: 16px;
+    color: #595959;
+  }
+
+  .progress-result {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .progress-result-title {
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 500;
+    color: #000;
+  }
+
+  .progress-result-subtitle {
+    margin-top: 12px;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000;
+  }
+
+  .progress-result-rank {
+    margin-top: 44px;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000;
+  }
+
+  .progress-result-rank span {
+    color: #f04444;
+    font-size: 12px;
+    vertical-align: 1px;
+  }
+
+  .progress-result .progress-button {
+    margin-top: 42px;
+  }
+
+  .post-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Реакции */
+  .reactions-bar {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .reaction {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 80px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 22px;
+    color: #595959;
+  }
+
+  .reaction-active {
+    background: #0B5DD7;
+    color: #fff;
+  }
+
+  .reaction-inactive {
+    background: #F5F5F5;
+  }
+  .reaction-inactive:hover { background: #ebebeb; }
+
+  .reaction-add {
+    background: #F5F5F5;
+    border-radius: 80px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #595959;
+  }
+  .reaction-add:hover { background: #ebebeb; }
+
+  /* Экшен-бар */
+  .action-bar {
+    padding: 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .action-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px 4px 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 56px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    color: #595959;
+    line-height: 22px;
+  }
+  .action-btn:hover { background: #f4f4f4; }
+
+  .action-icon-btn {
+    width: 36px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 4px 8px;
+  }
+  .action-icon-btn:hover { background: #f4f4f4; }
+
+  .action-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding-left: 12px;
+    color: #595959;
+    font-size: 15px;
+    line-height: 22px;
+  }
+
+  /* Адаптив */
+  @media (max-width: 640px) {
+    body { padding: 60px 0 0; }
+    .site-header { padding: 0 16px; }
+    .post-card { border-radius: 0; }
+    .post-content {
+      width: 592px;
+      height: 592px;
+      min-height: 0;
+    }
+  }
+
+  /* Темная тема */
+
+  /* Плавные переходы */
+  body, .site-header, .post-card, .post-title, .author-name, .author-time, .author-section,
+  .btn-subscribe, .reaction-inactive, .reaction-add, .action-btn, .action-right,
+  .post-content {
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  /* Страница и карточка */
+  [data-theme="dark"] body { background: #18191a; }
+  [data-theme="dark"] .post-card { background: #242526; }
+  [data-theme="dark"] .author-name { color: #e4e6eb; }
+  [data-theme="dark"] .author-section { color: #e4e6eb; }
+  [data-theme="dark"] .author-time { color: #b0b3b8; }
+  [data-theme="dark"] .btn-subscribe { background: #3a3b3c; color: #e4e6eb; }
+  [data-theme="dark"] .btn-subscribe:hover { background: #4e4f50; }
+  [data-theme="dark"] .btn-more:hover { background: #3a3b3c; }
+  [data-theme="dark"] .btn-more svg circle { fill: #b0b3b8; }
+  [data-theme="dark"] .post-title { color: #e4e6eb; }
+  [data-theme="dark"] .post-content { background: #2d2e30; border-color: rgba(255,255,255,0.06); color: #555; }
+  [data-theme="dark"] .avatar-badge { border-color: #242526; }
+
+  /* Реакции и экшен-бар */
+  [data-theme="dark"] .reaction { color: #b0b3b8; }
+  [data-theme="dark"] .reaction-inactive { background: #3a3b3c; }
+  [data-theme="dark"] .reaction-inactive:hover { background: #4e4f50; }
+  [data-theme="dark"] .reaction-inactive svg path { fill: #b0b3b8; }
+  [data-theme="dark"] .reaction-add { background: #3a3b3c; }
+  [data-theme="dark"] .reaction-add:hover { background: #4e4f50; }
+  [data-theme="dark"] .reaction-add svg path { fill: #b0b3b8; }
+  [data-theme="dark"] .action-btn { color: #b0b3b8; }
+  [data-theme="dark"] .action-btn:hover { background: #3a3b3c; }
+  [data-theme="dark"] .action-btn svg path { fill: #b0b3b8; }
+  [data-theme="dark"] .action-icon-btn:hover { background: #3a3b3c; }
+  [data-theme="dark"] .action-icon-btn svg path { fill: #b0b3b8; }
+  [data-theme="dark"] .action-right { color: #b0b3b8; }
+  [data-theme="dark"] .action-right svg path { fill: #b0b3b8; }
+
+  /* Игра «Пять подсказок» */
+  .post-content {
+    height: auto;
+    min-height: 592px;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+  .five-clues-game {
+    width: 100%;
+    min-height: 590px;
+    padding: 22px 24px 20px;
+    border-radius: 10px;
+    background: #fff;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .five-clues-progress {
+    width: 100%;
+  }
+
+  .five-clues-progress-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7078;
+    font-family: 'Roboto', sans-serif;
+    font-size: 10px;
+    line-height: 14px;
+    letter-spacing: 1.35px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .five-clues-categories {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 7px;
+    margin-top: 8px;
+  }
+
+  .five-clues-category {
+    min-width: 0;
+    text-align: center;
+  }
+
+  .five-clues-category-bar {
+    display: block;
+    width: 100%;
+    height: 4px;
+    border-radius: 999px;
+    background: #dedede;
+    transition: background-color 0.18s ease, transform 0.18s ease;
+  }
+
+  .five-clues-category.is-active .five-clues-category-bar {
+    background: #0b5dd7;
+    transform: scaleY(1.2);
+  }
+
+  .five-clues-category.is-complete .five-clues-category-bar {
+    background: #82a9df;
+  }
+
+  .five-clues-category-label {
+    display: block;
+    margin-top: 5px;
+    overflow: hidden;
+    color: #a0a0a0;
+    font-size: 9px;
+    line-height: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .five-clues-category.is-active .five-clues-category-label { color: #0b5dd7; }
+  .five-clues-category.is-complete .five-clues-category-label { color: #7185a2; }
+  .five-clues-category-label-short { display: none; }
+
+  .five-clues-hints {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 16px;
+  }
+
+  .five-clues-hint {
+    min-height: 50px;
+    padding: 10px 12px;
+    border: 1px solid rgba(0,0,0,0.09);
+    border-radius: 9px;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 14px;
+    line-height: 19px;
+    color: #151515;
+    animation: five-clues-reveal 0.22s ease both;
+  }
+
+  .five-clues-hint.is-locked {
+    min-height: 38px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    color: #9a9a9a;
+    background: #f5f5f5;
+    border-style: dashed;
+    animation: none;
+  }
+
+  .five-clues-hint-number {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    flex: 0 0 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5edfb;
+    color: #0b5dd7;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .five-clues-hint.is-locked .five-clues-hint-number {
+    background: #e8e8e8;
+    color: #8b8b8b;
+  }
+
+  @keyframes five-clues-reveal {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .five-clues-answer-area {
+    position: relative;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 15px;
+  }
+
+  .five-clues-input-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .five-clues-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 13px;
+    border: 1px solid #c9c9c9;
+    border-radius: 9px;
+    background: #fff;
+    color: #000;
+    font: 400 15px/20px 'Roboto', sans-serif;
+  }
+
+  .five-clues-input::placeholder { color: #8b8b8b; }
+
+  .five-clues-input:focus {
+    border-color: #0b5dd7;
+    outline: 2px solid rgba(11,93,215,0.18);
+    outline-offset: 0;
+  }
+
+  .five-clues-submit,
+  .five-clues-button {
+    border: 0;
+    border-radius: 9px;
+    background: #0b5dd7;
+    color: #fff;
+    min-width: 108px;
+    height: 44px;
+    padding: 0 16px;
+    font: 500 15px/20px 'Roboto', sans-serif;
+    cursor: pointer;
+  }
+
+  .five-clues-submit:hover,
+  .five-clues-button:hover { background: #0952bf; }
+
+  .five-clues-submit:disabled {
+    background: #b8c8e1;
+    cursor: default;
+  }
+
+  .five-clues-submit:focus-visible,
+  .five-clues-button:focus-visible,
+  .five-clues-suggestion:focus-visible {
+    outline: 2px solid #0b5dd7;
+    outline-offset: 2px;
+  }
+
+  .five-clues-message {
+    min-height: 18px;
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 18px;
+    color: #cf3232;
+  }
+
+  .five-clues-suggestions {
+    position: absolute;
+    z-index: 5;
+    left: 0;
+    right: 116px;
+    bottom: 82px;
+    max-height: 228px;
+    overflow-y: auto;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 9px;
+    background: #fff;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.16);
+  }
+
+  .five-clues-suggestions[hidden] { display: none; }
+
+  .five-clues-suggestion {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 12px;
+    border: 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    background: #fff;
+    color: #000;
+    text-align: left;
+    font: 400 14px/19px 'Roboto', sans-serif;
+    cursor: pointer;
+  }
+
+  .five-clues-suggestion:last-child { border-bottom: 0; }
+  .five-clues-suggestion:hover,
+  .five-clues-suggestion.is-active { background: #eef4fd; }
+
+  .five-clues-result {
+    min-height: 546px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .five-clues-result-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5f7eb;
+    color: #158744;
+    font-size: 30px;
+    font-weight: 500;
+  }
+
+  .five-clues-result.is-lost .five-clues-result-icon {
+    background: #fdeaea;
+    color: #cf3232;
+  }
+
+  .five-clues-result-title {
+    margin-top: 18px;
+    font-size: 25px;
+    line-height: 31px;
+    font-weight: 500;
+    color: #000;
+  }
+
+  .five-clues-result-answer {
+    margin-top: 10px;
+    font-size: 18px;
+    line-height: 25px;
+    color: #000;
+  }
+
+  .five-clues-result-answer-name { font-weight: 500; }
+
+  .five-clues-result-copy {
+    margin-top: 6px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #595959;
+  }
+
+  .five-clues-result-grid {
+    margin-top: 22px;
+    font-size: 24px;
+    line-height: 30px;
+    letter-spacing: 3px;
+  }
+
+  .five-clues-result-actions {
+    display: flex;
+    gap: 9px;
+    margin-top: 28px;
+  }
+
+  .five-clues-button.is-secondary {
+    background: #f0f0f0;
+    color: #000;
+  }
+
+  .five-clues-button.is-secondary:hover { background: #e5e5e5; }
+
+  .five-clues-share-status {
+    min-height: 20px;
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 20px;
+    color: #158744;
+  }
+
+  [data-theme="dark"] .five-clues-game { background: #2d2e30; color: #e4e6eb; }
+  [data-theme="dark"] .five-clues-result-title,
+  [data-theme="dark"] .five-clues-result-answer { color: #e4e6eb; }
+  [data-theme="dark"] .five-clues-result-copy { color: #b0b3b8; }
+  [data-theme="dark"] .five-clues-progress-title { color: #a6a9ae; }
+  [data-theme="dark"] .five-clues-category-bar { background: #4a4b4e; }
+  [data-theme="dark"] .five-clues-category.is-active .five-clues-category-bar { background: #6da7ff; }
+  [data-theme="dark"] .five-clues-category.is-complete .five-clues-category-bar { background: #5275a7; }
+  [data-theme="dark"] .five-clues-category.is-active .five-clues-category-label { color: #81b2ff; }
+  [data-theme="dark"] .five-clues-category.is-complete .five-clues-category-label { color: #8095b3; }
+  [data-theme="dark"] .five-clues-hint {
+    background: #38393b;
+    border-color: rgba(255,255,255,0.09);
+    color: #e4e6eb;
+  }
+  [data-theme="dark"] .five-clues-hint.is-locked {
+    background: #323335;
+    color: #8f9297;
+  }
+  [data-theme="dark"] .five-clues-hint-number { background: #29456f; color: #88b7ff; }
+  [data-theme="dark"] .five-clues-hint.is-locked .five-clues-hint-number { background: #444547; color: #aaa; }
+  [data-theme="dark"] .five-clues-input,
+  [data-theme="dark"] .five-clues-suggestions,
+  [data-theme="dark"] .five-clues-suggestion {
+    background: #242526;
+    border-color: rgba(255,255,255,0.12);
+    color: #e4e6eb;
+  }
+  [data-theme="dark"] .five-clues-suggestion:hover,
+  [data-theme="dark"] .five-clues-suggestion.is-active { background: #35445c; }
+  [data-theme="dark"] .five-clues-button.is-secondary { background: #3a3b3c; color: #e4e6eb; }
+  [data-theme="dark"] .five-clues-button.is-secondary:hover { background: #4e4f50; }
+
+  @media (max-width: 640px) {
+    .post-content {
+      width: 100%;
+      min-height: 0;
+    }
+
+    .five-clues-game {
+      min-height: 0;
+      padding: 18px 16px 16px;
+    }
+
+    .five-clues-progress-title { font-size: 9px; letter-spacing: 1px; }
+    .five-clues-categories { gap: 5px; }
+    .five-clues-hint { font-size: 13px; line-height: 18px; }
+    .five-clues-answer-area { margin-top: 14px; }
+    .five-clues-input-row { flex-direction: column; }
+    .five-clues-submit { width: 100%; }
+    .five-clues-suggestions { right: 0; bottom: 133px; }
+    .five-clues-result-actions { width: 100%; flex-direction: column; }
+    .five-clues-button { width: 100%; }
+  }
+
+  @media (max-width: 420px) {
+    .five-clues-category-label-full { display: none; }
+    .five-clues-category-label-short { display: inline; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-logo" aria-label="Логотип">
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g clip-path="url(#clip0_24133_20602)">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M34.5684 24.8497C36.8808 24.8497 38.6215 23.8743 39.9057 22.178L38.1906 20.8529C37.3202 22.0054 36.0019 22.6657 34.5684 22.6657C32.0598 22.6657 30.2423 20.5983 30.2423 18.0604C30.2423 15.5224 32.0299 13.3384 34.6409 13.3384C35.8014 13.3384 36.6205 13.6147 37.3373 14.0636V16.295H39.4961V13.0406L39.0822 12.7126C37.8962 11.7673 36.083 11.2667 34.5684 11.2667C30.8652 11.2667 27.8531 14.3139 27.8531 18.0604C27.8531 21.8025 30.8652 24.8497 34.5684 24.8497ZM39.0481 38.2515L38.9713 35.1223V27.4912H34.4703V29.6752H36.6973V34.8547C36.6973 37.0862 35.0121 38.6659 33.3141 38.6659C31.6161 38.6659 30.7287 37.4746 30.7287 35.2431V27.4912H26.522V29.6752H28.4547V35.623C28.4547 38.6486 30.1314 40.7333 33.1221 40.7333C34.8415 40.7333 36.1512 39.7708 36.932 38.2817H36.9661L37.2733 40.3621H40.7333V38.2558H39.0481V38.2515ZM27.354 11.5861H23.6038L20.34 21.1724H20.2888L17.0421 11.5861H13.0445V13.7701H15.2929L19.1625 24.6987H21.2189V24.6944L25.2549 13.7701H27.354V11.5861ZM9.53333 40.3885H11.7561V38.1393H9.53333V40.3885ZM18.1216 30.0249H18.096L17.9552 27.4913H13.9875V29.481H16.0993V38.2515H13.9875V40.3578H23.7959V38.2904H18.3349V32.9987C18.5823 31.0823 20.003 29.4465 21.94 29.4465H21.9741L21.9357 31.406H24.0945V27.4524H22.388C20.434 27.4481 18.9834 28.5185 18.1216 30.0249Z" fill="black"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_24133_20602">
+          <rect width="52" height="52" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+  </div>
+</header>
+
+<div class="post-card">
+  <div class="post-inner">
+
+    <!-- Шапка -->
+    <div class="post-header">
+      <div class="author-block">
+        <div class="avatar-wrap">
+          <div class="avatar-main"></div>
+          <div class="avatar-badge"></div>
+        </div>
+        <div class="author-info">
+          <div class="author-name-row">
+            <div class="author-name">Пять подсказок</div>
+            <div class="author-name-badge">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <g clip-path="url(#clip0_26708_34256)">
+                  <path d="M2.06588 6.68558C2.60273 4.70211 4.16383 2.95898 6.802 2.95898C9.77842 2.95898 11 5.22972 11 5.22972C11 5.22972 12.3653 2.95898 15.1981 2.95898C18.0309 2.95898 19.3974 4.70211 19.9342 6.68558C21.1367 11.1284 17.5903 14.987 14.3477 17.2689C13.4576 17.8954 12.4776 18.6201 11.4327 18.9642C11.3613 18.9877 11.1937 19.041 11 19.041C10.8064 19.041 10.6388 18.9877 10.5674 18.9642C9.5121 18.6166 8.5539 17.9034 7.65237 17.2689C4.40983 14.987 0.863367 11.1284 2.06588 6.68558Z" fill="url(#paint0_linear_26708_34256)"/>
+                </g>
+                <defs>
+                  <linearGradient id="paint0_linear_26708_34256" x1="11" y1="2.95898" x2="11" y2="19.041" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#FF5D6D"/>
+                    <stop offset="1" stop-color="#F35565"/>
+                  </linearGradient>
+                  <clipPath id="clip0_26708_34256">
+                    <rect width="22" height="22" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+          </div>
+          <div class="author-meta">
+            <span class="author-section">Раздел</span>
+            <span class="author-time">2ч</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-subscribe">Подписаться</button>
+        <button class="btn-more">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="4.58" cy="11" r="1.83" fill="#595959"/>
+            <circle cx="11" cy="11" r="1.83" fill="#595959"/>
+            <circle cx="17.42" cy="11" r="1.83" fill="#595959"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Заголовок -->
+    <div class="post-title-row">
+      <span class="post-title">Пять подсказок</span>
+    </div>
+
+    <!-- Контент-блок: сюда вставляется содержимое карточки -->
+    <div class="post-content" id="card-content">
+      <div class="five-clues-game" id="five-clues-game"></div>
+    </div>
+
+    <!-- Реакции -->
+    <div class="reactions-bar">
+      <!-- Активная реакция (лайк) -->
+      <div class="reaction reaction-active">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M1.878 6.078C2.366 4.275 3.785 2.69 6.184 2.69C8.889 2.69 10 4.754 10 4.754C10 4.754 11.241 2.69 13.816 2.69C16.392 2.69 17.634 4.275 18.122 6.078C19.215 10.117 15.991 13.625 13.043 15.699C12.234 16.268 11.343 16.927 10.393 17.24C10.328 17.261 10.176 17.31 10 17.31C9.824 17.31 9.672 17.261 9.607 17.24C8.647 16.924 7.776 16.276 6.957 15.699C4.009 13.625 0.785 10.117 1.878 6.078Z" fill="url(#heartGrad)"/>
+          <defs>
+            <linearGradient id="heartGrad" x1="10" y1="2.69" x2="10" y2="17.31" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FF5D6D"/>
+              <stop offset="1" stop-color="#F35565"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span style="color:#fff;font-weight:400">100</span>
+      </div>
+
+      <!-- Огонь -->
+      <div class="reaction reaction-inactive">
+        <span class="reaction-icon reaction-fire-icon">
+          <svg width="17" height="20" viewBox="0 0 17 20" fill="none">
+            <path d="M0.026 13.631C0.026 13.631 0.606 19.838 7.887 19.986C15.169 20.135 16.708 12.413 15.512 10.799C15.512 10.799 15.198 11.848 14.854 11.975C14.854 11.975 14.736 6.545 12.271 4.787C12.271 4.787 12.372 5.802 11.987 5.819C11.987 5.819 9.69 0.778 4.616 0C4.616 0 6.568 3.34 4.142 6.502C1.717 9.665 1.815 10.961 1.815 10.961C1.815 10.961 1.048 10.329 1.175 9.881C1.175 9.881 -0.207 10.766 0.026 13.631Z" fill="url(#fireGrad)"/>
+            <defs>
+              <radialGradient id="fireGrad" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(4 11.82) scale(10.6)">
+                <stop stop-color="#FFAB1D"/>
+                <stop offset="1" stop-color="#FB4201"/>
+              </radialGradient>
+            </defs>
+          </svg>
+        </span>
+        <span>23</span>
+      </div>
+
+      <!-- Кнопка добавить реакцию / переключить тему -->
+      <div class="reaction-add" id="theme-toggle" title="Переключить тему">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke="#595959" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="8" cy="8" r="2.5" stroke="#595959" stroke-width="1.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Экшен-бар -->
+    <div class="action-bar">
+      <div class="action-left">
+        <!-- Комментарии -->
+        <button class="action-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M17.48 9.78C17.48 5.28 13.83 2.5 9.78 2.5C5.74 2.5 2.1 5.27 2.08 9.75C2.07 14.24 5.64 17.06 9.78 17.06C10.87 17.06 11.74 17 12.8 16.58C12.96 16.52 13.22 16.52 13.47 16.6L16.01 17.44C16.61 17.63 17.14 17.34 17.44 17.04C17.76 16.73 18.03 16.2 17.87 15.59L17.06 13.08C16.95 12.75 16.95 12.38 17.02 12.19L17.06 12.06C17.29 11.42 17.48 10.89 17.48 9.78ZM9.78 4.17C6.46 4.17 3.75 6.38 3.75 9.78C3.75 13.18 6.46 15.39 9.78 15.39C10.8 15.39 11.42 15.34 12.18 15.04C12.79 14.79 13.47 14.84 14 15.02L16.16 15.74L15.43 13.56C15.29 13.01 15.22 12.25 15.45 11.62L15.5 11.48C15.7 10.91 15.82 10.6 15.82 9.78C15.82 6.38 13.1 4.17 9.78 4.17Z" fill="#595959"/>
+          </svg>
+          76
+        </button>
+
+        <!-- Репост -->
+        <button class="action-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.74 3.578C13.07 3.253 13.6 3.253 13.92 3.578L18.09 7.744C18.41 8.07 18.41 8.597 18.09 8.923L13.92 13.09C13.6 13.415 13.07 13.415 12.74 13.09C12.42 12.764 12.42 12.237 12.74 11.911L15.42 9.234C12.84 9.015 9.97 9.331 7.66 10.203C4.98 11.214 3.33 12.843 3.33 15C3.33 15.46 2.96 15.834 2.5 15.834C2.04 15.833 1.67 15.46 1.67 15C1.67 11.797 4.15 9.746 7.07 8.643C9.64 7.674 12.76 7.336 15.56 7.573L12.74 4.756C12.42 4.43 12.42 3.903 12.74 3.578Z" fill="#595959"/>
+          </svg>
+          10
+        </button>
+
+        <!-- Закладка -->
+        <button class="action-icon-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M3.33331 5.83333C3.33331 3.99238 4.8257 2.5 6.66665 2.5H13.3333C15.1743 2.5 16.6666 3.99238 16.6666 5.83333V15.8712C16.6666 17.2271 15.1039 17.9867 14.0377 17.1489L10.4376 14.3203C10.1808 14.1185 9.81921 14.1185 9.56236 14.3203L5.96227 17.1489C4.89606 17.9867 3.33331 17.2271 3.33331 15.8712V5.83333ZM6.66665 4.16667C5.74617 4.16667 4.99998 4.91286 4.99998 5.83333V15.7854L8.53265 13.0098C9.39386 12.3331 10.6061 12.3331 11.4673 13.0098L15 15.7854V5.83333C15 4.91286 14.2538 4.16667 13.3333 4.16667H6.66665Z" fill="#595959"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Просмотры -->
+      <div class="action-right">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M2.6551 9.99998C3.51286 11.3377 4.32593 12.5193 5.37099 13.409C6.49234 14.3637 7.90686 15 10 15C12.0932 15 13.5077 14.3637 14.6291 13.409C15.6741 12.5193 16.4872 11.3377 17.345 9.99998C16.4872 8.66223 15.6741 7.48067 14.6291 6.59094C13.5077 5.63623 12.0932 4.99998 10 4.99998C7.90686 4.99998 6.49234 5.63623 5.37099 6.59094C4.32593 7.48067 3.51286 8.66223 2.6551 9.99998ZM4.29055 5.3219C5.7126 4.1112 7.50989 3.33331 10 3.33331C12.4902 3.33331 14.2875 4.1112 15.7095 5.3219C17.0929 6.49969 18.0937 8.0692 19.0367 9.55301C19.21 9.82578 19.21 10.1742 19.0367 10.4469C18.0937 11.9308 17.0929 13.5003 15.7095 14.6781C14.2875 15.8888 12.4902 16.6666 10 16.6666C7.50989 16.6666 5.7126 15.8888 4.29055 14.6781C2.90716 13.5003 1.90635 11.9308 0.963382 10.4469C0.790038 10.1742 0.790038 9.82578 0.963382 9.55301C1.90635 8.0692 2.90716 6.49969 4.29055 5.3219ZM10 8.54165C9.19463 8.54165 8.54171 9.19456 8.54171 9.99998C8.54171 10.8054 9.19463 11.4583 10 11.4583C10.8055 11.4583 11.4584 10.8054 11.4584 9.99998C11.4584 9.19456 10.8055 8.54165 10 8.54165ZM6.87504 9.99998C6.87504 8.27409 8.27415 6.87498 10 6.87498C11.7259 6.87498 13.125 8.27409 13.125 9.99998C13.125 11.7259 11.7259 13.125 10 13.125C8.27415 13.125 6.87504 11.7259 6.87504 9.99998Z" fill="white"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M2.6551 9.99998C3.51286 11.3377 4.32593 12.5193 5.37099 13.409C6.49234 14.3637 7.90686 15 10 15C12.0932 15 13.5077 14.3637 14.6291 13.409C15.6741 12.5193 16.4872 11.3377 17.345 9.99998C16.4872 8.66223 15.6741 7.48067 14.6291 6.59094C13.5077 5.63623 12.0932 4.99998 10 4.99998C7.90686 4.99998 6.49234 5.63623 5.37099 6.59094C4.32593 7.48067 3.51286 8.66223 2.6551 9.99998ZM4.29055 5.3219C5.7126 4.1112 7.50989 3.33331 10 3.33331C12.4902 3.33331 14.2875 4.1112 15.7095 5.3219C17.0929 6.49969 18.0937 8.0692 19.0367 9.55301C19.21 9.82578 19.21 10.1742 19.0367 10.4469C18.0937 11.9308 17.0929 13.5003 15.7095 14.6781C14.2875 15.8888 12.4902 16.6666 10 16.6666C7.50989 16.6666 5.7126 15.8888 4.29055 14.6781C2.90716 13.5003 1.90635 11.9308 0.963382 10.4469C0.790038 10.1742 0.790038 9.82578 0.963382 9.55301C1.90635 8.0692 2.90716 6.49969 4.29055 5.3219ZM10 8.54165C9.19463 8.54165 8.54171 9.19456 8.54171 9.99998C8.54171 10.8054 9.19463 11.4583 10 11.4583C10.8055 11.4583 11.4584 10.8054 11.4584 9.99998C11.4584 9.19456 10.8055 8.54165 10 8.54165ZM6.87504 9.99998C6.87504 8.27409 8.27415 6.87498 10 6.87498C11.7259 6.87498 13.125 8.27409 13.125 9.99998C13.125 11.7259 11.7259 13.125 10 13.125C8.27415 13.125 6.87504 11.7259 6.87504 9.99998Z" fill="black" fill-opacity="0.65"/>
+        </svg>
+        5 281
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const badgeUploadMessage = 'Перетащите картинку в формате SVG, PNG, JPG, JPEG, WEBP или GIF.';
+  const supportedBadgeExtensions = ['svg', 'png', 'jpg', 'jpeg', 'webp', 'gif'];
+
+  (() => {
+    const revealDelay = 3000;
+    const fadeDelay = 240;
+    const rounds = [
+      {
+        game: 'Half-Life 2',
+        answer: 28,
+        exact: 18,
+        image: 'images/01.jpg'
+      },
+      {
+        game: 'Dark Souls 2',
+        answer: 8,
+        exact: 27,
+        image: 'images/02.jpg'
+      },
+      {
+        game: 'Mafia',
+        answer: 33,
+        exact: 12,
+        image: 'images/03.jpg'
+      },
+      {
+        game: 'Ведьмак 3',
+        answer: 11,
+        exact: 9,
+        image: 'images/04.jpg'
+      },
+      {
+        game: 'GTA San Andreas',
+        answer: 55,
+        exact: 6,
+        image: 'images/05.jpg'
+      }
+    ];
+
+    const gameNode = document.getElementById('progress-game');
+    if (!gameNode) return;
+    let roundIndex = 0;
+    let guess = 50;
+    let isRevealed = false;
+    let scores = [];
+    let autoTimer = null;
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[char]);
+    }
+
+    function clampPercent(value) {
+      return Math.max(0, Math.min(100, Number(value)));
+    }
+
+    function roundScore(playerGuess, correctAnswer) {
+      return Math.max(0, 100 - Math.abs(playerGuess - correctAnswer));
+    }
+
+    function render() {
+      window.clearTimeout(autoTimer);
+
+      if (roundIndex >= rounds.length) {
+        renderResult();
+        return;
+      }
+
+      const round = rounds[roundIndex];
+      const playerScore = roundScore(guess, round.answer);
+      const playerLeft = clampPercent(guess);
+      const correctLeft = clampPercent(round.answer);
+
+      gameNode.innerHTML = `
+        <div class="progress-shot"><img src="${round.image}" alt=""></div>
+        <div class="progress-round">${roundIndex + 1}/${rounds.length}</div>
+        <div class="progress-game-name"></div>
+        <div class="progress-value">${guess}%</div>
+        <div class="progress-slider-wrap">
+          <input class="progress-slider ${isRevealed ? 'is-revealed' : ''}" id="progress-slider" type="range" min="0" max="100" value="${guess}" ${isRevealed ? 'disabled' : ''} aria-label="Процент прохождения">
+          <div class="progress-marker progress-marker-player ${isRevealed ? 'is-visible' : ''}" style="left: ${playerLeft}%">
+            <span class="progress-marker-label">ты: ${guess}%</span>
+          </div>
+          <div class="progress-marker progress-marker-correct ${isRevealed ? 'is-visible' : ''}" style="left: ${correctLeft}%">
+            <span class="progress-marker-label">ответ: ${round.answer}%</span>
+          </div>
+        </div>
+        ${isRevealed ? `
+          <div class="progress-reveal-info">
+            <div class="progress-reveal-title">${escapeHtml(round.game)}</div>
+            <div class="progress-reveal-meta">Точно отгадал ${round.exact}% игроков</div>
+          </div>
+        ` : `
+          <button class="progress-button" id="progress-reveal" type="button">Узнать ответ</button>
+        `}
+      `;
+
+      const slider = document.getElementById('progress-slider');
+      const revealButton = document.getElementById('progress-reveal');
+
+      if (!isRevealed) {
+        slider.addEventListener('input', (event) => {
+          guess = Number(event.target.value);
+          gameNode.querySelector('.progress-value').textContent = `${guess}%`;
+        });
+
+        revealButton.addEventListener('click', revealAnswer);
+      } else {
+        autoTimer = window.setTimeout(nextRound, revealDelay);
+      }
+    }
+
+    function fadeTo(nextRender) {
+      gameNode.classList.add('is-fading');
+      window.setTimeout(() => {
+        nextRender();
+        requestAnimationFrame(() => {
+          gameNode.classList.remove('is-fading');
+        });
+      }, fadeDelay);
+    }
+
+    function revealAnswer() {
+      const round = rounds[roundIndex];
+      scores[roundIndex] = roundScore(guess, round.answer);
+      isRevealed = true;
+      render();
+    }
+
+    function nextRound() {
+      fadeTo(() => {
+        roundIndex += 1;
+        guess = 50;
+        isRevealed = false;
+        render();
+      });
+    }
+
+    function renderResult() {
+      const total = scores.reduce((sum, score) => sum + score, 0);
+      const percentile = total >= 430 ? 92 : total >= 360 ? 78 : total >= 280 ? 61 : 43;
+      const place = Math.max(124, 1800 - total * 3);
+
+      gameNode.innerHTML = `
+        <div class="progress-result">
+          <div class="progress-result-title">Вы набрали ${total} баллов</div>
+          <div class="progress-result-subtitle">Больше, чем ${percentile}% игроков</div>
+          <div class="progress-result-rank"><span>▼ 2</span> ${place} место за все время</div>
+          <button class="progress-button" id="progress-restart" type="button">Играть ещё</button>
+        </div>
+      `;
+
+      document.getElementById('progress-restart').addEventListener('click', () => {
+        fadeTo(() => {
+          roundIndex = 0;
+          guess = 50;
+          isRevealed = false;
+          scores = [];
+          render();
+        });
+      });
+    }
+
+    render();
+  })();
+
+  (() => {
+    const clueCategories = [
+      { name: 'Кто это?', shortName: 'Кто?' },
+      { name: 'Контекст', shortName: 'Контекст' },
+      { name: 'Роль', shortName: 'Роль' },
+      { name: 'Особенность', shortName: 'Черта' },
+      { name: 'Ассоциация', shortName: 'Связь' }
+    ];
+
+    const characters = [
+      {
+        id: 'geralt',
+        name: 'Геральт из Ривии',
+        aliases: ['Геральт', 'Geralt', 'Geralt of Rivia'],
+        clues: [
+          'Это вымышленный персонаж из мрачного фэнтезийного мира.',
+          'Впервые появился в книгах польского писателя в 1980-х.',
+          'Зарабатывает охотой на опасных чудовищ.',
+          'Прошёл мутации, из-за которых получил белые волосы и необычные глаза.',
+          'Носит два меча и известен под прозвищем Белый Волк.'
+        ]
+      },
+      {
+        id: 'mario',
+        name: 'Марио',
+        aliases: ['Mario'],
+        clues: [
+          'Вымышленный человек и герой семейных видеоигр.',
+          'Был создан японской компанией и стал известен в 1980-х.',
+          'Обычно спасает принцессу и мешает злодею захватить её королевство.',
+          'Носит красную кепку и комбинезон, а его брат одет в зелёное.',
+          'Он водопроводчик, сражающийся с Боузером.'
+        ]
+      },
+      {
+        id: 'gordon-freeman',
+        name: 'Гордон Фримен',
+        aliases: ['Gordon Freeman', 'Фримен'],
+        clues: [
+          'Вымышленный человек из научной фантастики.',
+          'Впервые появился в компьютерной игре 1998 года.',
+          'Работает учёным и после катастрофы вынужден самостоятельно искать путь к спасению.',
+          'Носит защитный костюм HEV и часто использует монтировку.',
+          'Пережил каскадный резонанс в комплексе «Чёрная Меза».'
+        ]
+      },
+      {
+        id: 'kratos',
+        name: 'Кратос',
+        aliases: ['Kratos'],
+        clues: [
+          'Вымышленный воин, связанный сразу с двумя мифологиями.',
+          'Первые его приключения были основаны на мифах Древней Греции.',
+          'Ведёт войны с богами и чудовищами, пытаясь изменить собственную судьбу.',
+          'Его отличают бледная кожа, красная татуировка и неудержимая ярость.',
+          'Он носил Клинки Хаоса и воспитывает сына Атрея.'
+        ]
+      },
+      {
+        id: 'lara-croft',
+        name: 'Лара Крофт',
+        aliases: ['Lara Croft', 'Лара'],
+        clues: [
+          'Вымышленная британка из серии приключенческих игр.',
+          'Её первое трёхмерное приключение вышло в 1996 году.',
+          'Она исследует древние руины и разыскивает артефакты.',
+          'Известна акробатикой, косой и парой пистолетов.',
+          'Название её серии переводится как «расхитительница гробниц».'
+        ]
+      },
+      {
+        id: 'arthur-morgan',
+        name: 'Артур Морган',
+        aliases: ['Arthur Morgan', 'Артур'],
+        clues: [
+          'Вымышленный человек из реалистичного вестерна.',
+          'Живёт на американском фронтире в 1899 году, когда эпоха Дикого Запада заканчивается.',
+          'Состоит в банде, скрывающейся от закона, и выполняет поручения её лидера.',
+          'Он ведёт подробный дневник и превосходно обращается с револьвером.',
+          'Он правая рука Датча ван дер Линде в Red Dead Redemption 2.'
+        ]
+      },
+      {
+        id: 'agent-47',
+        name: 'Агент 47',
+        aliases: ['Agent 47', 'Сорок Седьмой', '47'],
+        clues: [
+          'Вымышленный человек, созданный искусственно.',
+          'Впервые появился в европейской стелс-игре на рубеже тысячелетий.',
+          'Профессионально устраняет назначенные цели по всему миру.',
+          'Может идеально маскироваться, переодеваясь в окружающих.',
+          'Он лыс, носит красный галстук, а на затылке у него штрихкод.'
+        ]
+      },
+      {
+        id: 'sonic',
+        name: 'Соник',
+        aliases: ['Sonic', 'Соник the Hedgehog'],
+        clues: [
+          'Вымышленное антропоморфное животное.',
+          'Был создан как талисман японской игровой компании в начале 1990-х.',
+          'Сражается с учёным, превращающим животных в роботов.',
+          'Способен бегать со сверхзвуковой скоростью и сворачиваться в шар для атаки.',
+          'Это синий ёж, который собирает кольца и дружит с двухвостым лисом Тейлзом.'
+        ]
+      },
+      {
+        id: 'darth-vader',
+        name: 'Дарт Вейдер',
+        aliases: ['Darth Vader', 'Вейдер'],
+        clues: [
+          'Вымышленный человек из космической саги.',
+          'Начинал как талантливый герой, но стал одним из главных злодеев.',
+          'Служит императору и преследует участников сопротивления.',
+          'Большая часть его тела заменена механизмами; он носит чёрный шлем и красный световой меч.',
+          'Он отец Люка Скайуокера.'
+        ]
+      },
+      {
+        id: 'neo',
+        name: 'Нео',
+        aliases: ['Neo', 'Томас Андерсон', 'Thomas Anderson'],
+        clues: [
+          'Вымышленный человек из научно-фантастического фильма конца 1990-х.',
+          'Живёт в мире, который оказывается компьютерной симуляцией.',
+          'До пробуждения работает программистом и занимается хакерством.',
+          'Может нарушать законы виртуальной реальности и уклоняться от пуль.',
+          'Морфеус предлагает ему выбрать красную или синюю таблетку.'
+        ]
+      },
+      {
+        id: 'jack-sparrow',
+        name: 'Джек Воробей',
+        aliases: ['Jack Sparrow', 'Капитан Джек Воробей'],
+        clues: [
+          'Вымышленный человек из приключенческой киносерии 2000-х.',
+          'Его истории происходят в мире парусного флота, морских легенд и проклятых сокровищ.',
+          'Он пират и называет себя капитаном, даже когда у него нет корабля.',
+          'Любит ром, действует непредсказуемо и владеет компасом, который не указывает на север.',
+          'Он стремится вернуть корабль «Чёрная жемчужина».'
+        ]
+      },
+      {
+        id: 'walter-white',
+        name: 'Уолтер Уайт',
+        aliases: ['Walter White', 'Вальтер Уайт', 'Хайзенберг', 'Heisenberg'],
+        clues: [
+          'Вымышленный человек из американского драматического сериала.',
+          'Живёт в современном Альбукерке и узнаёт о тяжёлом диагнозе.',
+          'Работает учителем, но постепенно становится руководителем преступного бизнеса.',
+          'Его главное преимущество — выдающиеся знания химии.',
+          'Его напарника зовут Джесси Пинкман, а сериал — Breaking Bad.'
+        ]
+      },
+      {
+        id: 'shrek',
+        name: 'Шрек',
+        aliases: ['Shrek'],
+        clues: [
+          'Вымышленное сказочное существо.',
+          'Он герой полнометражной анимационной комедии.',
+          'Вынужден спасать принцессу, чтобы вернуть себе спокойную жизнь.',
+          'Это зелёный огр, предпочитающий одиночество на собственном болоте.',
+          'Его лучший друг — говорящий Осёл, а возлюбленная — Фиона.'
+        ]
+      },
+      {
+        id: 'homer-simpson',
+        name: 'Гомер Симпсон',
+        aliases: ['Homer Simpson', 'Гомер'],
+        clues: [
+          'Вымышленный человек из американского анимационного сериала.',
+          'Уже много десятилетий почти не меняется внешне и не стареет.',
+          'Работает инспектором безопасности на атомной электростанции.',
+          'Любит пончики и пиво, часто восклицает «D’oh!».',
+          'Живёт в Спрингфилде с Мардж, Бартом, Лизой и Мэгги.'
+        ]
+      },
+      {
+        id: 'naruto',
+        name: 'Наруто Узумаки',
+        aliases: ['Наруто', 'Naruto', 'Naruto Uzumaki'],
+        clues: [
+          'Вымышленный подросток из японской манги и аниме.',
+          'Вырос сиротой в деревне Скрытого Листа и обучался искусству ниндзя.',
+          'Защищает свою деревню и стремится заслужить титул Хокаге.',
+          'Внутри него запечатано девятихвостое существо; он использует теневое клонирование.',
+          'Носит оранжевую одежду, а его наставника зовут Какаси.'
+        ]
+      },
+      {
+        id: 'batman',
+        name: 'Бэтмен',
+        aliases: ['Batman', 'Бетмен'],
+        clues: [
+          'Вымышленный герой комиксов, не обладающий сверхспособностями.',
+          'Впервые появился в американских комиксах в конце 1930-х.',
+          'Днём он богатый предприниматель, ночью — борец с преступностью.',
+          'Использует страх, интеллект, гаджеты и тайное убежище в пещере.',
+          'Защищает Готэм; среди его близких — Альфред и Робин, а главный враг — Джокер.'
+        ]
+      },
+      {
+        id: 'spider-man',
+        name: 'Человек-паук',
+        aliases: ['Spider-Man', 'Spiderman', 'Спайдермен', 'Человек паук'],
+        clues: [
+          'Вымышленный герой комиксов с нечеловеческими способностями.',
+          'Получил силы после укуса необычного паука.',
+          'Живёт в Нью-Йорке и совмещает героизм с обычными проблемами.',
+          'Чувствует опасность, ползает по стенам и выпускает паутину.',
+          'Его воспитывала тётя Мэй, а ключевой жизненный принцип связан с большой ответственностью.'
+        ]
+      },
+      {
+        id: 'freddie-mercury',
+        name: 'Фредди Меркьюри',
+        aliases: ['Freddie Mercury', 'Фредди Меркури'],
+        clues: [
+          'Реальный человек и музыкант XX века.',
+          'Родился на Занзибаре, а прославился в Великобритании.',
+          'Был вокалистом одной из самых известных рок-групп мира.',
+          'Запомнился мощным голосом, сценическими костюмами и усами.',
+          'Исполнял «Bohemian Rhapsody» и выступал на Live Aid с группой Queen.'
+        ]
+      },
+      {
+        id: 'hideo-kojima',
+        name: 'Хидео Кодзима',
+        aliases: ['Hideo Kojima', 'Кодзима', 'Хидэо Кодзима', 'Коджима'],
+        clues: [
+          'Реальный человек из индустрии развлечений.',
+          'Начал карьеру в японской игровой индустрии в 1980-х.',
+          'Работает автором, режиссёром и продюсером видеоигр.',
+          'Его проекты известны кинематографичной постановкой и необычными сюжетами.',
+          'Создал серию про Солид Снейка, а после ухода из Konami выпустил Death Stranding.'
+        ]
+      },
+      {
+        id: 'big-floppa',
+        name: 'Большой Шлёпа',
+        aliases: ['Big Floppa', 'Большой Шлепа'],
+        clues: [
+          'Реальное животное, ставшее интернет-мемом.',
+          'Получило широкую известность в русскоязычном интернете в начале 2020-х.',
+          'Домашний питомец, изображения которого используются как самостоятельный герой мемов.',
+          'Его настоящее имя — Гоша, а уши заканчиваются длинными чёрными кисточками.',
+          'Это каракал, известный под мемным прозвищем со словом «Шлёпа».'
+        ]
+      },
+      {
+        id: 'master-chief',
+        name: 'Мастер Чиф',
+        aliases: ['Master Chief', 'Мастер-Чиф'],
+        clues: [
+          'Вымышленный человек из военно-фантастической серии игр.',
+          'С детства был подготовлен как генетически улучшенный суперсолдат.',
+          'Защищает человечество в войне с союзом инопланетных рас.',
+          'Носит зелёную броню «Мьёльнир» и работает вместе с ИИ Кортаной.',
+          'Это главный герой серии Halo.'
+        ]
+      },
+      {
+        id: 'solid-snake',
+        name: 'Солид Снейк',
+        aliases: ['Solid Snake', 'Солид Снейк', 'Snake'],
+        clues: [
+          'Вымышленный человек из серии тактических видеоигр.',
+          'Был создан как клон легендарного солдата.',
+          'Специализируется на скрытном проникновении и работе в одиночку.',
+          'Известен банданой, переговорами по кодеку и любовью к картонным коробкам.',
+          'Сражается с шагающими ядерными машинами в серии Metal Gear.'
+        ]
+      },
+      {
+        id: 'leon-kennedy',
+        name: 'Леон Кеннеди',
+        aliases: ['Leon Kennedy', 'Leon S. Kennedy', 'Леон Скотт Кеннеди', 'Леон'],
+        clues: [
+          'Вымышленный американец из серии хоррор-игр.',
+          'В первый рабочий день полицейским попал в охваченный катастрофой город.',
+          'Позже стал правительственным агентом и выполнял секретные задания.',
+          'Отлично владеет оружием, сохраняет самообладание и способен парировать опасные атаки ножом.',
+          'Сражался с биооружием и спасал дочь президента в Resident Evil 2 и Resident Evil 4.'
+        ]
+      },
+      {
+        id: 'commander-shepard',
+        name: 'Коммандер Шепард',
+        aliases: ['Commander Shepard', 'Шепард', 'Капитан Шепард'],
+        clues: [
+          'Вымышленный человек из научно-фантастической ролевой игры.',
+          'Пол, внешность и прошлое этого героя выбирает сам игрок.',
+          'Командует космическим кораблём и собирает экипаж из разных рас.',
+          'Характер, репутация и отношения с экипажем зависят от решений игрока.',
+          'Пытается объединить галактику против Жнецов на корабле «Нормандия» в серии Mass Effect.'
+        ]
+      },
+      {
+        id: 'max-payne',
+        name: 'Макс Пэйн',
+        aliases: ['Max Payne', 'Макс Пейн'],
+        clues: [
+          'Вымышленный американский полицейский из мрачного боевика.',
+          'После гибели семьи начинает личную войну с преступниками.',
+          'Расследует заговор и в одиночку противостоит преступным организациям.',
+          'Во время перестрелок замедляет время, а историю сопровождает нуарными монологами.',
+          'Носит фамилию, которая по-английски звучит как слово «боль».'
+        ]
+      },
+      {
+        id: '2b',
+        name: '2B',
+        aliases: ['YoRHa No.2 Type B', 'Йорха 2Б', 'Два-Би'],
+        clues: [
+          'Вымышленное существо, внешне почти неотличимое от человека.',
+          'Это боевой андроид, отправленный на постапокалиптическую Землю.',
+          'Служит организации YoRHa и сражается с машинами.',
+          'Носит чёрное платье, повязку на глазах и использует холодное оружие.',
+          'Её напарника зовут 9S, а игра — NieR: Automata.'
+        ]
+      },
+      {
+        id: 'pikachu',
+        name: 'Пикачу',
+        aliases: ['Pikachu'],
+        clues: [
+          'Вымышленное существо из японской медиафраншизы.',
+          'Впервые появилось в японских видеоиграх 1990-х о карманных монстрах.',
+          'Становится спутником тренера и участвует в сражениях с другими существами.',
+          'Обладает электрическими способностями; имеет жёлтую шерсть, красные щёки и хвост-молнию.',
+          'Главный спутник Эша и самый известный символ Pokémon.'
+        ]
+      },
+      {
+        id: 'cj',
+        name: 'Карл Джонсон',
+        aliases: ['Carl Johnson', 'CJ', 'Си-Джей', 'Си Джей'],
+        clues: [
+          'Вымышленный молодой человек из криминальной видеоигры.',
+          'Возвращается домой на западное побережье США после смерти матери.',
+          'Снова присоединяется к уличной банде, использующей зелёный цвет.',
+          'Может менять внешность тренировками, одеждой и причёсками, а также управлять множеством видов транспорта.',
+          'Его брат Свит возглавляет Grove Street Families, а сам он — герой GTA: San Andreas.'
+        ]
+      },
+      {
+        id: 'indiana-jones',
+        name: 'Индиана Джонс',
+        aliases: ['Indiana Jones', 'Инди', 'Индиана'],
+        clues: [
+          'Вымышленный американец из приключенческой киносерии.',
+          'Работает профессором и археологом в первой половине XX века.',
+          'Разыскивает древние артефакты и часто противостоит нацистам.',
+          'Боится змей, носит фетровую шляпу и пользуется кнутом.',
+          'Его сыграл Харрисон Форд, а первое приключение было связано с утраченным ковчегом.'
+        ]
+      },
+      {
+        id: 'terminator-t800',
+        name: 'Терминатор T-800',
+        aliases: ['T-800', 'Terminator', 'Терминатор', 'Т-800'],
+        clues: [
+          'Вымышленное искусственное существо из научной фантастики.',
+          'Создано в будущем и отправлено назад во времени.',
+          'В одной истории охотится на человека, а в следующих становится защитником.',
+          'Под человеческой внешностью скрывается металлический скелет с красными глазами.',
+          'Его сыграл Арнольд Шварценеггер, произносящий «I’ll be back».'
+        ]
+      },
+      {
+        id: 'john-wick',
+        name: 'Джон Уик',
+        aliases: ['John Wick', 'Джон Вик'],
+        clues: [
+          'Вымышленный человек из современной серии боевиков.',
+          'Пытался оставить опасную профессию, но личная трагедия заставила его вернуться.',
+          'Работает в тайном мире наёмных убийц с собственными правилами и валютой.',
+          'Носит чёрный костюм, виртуозно обращается с оружием и особенно дорожит собаками.',
+          'Связан с отелем «Континенталь», известен как Баба-яга, а сыграл его Киану Ривз.'
+        ]
+      },
+      {
+        id: 'harry-potter',
+        name: 'Гарри Поттер',
+        aliases: ['Harry Potter', 'Гарри'],
+        clues: [
+          'Вымышленный британский мальчик из фэнтезийной серии.',
+          'Рано потерял родителей и вырос в семье неприятных родственников.',
+          'Учится в закрытой школе, где преподают магические дисциплины.',
+          'Носит круглые очки, пользуется волшебной палочкой и имеет шрам на лбу.',
+          'Учится в Хогвартсе и противостоит Волан-де-Морту.'
+        ]
+      },
+      {
+        id: 'gandalf',
+        name: 'Гэндальф',
+        aliases: ['Gandalf', 'Гандальф', 'Гэндальф Серый', 'Гэндальф Белый'],
+        clues: [
+          'Вымышленное древнее существо из эпического фэнтези.',
+          'Действует в Средиземье во время событий, связанных с Кольцом Всевластья.',
+          'Помогает группе героев в путешествии по Средиземью.',
+          'Выглядит как пожилой волшебник с посохом; сначала носит серые одежды, а после возвращения — белые.',
+          'С посохом в руке остановил Балрога словами о том, что тот не пройдёт.'
+        ]
+      },
+      {
+        id: 'hannibal-lecter',
+        name: 'Ганнибал Лектер',
+        aliases: ['Hannibal Lecter', 'Ганнибал', 'Доктор Лектер'],
+        clues: [
+          'Вымышленный человек из книг, фильмов и сериалов.',
+          'Впервые появился в американском криминальном романе начала 1980-х.',
+          'Работает психиатром и даже в заключении помогает расследовать преступления.',
+          'Обладает выдающимся интеллектом, безупречными манерами и является каннибалом.',
+          'В «Молчании ягнят» беседует с агентом Кларисой Старлинг.'
+        ]
+      },
+      {
+        id: 'rick-sanchez',
+        name: 'Рик Санчез',
+        aliases: ['Rick Sanchez', 'Рик'],
+        clues: [
+          'Вымышленный пожилой человек из анимационного сериала.',
+          'Гениальный учёный, путешествующий между мирами.',
+          'Постоянно втягивает в опасные приключения своего внука.',
+          'Использует портальную пушку, оставляющую зелёные проходы.',
+          'Его внука зовут Морти, а однажды он превратил себя в огурец.'
+        ]
+      },
+      {
+        id: 'spongebob',
+        name: 'Губка Боб', 
+        aliases: ['SpongeBob', 'SpongeBob SquarePants', 'Губка Боб Квадратные Штаны'],
+        clues: [
+          'Вымышленное антропоморфное морское существо.',
+          'Живёт в подводном городе вместе с другими морскими обитателями.',
+          'Работает поваром в заведении быстрого питания.',
+          'Имеет квадратное жёлтое тело и живёт в доме-ананасе.',
+          'Его лучшие друзья — Патрик и Сэнди, а соседа зовут Сквидвард.'
+        ]
+      },
+      {
+        id: 'goku',
+        name: 'Сон Гоку',
+        aliases: ['Goku', 'Son Goku', 'Гоку'],
+        clues: [
+          'Вымышленный герой японской манги и аниме.',
+          'Родился на другой планете, но вырос на Земле.',
+          'Защищает Землю и постоянно ищет сильных соперников, чтобы совершенствоваться в бою.',
+          'Принадлежит к расе сайянов, использует «Камехамеха» и превращается в Супер Сайяна.',
+          'Собирает магические шары в серии Dragon Ball.'
+        ]
+      },
+      {
+        id: 'light-yagami',
+        name: 'Лайт Ягами',
+        aliases: ['Light Yagami', 'Лайт', 'Кира', 'Kira'],
+        clues: [
+          'Вымышленный японский школьник из манги и аниме.',
+          'Находит предмет, принадлежавший богу смерти.',
+          'Тайно наказывает преступников, пытаясь построить собственный справедливый мир.',
+          'Выдающийся стратег, способный убить человека, записав его имя и зная его лицо.',
+          'Его сопровождает Рюк, противостоит ему детектив L, а мир знает его как Киру из Death Note.'
+        ]
+      },
+      {
+        id: 'michael-jackson',
+        name: 'Майкл Джексон',
+        aliases: ['Michael Jackson', 'Майкл'],
+        clues: [
+          'Реальный американский музыкант XX века.',
+          'Начал профессиональную карьеру ещё ребёнком в семейной группе.',
+          'Стал одним из самых успешных исполнителей популярной музыки.',
+          'Прославил танцевальное движение «лунная походка» и часто выступал в одной перчатке.',
+          'Записал альбом Thriller и получил прозвище Король поп-музыки.'
+        ]
+      },
+      {
+        id: 'pepe',
+        name: 'Лягушонок Пепе',
+        aliases: ['Pepe the Frog', 'Pepe', 'Пепе'],
+        clues: [
+          'Вымышленное антропоморфное животное.',
+          'Появилось в американском веб-комиксе середины 2000-х.',
+          'Стало одним из самых распространённых реакционных изображений в интернете.',
+          'Это зелёная лягушка с человекоподобным лицом.',
+          'Первоначально было связано с фразой «Feels Good Man».'
+        ]
+      }
+    ];
+
+    const gameRoot = document.getElementById('five-clues-game');
+    if (!gameRoot) return;
+
+    let target = null;
+    let guesses = [];
+    let selectedId = null;
+    let suggestionMatches = [];
+    let activeSuggestion = -1;
+
+    function normalize(value) {
+      return String(value)
+        .toLocaleLowerCase('ru-RU')
+        .replace(/ё/g, 'е')
+        .replace(/[–—-]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[char]);
+    }
+
+    function isAlreadyGuessed(character) {
+      return guesses.some((guess) => guess.id === character.id);
+    }
+
+    function findExact(value) {
+      const query = normalize(value);
+      if (!query) return null;
+
+      return characters.find((character) => {
+        const names = [character.name, ...character.aliases];
+        return names.some((name) => normalize(name) === query);
+      }) || null;
+    }
+
+    function findMatches(value) {
+      const query = normalize(value);
+
+      return characters
+        .filter((character) => !isAlreadyGuessed(character))
+        .map((character, order) => {
+          const names = [character.name, ...character.aliases].map(normalize);
+          const startsWith = query && names.some((name) => name.startsWith(query));
+          const includes = !query || names.some((name) => name.includes(query));
+          return { character, order, rank: startsWith ? 0 : 1, includes };
+        })
+        .filter((item) => item.includes)
+        .sort((a, b) => a.rank - b.rank || a.order - b.order)
+        .slice(0, 6)
+        .map((item) => item.character);
+    }
+
+    function renderCategoryProgress(activeIndex) {
+      return clueCategories.map((category, index) => {
+        const state = index < activeIndex ? 'is-complete' : index === activeIndex ? 'is-active' : '';
+        const current = index === activeIndex ? 'aria-current="step"' : '';
+        return `
+          <div class="five-clues-category ${state}" role="listitem" ${current}>
+            <span class="five-clues-category-bar" aria-hidden="true"></span>
+            <span class="five-clues-category-label">
+              <span class="five-clues-category-label-full">${category.name}</span>
+              <span class="five-clues-category-label-short">${category.shortName}</span>
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderGame() {
+      selectedId = null;
+      suggestionMatches = [];
+      activeSuggestion = -1;
+
+      const unlockedCount = Math.min(guesses.length + 1, 5);
+      const hints = target.clues.map((clue, index) => {
+        const unlocked = index < unlockedCount;
+        return `
+          <li class="five-clues-hint ${unlocked ? '' : 'is-locked'}">
+            <span class="five-clues-hint-number">${index + 1}</span>
+            <span>${unlocked ? escapeHtml(clue) : 'Откроется после попытки ' + index}</span>
+          </li>
+        `;
+      }).join('');
+
+      gameRoot.innerHTML = `
+        <div class="five-clues-progress">
+          <div class="five-clues-progress-title">
+            <span>Подсказка ${unlockedCount} из 5 · ${clueCategories[unlockedCount - 1].name}</span>
+          </div>
+          <div class="five-clues-categories" role="list" aria-label="Категории подсказок">
+            ${renderCategoryProgress(unlockedCount - 1)}
+          </div>
+        </div>
+        <ol class="five-clues-hints">${hints}</ol>
+        <form class="five-clues-answer-area" id="five-clues-form" novalidate>
+          <div class="five-clues-suggestions" id="five-clues-suggestions" role="listbox" hidden></div>
+          <div class="five-clues-input-row">
+            <input
+              class="five-clues-input"
+              id="five-clues-input"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Введите имя персонажа"
+              aria-label="Имя персонажа"
+              aria-autocomplete="list"
+              aria-controls="five-clues-suggestions"
+              aria-expanded="false"
+            >
+            <button class="five-clues-submit" id="five-clues-submit" type="submit" disabled>Ответить</button>
+          </div>
+          <div class="five-clues-message" id="five-clues-message" role="status" aria-live="polite"></div>
+        </form>
+      `;
+
+      attachGameEvents();
+    }
+
+    function attachGameEvents() {
+      const form = document.getElementById('five-clues-form');
+      const input = document.getElementById('five-clues-input');
+      const submit = document.getElementById('five-clues-submit');
+      const list = document.getElementById('five-clues-suggestions');
+      const message = document.getElementById('five-clues-message');
+
+      function closeSuggestions() {
+        list.hidden = true;
+        input.setAttribute('aria-expanded', 'false');
+        input.removeAttribute('aria-activedescendant');
+        activeSuggestion = -1;
+      }
+
+      function drawSuggestions() {
+        if (!normalize(input.value)) {
+          suggestionMatches = [];
+          closeSuggestions();
+          return;
+        }
+
+        suggestionMatches = findMatches(input.value);
+
+        if (!suggestionMatches.length) {
+          if (input.value.trim() && !message.textContent) {
+            message.textContent = 'Нет такого персонажа в списке.';
+          }
+          closeSuggestions();
+          return;
+        }
+
+        if (activeSuggestion >= suggestionMatches.length) activeSuggestion = 0;
+
+        list.innerHTML = suggestionMatches.map((character, index) => `
+          <button
+            class="five-clues-suggestion ${index === activeSuggestion ? 'is-active' : ''}"
+            id="five-clues-option-${index}"
+            type="button"
+            role="option"
+            aria-selected="${index === activeSuggestion}"
+            data-character-id="${character.id}"
+          >${escapeHtml(character.name)}</button>
+        `).join('');
+
+        list.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
+        if (activeSuggestion >= 0) {
+          input.setAttribute('aria-activedescendant', `five-clues-option-${activeSuggestion}`);
+        } else {
+          input.removeAttribute('aria-activedescendant');
+        }
+
+        list.querySelectorAll('.five-clues-suggestion').forEach((button) => {
+          button.addEventListener('mousedown', (event) => event.preventDefault());
+          button.addEventListener('click', () => {
+            const character = characters.find((item) => item.id === button.dataset.characterId);
+            chooseCharacter(character);
+          });
+        });
+      }
+
+      function chooseCharacter(character) {
+        if (!character) return;
+        input.value = character.name;
+        selectedId = character.id;
+        submit.disabled = false;
+        message.textContent = '';
+        closeSuggestions();
+        input.focus();
+      }
+
+      function moveSuggestion(direction) {
+        if (list.hidden) {
+          activeSuggestion = 0;
+          drawSuggestions();
+          return;
+        }
+
+        if (!suggestionMatches.length) return;
+        activeSuggestion = (activeSuggestion + direction + suggestionMatches.length) % suggestionMatches.length;
+        drawSuggestions();
+        document.getElementById(`five-clues-option-${activeSuggestion}`)?.scrollIntoView({ block: 'nearest' });
+      }
+
+      input.addEventListener('input', () => {
+        const exact = findExact(input.value);
+        const alreadyGuessed = exact && isAlreadyGuessed(exact);
+        selectedId = exact && !alreadyGuessed ? exact.id : null;
+        submit.disabled = !selectedId;
+        message.textContent = alreadyGuessed ? 'Вы уже называли этого персонажа.' : '';
+        activeSuggestion = 0;
+        drawSuggestions();
+      });
+
+      input.addEventListener('focus', () => {
+        activeSuggestion = 0;
+        drawSuggestions();
+      });
+
+      input.addEventListener('blur', () => {
+        window.setTimeout(closeSuggestions, 120);
+      });
+
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          moveSuggestion(1);
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          moveSuggestion(-1);
+        } else if (event.key === 'Escape') {
+          closeSuggestions();
+        } else if (event.key === 'Enter' && !list.hidden && activeSuggestion >= 0) {
+          event.preventDefault();
+          chooseCharacter(suggestionMatches[activeSuggestion]);
+        }
+      });
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const character = characters.find((item) => item.id === selectedId) || findExact(input.value);
+
+        if (!character) {
+          message.textContent = 'Выберите персонажа из списка.';
+          return;
+        }
+
+        if (isAlreadyGuessed(character)) {
+          message.textContent = 'Вы уже называли этого персонажа.';
+          selectedId = null;
+          submit.disabled = true;
+          return;
+        }
+
+        guesses.push(character);
+
+        if (character.id === target.id) {
+          renderResult(true);
+        } else if (guesses.length >= 5) {
+          renderResult(false);
+        } else {
+          renderGame();
+        }
+      });
+    }
+
+    function buildResultGrid(won) {
+      if (!won) return '🟥🟥🟥🟥🟥';
+      const wrong = Math.max(0, guesses.length - 1);
+      return `${'⬛'.repeat(wrong)}🟩${'⬜'.repeat(5 - guesses.length)}`;
+    }
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      const copied = document.execCommand('copy');
+      textarea.remove();
+      if (!copied) throw new Error('copy failed');
+    }
+
+    async function copyResult(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function renderResult(won) {
+      const resultGrid = buildResultGrid(won);
+      const resultValue = won ? `${guesses.length}/5` : 'X/5';
+      const shareText = `Пять подсказок — ${resultValue} ${resultGrid}`;
+
+      gameRoot.innerHTML = `
+        <div class="five-clues-result ${won ? '' : 'is-lost'}">
+          <div class="five-clues-result-icon" aria-hidden="true">${won ? '✓' : '×'}</div>
+          <div class="five-clues-result-title">${won ? 'Угадано!' : 'Попытки закончились'}</div>
+          <div class="five-clues-result-answer">Ответ: <span class="five-clues-result-answer-name">${escapeHtml(target.name)}</span></div>
+          <div class="five-clues-result-copy">${won ? `Вы справились с ${guesses.length}-й попытки.` : 'В следующий раз обязательно получится.'}</div>
+          <div class="five-clues-result-grid" aria-label="Результат ${resultValue}">${resultGrid}</div>
+          <div class="five-clues-result-actions">
+            <button class="five-clues-button" id="five-clues-share" type="button">Поделиться</button>
+            <button class="five-clues-button is-secondary" id="five-clues-restart" type="button">Новая игра</button>
+          </div>
+          <div class="five-clues-share-status" id="five-clues-share-status" role="status" aria-live="polite"></div>
+        </div>
+      `;
+
+      document.getElementById('five-clues-share').addEventListener('click', async (event) => {
+        const status = document.getElementById('five-clues-share-status');
+        try {
+          await copyResult(shareText);
+          status.textContent = 'Результат скопирован';
+          event.currentTarget.textContent = 'Скопировано';
+        } catch (error) {
+          status.textContent = 'Не удалось скопировать результат';
+        }
+      });
+
+      document.getElementById('five-clues-restart').addEventListener('click', startGame);
+    }
+
+    function startGame() {
+      target = characters[Math.floor(Math.random() * characters.length)];
+      guesses = [];
+      selectedId = null;
+      suggestionMatches = [];
+      activeSuggestion = -1;
+      renderGame();
+    }
+
+    startGame();
+  })();
+
+  // Переключение темы
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? '' : 'dark');
+  });
+
+  function isSupportedBadgeImage(file) {
+    const extension = file.name.split('.').pop().toLowerCase();
+    return file.type.startsWith('image/') || supportedBadgeExtensions.includes(extension);
+  }
+
+  function showBadgeUploadAlert() {
+    alert(badgeUploadMessage);
+  }
+
+  function replaceImageContent(container, src, className) {
+    container.innerHTML = '';
+
+    const image = document.createElement('img');
+    image.className = className;
+    image.src = src;
+    image.alt = '';
+
+    container.appendChild(image);
+  }
+
+  document.addEventListener('dragover', (event) => {
+    event.preventDefault();
+  });
+
+  document.addEventListener('drop', (event) => {
+    event.preventDefault();
+
+    const file = event.dataTransfer.files[0];
+    if (!file || !isSupportedBadgeImage(file)) {
+      showBadgeUploadAlert();
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.addEventListener('load', () => {
+      const badge = document.querySelector('.author-name-badge');
+      const fireIcon = document.querySelector('.reaction-fire-icon');
+
+      replaceImageContent(badge, reader.result, 'author-name-badge-image');
+      replaceImageContent(fireIcon, reader.result, 'reaction-icon-image');
+    });
+
+    reader.addEventListener('error', showBadgeUploadAlert);
+    reader.readAsDataURL(file);
+  });
+</script>
+
+</body>
+</html>
