@@ -1882,6 +1882,481 @@
       }
     ];
 
+    const additionalGuessOptions = `
+Луиджи|Luigi
+Принцесса Пич|Princess Peach
+Боузер|Bowser
+Йоши|Yoshi
+Варио|Wario
+Валуиджи|Waluigi
+Принцесса Зельда|Princess Zelda
+Ганондорф|Ganondorf
+Самус Аран|Samus Aran
+Кирби|Kirby
+Донки Конг|Donkey Kong
+Фокс Макклауд|Fox McCloud
+Капитан Фэлкон|Captain Falcon
+Пакман|Pac-Man
+Мегамен|Mega Man
+Крэш Бандикут|Crash Bandicoot
+Спайро|Spyro
+Рэйман|Rayman
+Сэкбой|Sackboy
+Стив|Steve
+Крипер|Creeper
+Алекс из Minecraft|Minecraft Alex
+Палач Рока|Doom Slayer|Думгай
+Дюк Нюкем|Duke Nukem
+Би-Джей Бласковиц|BJ Blazkowicz
+G-Man|Джи-мен
+Аликс Вэнс|Alyx Vance
+Барни Калхаун|Barney Calhoun
+Челл|Chell
+GLaDOS|ГЛэДОС
+Пулемётчик|Heavy
+Разведчик|Scout
+Поджигатель|Pyro
+Медик из Team Fortress 2|TF2 Medic
+Шпион из Team Fortress 2|TF2 Spy
+Инженер из Team Fortress 2|TF2 Engineer
+Подрывник|Demoman
+Снайпер из Team Fortress 2|TF2 Sniper
+Эцио Аудиторе|Ezio Auditore
+Альтаир|Altair
+Байек|Bayek
+Кассандра из Assassin’s Creed|Kassandra
+Эйвор|Eivor
+Принц Персии|Prince of Persia
+Сэм Фишер|Sam Fisher
+Нейтан Дрейк|Nathan Drake
+Элли Уильямс|Ellie Williams
+Джоэл Миллер|Joel Miller
+Эбби Андерсон|Abby Anderson
+Элой|Aloy
+Дзин Сакай|Jin Sakai
+Сенуа|Senua
+Алан Уэйк|Alan Wake
+Сага Андерсон|Saga Anderson
+Айзек Кларк|Isaac Clarke
+Фейт Коннорс|Faith Connors
+Ваас Монтенегро|Vaas Montenegro
+Пэйган Мин|Pagan Min
+Джейсон Броди|Jason Brody
+Аджай Гейл|Ajay Ghale
+Загрей|Zagreus
+Аид из Hades|Hades
+Капхед|Cuphead
+Санс|Sans
+Папирус|Papyrus
+Фриск|Frisk
+Шовел Найт|Shovel Knight
+Ори|Ori
+Рыцарь из Hollow Knight|The Knight
+Хорнет|Hornet
+Мэдлин|Madeline
+Довакин|Dragonborn|Драконорождённый
+Лидия из Skyrim|Lydia
+Алдуин|Alduin
+Нереварин|Nerevarine
+Шеогорат|Sheogorath
+Волт-Бой|Vault Boy
+Псина из Fallout|Dogmeat
+Курьер из Fallout: New Vegas|The Courier
+Ник Валентайн|Nick Valentine
+Красавчик Джек|Handsome Jack
+Железяка|Claptrap
+Крошка Тина|Tiny Tina
+Большой Папочка|Big Daddy
+Маленькая Сестричка|Little Sister
+Букер ДеВитт|Booker DeWitt
+Элизабет из BioShock|Elizabeth
+Эндрю Райан|Andrew Ryan
+Маркус Феникс|Marcus Fenix
+Кейт Диаз|Kait Diaz
+Кортана|Cortana
+Арбитр|Arbiter
+Маркус Холлоуэй|Marcus Holloway
+Эйден Пирс|Aiden Pearce
+Нико Беллик|Niko Bellic
+Томми Версетти|Tommy Vercetti
+Франклин Клинтон|Franklin Clinton
+Майкл Де Санта|Michael De Santa
+Тревор Филипс|Trevor Philips
+Клод из GTA III|Claude
+Роман Беллик|Roman Bellic
+Биг Смоук|Big Smoke
+Райдер из GTA: San Andreas|Ryder
+Джонни Сильверхенд|Johnny Silverhand
+Ви из Cyberpunk 2077|Cyberpunk V
+Панам Палмер|Panam Palmer
+Джуди Альварес|Judy Alvarez
+Адам Дженсен|Adam Jensen
+Джей-Си Дентон|JC Denton
+Корво Аттано|Corvo Attano
+Эмили Колдуин|Emily Kaldwin
+Гаррет|Garrett
+Смерть из Darksiders|Death
+Война из Darksiders|War
+Данте|Dante
+Вергилий|Vergil
+Неро|Nero
+Байонетта|Bayonetta
+Рю|Ryu
+Кен Мастерс|Ken Masters
+Чунь Ли|Chun-Li
+Скорпион|Scorpion
+Саб-Зиро|Sub-Zero
+Рейден из Mortal Kombat|Mortal Kombat Raiden
+Лю Кан|Liu Kang
+Китана|Kitana
+Соня Блейд|Sonya Blade
+Джонни Кейдж|Johnny Cage
+Шао Кан|Shao Kahn
+Дзин Кадзама|Jin Kazama
+Кадзуя Мисима|Kazuya Mishima
+Хэйхати Мисима|Heihachi Mishima
+Акума|Akuma
+Терри Богард|Terry Bogard
+Линк|Link
+Клауд Страйф|Cloud Strife
+Сефирот|Sephiroth
+Тифа Локхарт|Tifa Lockhart
+Айрис Гейнсборо|Aerith Gainsborough
+Скволл Леонхарт|Squall Leonhart
+Тидус|Tidus
+Лайтнинг|Lightning
+Ноктис|Noctis
+Клайв Росфилд|Clive Rosfield
+Джилл Валентайн|Jill Valentine
+Крис Редфилд|Chris Redfield
+Клэр Редфилд|Claire Redfield
+Ада Вонг|Ada Wong
+Альберт Вескер|Albert Wesker
+Немезис|Nemesis
+Леди Димитреску|Lady Dimitrescu
+Итан Уинтерс|Ethan Winters
+Артас Менетил|Arthas Menethil
+Тралл|Thrall
+Иллидан|Illidan
+Сильвана Ветрокрылая|Sylvanas Windrunner
+Джайна Праудмур|Jaina Proudmoore
+Пудж|Pudge
+Инвокер|Invoker
+Люк Скайуокер|Luke Skywalker
+Лея Органа|Leia Organa
+Хан Соло|Han Solo
+Йода|Yoda
+Оби-Ван Кеноби|Obi-Wan Kenobi
+Император Палпатин|Emperor Palpatine
+Асока Тано|Ahsoka Tano
+Мандалорец|Din Djarin|Дин Джарин
+Грогу|Grogu
+R2-D2|Р2-Д2
+C-3PO|С-3ПО
+Чубакка|Chewbacca
+Боба Фетт|Boba Fett
+Рей|Rey
+Кайло Рен|Kylo Ren
+Джеймс Бонд|James Bond
+Шерлок Холмс|Sherlock Holmes
+Доктор Ватсон|Doctor Watson
+Железный человек|Iron Man
+Капитан Америка|Captain America
+Тор|Thor
+Халк|Hulk
+Чёрная вдова|Black Widow
+Соколиный глаз|Hawkeye
+Танос|Thanos
+Локи|Loki
+Доктор Стрэндж|Doctor Strange
+Чёрная пантера|Black Panther
+Алая ведьма|Scarlet Witch
+Вижн|Vision
+Звёздный Лорд|Star-Lord
+Грут|Groot
+Ракета|Rocket Raccoon
+Дэдпул|Deadpool
+Росомаха|Wolverine
+Профессор Икс|Professor X
+Магнето|Magneto
+Джокер|Joker
+Харли Квинн|Harley Quinn
+Супермен|Superman
+Чудо-женщина|Wonder Woman
+Аквамен|Aquaman
+Флэш|The Flash
+Зелёный Фонарь|Green Lantern
+Женщина-кошка|Catwoman
+Роршах|Rorschach
+Хеллбой|Hellboy
+Хоумлендер|Homelander
+Билли Бутчер|Billy Butcher
+Одиннадцать|Eleven
+Уэнсдэй Аддамс|Wednesday Addams
+Тони Сопрано|Tony Soprano
+Доктор Хаус|Gregory House
+Сол Гудман|Saul Goodman
+Джесси Пинкман|Jesse Pinkman
+Гус Фринг|Gus Fring
+Дон Дрейпер|Don Draper
+Декстер Морган|Dexter Morgan
+Томас Шелби|Thomas Shelby
+Дейл Купер|Dale Cooper
+Фокс Малдер|Fox Mulder
+Дана Скалли|Dana Scully
+Тирион Ланнистер|Tyrion Lannister
+Джон Сноу|Jon Snow
+Дейенерис Таргариен|Daenerys Targaryen
+Серсея Ланнистер|Cersei Lannister
+Арья Старк|Arya Stark
+Нед Старк|Ned Stark
+Сандор Клиган|The Hound
+Тони Монтана|Tony Montana
+Вито Корлеоне|Vito Corleone
+Майкл Корлеоне|Michael Corleone
+Рокки Бальбоа|Rocky Balboa
+Джон Рэмбо|John Rambo
+Форрест Гамп|Forrest Gump
+Тайлер Дёрден|Tyler Durden
+Чувак|The Dude
+Трэвис Бикл|Travis Bickle
+Патрик Бэйтман|Patrick Bateman
+Эллен Рипли|Ellen Ripley
+Ксеноморф|Xenomorph
+Хищник|Predator
+Эш Уильямс|Ash Williams
+Макс Рокатански|Max Rockatansky
+Сара Коннор|Sarah Connor
+Робокоп|RoboCop
+Марти Макфлай|Marty McFly
+Док Браун|Doc Brown
+Инопланетянин И.Т.|E.T.
+Битлджус|Beetlejuice
+Эдвард Руки-ножницы|Edward Scissorhands
+Эйс Вентура|Ace Ventura
+Маска|The Mask
+Труман Бёрбанк|Truman Burbank
+Морфеус|Morpheus
+Тринити|Trinity
+Агент Смит|Agent Smith
+Фуриоса|Furiosa
+Пол Атрейдес|Paul Atreides
+Чани|Chani
+Лето Атрейдес|Leto Atreides
+Блэйд|Blade
+Рик Декард|Rick Deckard
+Рой Батти|Roy Batty
+Корбен Даллас|Korben Dallas
+Лилу|Leeloo
+Джек Торранс|Jack Torrance
+Фредди Крюгер|Freddy Krueger
+Джейсон Вурхиз|Jason Voorhees
+Майкл Майерс|Michael Myers
+Лиза Симпсон|Lisa Simpson
+Барт Симпсон|Bart Simpson
+Мардж Симпсон|Marge Simpson
+Мэгги Симпсон|Maggie Simpson
+Питер Гриффин|Peter Griffin
+Стьюи Гриффин|Stewie Griffin
+Брайан Гриффин|Brian Griffin
+Бендер|Bender
+Фрай|Philip J. Fry
+Лила|Turanga Leela
+Профессор Фарнсворт|Professor Farnsworth
+Морти Смит|Morty Smith
+Саммер Смит|Summer Smith
+Бет Смит|Beth Smith
+Джерри Смит|Jerry Smith
+БоДжек|BoJack Horseman
+Мистер Подхвост|Mr. Peanutbutter
+Эрик Картман|Eric Cartman
+Кенни Маккормик|Kenny McCormick
+Стэн Марш|Stan Marsh
+Кайл Брофловски|Kyle Broflovski
+Аанг|Aang
+Катара|Katara
+Зуко|Zuko
+Тоф Бейфонг|Toph Beifong
+Корра|Korra
+Момо|Momo
+По|Po
+Мастер Шифу|Master Shifu
+Беззубик|Toothless
+Иккинг|Hiccup
+Эльза|Elsa
+Анна из «Холодного сердца»|Frozen Anna
+Олаф|Olaf
+Симба|Simba
+Тимон|Timon
+Пумба|Pumbaa
+Муфаса|Mufasa
+Шрам|Scar
+Ариэль|Ariel
+Аладдин|Aladdin
+Джинн|Genie
+Мулан|Mulan
+Стич|Stitch
+Микки Маус|Mickey Mouse
+Дональд Дак|Donald Duck
+Гуфи|Goofy
+Том|Tom Cat
+Джерри|Jerry Mouse
+Багз Банни|Bugs Bunny
+Даффи Дак|Daffy Duck
+Скуби-Ду|Scooby-Doo
+Шэгги|Shaggy
+Попай|Popeye
+Винни-Пух|Winnie-the-Pooh
+Тигра|Tigger
+Чебурашка|Cheburashka
+Крокодил Гена|Gena the Crocodile
+Карлсон|Karlsson
+Кот Леопольд|Leopold the Cat
+Маша|Masha
+Медведь из «Маши и Медведя»|The Bear
+Сейлор Мун|Sailor Moon
+Монки Д. Луффи|Monkey D. Luffy
+Ророноа Зоро|Roronoa Zoro
+Нами|Nami
+Санджи|Sanji
+Вегета|Vegeta
+Пикколо|Piccolo
+Фриза|Frieza
+Сайтама|Saitama
+Генос|Genos
+Эрен Йегер|Eren Yeager
+Микаса Аккерман|Mikasa Ackerman
+Леви Аккерман|Levi Ackerman
+Эдвард Элрик|Edward Elric
+Альфонс Элрик|Alphonse Elric
+Спайк Шпигель|Spike Spiegel
+Фэй Валентайн|Faye Valentine
+Ичиго Куросаки|Ichigo Kurosaki
+Рукия Кучики|Rukia Kuchiki
+Тандзиро Камадо|Tanjiro Kamado
+Нэдзуко Камадо|Nezuko Kamado
+Сатору Годзё|Satoru Gojo
+Юдзи Итадори|Yuji Itadori
+Макима|Makima
+Дэндзи|Denji
+Тоторо|Totoro
+Тихиро|Chihiro
+Хаул|Howl
+Эш Кетчум|Ash Ketchum
+Фродо Бэггинс|Frodo Baggins
+Сэмуайз Гэмджи|Samwise Gamgee
+Арагорн|Aragorn
+Леголас|Legolas
+Гимли|Gimli
+Голлум|Gollum
+Бильбо Бэггинс|Bilbo Baggins
+Саурон|Sauron
+Саруман|Saruman
+Галадриэль|Galadriel
+Альбус Дамблдор|Albus Dumbledore
+Гермиона Грейнджер|Hermione Granger
+Рон Уизли|Ron Weasley
+Волан-де-Морт|Voldemort
+Северус Снейп|Severus Snape
+Рубеус Хагрид|Rubeus Hagrid
+Драко Малфой|Draco Malfoy
+Сириус Блэк|Sirius Black
+Полумна Лавгуд|Luna Lovegood
+Дон Кихот|Don Quixote
+Санчо Панса|Sancho Panza
+Гамлет|Hamlet
+Ромео|Romeo
+Джульетта|Juliet
+Алиса|Alice
+Безумный Шляпник|Mad Hatter
+Чеширский Кот|Cheshire Cat
+Маленький принц|The Little Prince
+Остап Бендер|Ostap Bender
+Воланд|Woland
+Мастер из «Мастера и Маргариты»|The Master
+Маргарита|Margarita
+Кот Бегемот|Behemoth the Cat
+Родион Раскольников|Rodion Raskolnikov
+Анна Каренина|Anna Karenina
+Евгений Онегин|Eugene Onegin
+Муми-тролль|Moomintroll
+Пеппи Длинныйчулок|Pippi Longstocking
+Мэри Поппинс|Mary Poppins
+Питер Пэн|Peter Pan
+Капитан Крюк|Captain Hook
+Тарзан|Tarzan
+Конан-варвар|Conan the Barbarian
+Ктулху|Cthulhu
+Граф Дракула|Count Dracula
+Чудовище Франкенштейна|Frankenstein's Monster
+Д’Артаньян|D'Artagnan
+Граф Монте-Кристо|The Count of Monte Cristo
+Робинзон Крузо|Robinson Crusoe
+Барон Мюнхгаузен|Baron Munchausen
+Дэвид Боуи|David Bowie
+Курт Кобейн|Kurt Cobain
+Эминем|Eminem
+Леди Гага|Lady Gaga
+Виктор Цой|Viktor Tsoi
+Егор Летов|Egor Letov
+Рик Эстли|Rick Astley
+Канье Уэст|Kanye West
+Тейлор Свифт|Taylor Swift
+Билли Айлиш|Billie Eilish
+Бритни Спирс|Britney Spears
+Мадонна|Madonna
+Элвис Пресли|Elvis Presley
+Джон Леннон|John Lennon
+Пол Маккартни|Paul McCartney
+Оззи Осборн|Ozzy Osbourne
+Мик Джаггер|Mick Jagger
+Элтон Джон|Elton John
+Принс|Prince
+Бейонсе|Beyoncé
+Рианна|Rihanna
+Снуп Догг|Snoop Dogg
+Доктор Дре|Dr. Dre
+Тупак Шакур|Tupac Shakur
+The Weeknd|Уикенд
+Честер Беннингтон|Chester Bennington
+Дэйв Грол|Dave Grohl
+Эми Уайнхаус|Amy Winehouse
+Адель|Adele
+Джонни Кэш|Johnny Cash
+Боб Марли|Bob Marley
+Мэрилин Мэнсон|Marilyn Manson
+Тилль Линдеманн|Till Lindemann
+Кори Тейлор|Corey Taylor
+Гейб Ньюэлл|Gabe Newell
+Сигэру Миямото|Shigeru Miyamoto
+Джон Кармак|John Carmack
+Тодд Говард|Todd Howard
+Сэм Лейк|Sam Lake
+Нил Дракманн|Neil Druckmann
+Киану Ривз|Keanu Reeves
+Арнольд Шварценеггер|Arnold Schwarzenegger
+Джеки Чан|Jackie Chan
+Николас Кейдж|Nicolas Cage
+Джим Керри|Jim Carrey
+Роуэн Аткинсон|Rowan Atkinson
+Илон Маск|Elon Musk
+Гарольд, скрывающий боль|Hide the Pain Harold
+Doge|Доге
+Гигачад|Gigachad
+`
+      .trim()
+      .split('\n')
+      .map((line, index) => {
+        const [name, ...aliases] = line.split('|').map((part) => part.trim()).filter(Boolean);
+        return {
+          id: 'catalog-' + String(index + 1).padStart(3, '0'),
+          name,
+          aliases
+        };
+      });
+
+    const guessOptions = [...characters, ...additionalGuessOptions];
+
     const gameRoot = document.getElementById('five-clues-game');
     if (!gameRoot) return;
 
@@ -1918,7 +2393,7 @@
       const query = normalize(value);
       if (!query) return null;
 
-      return characters.find((character) => {
+      return guessOptions.find((character) => {
         const names = [character.name, ...character.aliases];
         return names.some((name) => normalize(name) === query);
       }) || null;
@@ -1927,7 +2402,9 @@
     function findMatches(value) {
       const query = normalize(value);
 
-      return characters
+      if (query.length < 2) return [];
+
+      return guessOptions
         .filter((character) => !isAlreadyGuessed(character))
         .map((character, order) => {
           const names = [character.name, ...character.aliases].map(normalize);
@@ -2022,7 +2499,7 @@
       }
 
       function drawSuggestions() {
-        if (!normalize(input.value)) {
+        if (normalize(input.value).length < 2) {
           suggestionMatches = [];
           closeSuggestions();
           return;
@@ -2062,7 +2539,7 @@
         list.querySelectorAll('.five-clues-suggestion').forEach((button) => {
           button.addEventListener('mousedown', (event) => event.preventDefault());
           button.addEventListener('click', () => {
-            const character = characters.find((item) => item.id === button.dataset.characterId);
+            const character = guessOptions.find((item) => item.id === button.dataset.characterId);
             chooseCharacter(character);
           });
         });
@@ -2127,7 +2604,7 @@
 
       form.addEventListener('submit', (event) => {
         event.preventDefault();
-        const character = characters.find((item) => item.id === selectedId) || findExact(input.value);
+        const character = guessOptions.find((item) => item.id === selectedId) || findExact(input.value);
 
         if (!character) {
           message.textContent = 'Выберите персонажа из списка.';
