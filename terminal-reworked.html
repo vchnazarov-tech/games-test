@@ -96,12 +96,90 @@
 
   .game-frame {
     --noise-opacity: .2;
+    --noise-size: 160px;
+    --noise-speed: 1s;
+    --edge-glow-color: rgba(255, 154, 61, .5);
+    --edge-glow-size: 40px;
+    --vignette-intensity: .3;
+    --curvature-intensity: .6;
     position: relative;
     overflow: hidden;
     isolation: isolate;
     border: 1px solid rgba(0,0,0,.12);
     border-radius: 10px;
-    background: #0d0b09;
+  }
+
+  .game-frame[data-theme="cyber"] {
+    --edge-glow-color: rgba(91, 179, 135, .5);
+  }
+
+  .game-frame.critical-state {
+    --noise-opacity: .34;
+    --noise-size: 190px;
+    --noise-speed: .7s;
+    --edge-glow-color: rgba(255, 58, 46, .58);
+  }
+
+  .crt-surface-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .crt-curvature-layer {
+    z-index: 25;
+    background:
+      radial-gradient(
+        ellipse 75% 75% at 30% 25%,
+        rgba(255,255,255,.05) 0%,
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse 100% 100% at 50% 50%,
+        transparent 0%,
+        transparent 42%,
+        rgba(0,0,0,calc(var(--curvature-intensity) * .35)) 72%,
+        rgba(0,0,0,calc(var(--curvature-intensity) * .9)) 100%
+      );
+  }
+
+  .crt-vignette-layer {
+    z-index: 27;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 60%,
+      rgba(0,0,0,var(--vignette-intensity)) 100%
+    );
+    mix-blend-mode: multiply;
+  }
+
+  .crt-edge-glow-layer {
+    z-index: 28;
+    box-shadow: inset 0 0 var(--edge-glow-size) var(--edge-glow-color);
+  }
+
+  .crt-danger-layer {
+    z-index: 30;
+    opacity: 0;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 44%,
+      rgba(170, 7, 2, .24) 68%,
+      rgba(255, 31, 12, 1) 100%
+    );
+    box-shadow: inset 0 0 72px rgba(255, 26, 10, .9);
+    mix-blend-mode: screen;
+    will-change: opacity;
+  }
+
+  .game-frame.critical-state .crt-danger-layer {
+    animation: critical-glass-pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes critical-glass-pulse {
+    0%, 100% { opacity: .14; }
+    50% { opacity: .54; }
   }
 
   .game-frame::after {
@@ -113,10 +191,10 @@
     opacity: var(--noise-opacity);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.5' numOctaves='3' seed='17' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.82'/%3E%3C/svg%3E");
     background-repeat: repeat;
-    background-size: 160px 160px;
+    background-size: var(--noise-size) var(--noise-size);
     mix-blend-mode: screen;
     will-change: transform;
-    animation: rf-grain-shift 1s steps(4, end) infinite;
+    animation: rf-grain-shift var(--noise-speed) steps(4, end) infinite;
   }
 
   @keyframes rf-grain-shift {
@@ -141,7 +219,6 @@
     width: 592px;
     height: 592px;
     overflow: hidden;
-    isolation: isolate;
     color: var(--paper);
     background:
       radial-gradient(ellipse 72% 56% at 0% 0%, rgba(255,112,32,.31), rgba(188,70,13,.13) 46%, transparent 75%),
@@ -168,11 +245,24 @@
       linear-gradient(128deg, #12170e, #0a0e08 56%, #10150c);
   }
 
+  .game-frame.critical-state #terminal {
+    --signal: #ff5748;
+    --signal-hot: #ff2f27;
+    --signal-dim: #b8453c;
+    --code: #ec6656;
+    --line: #6d3029;
+    background:
+      radial-gradient(ellipse 72% 56% at 0% 0%, rgba(255,61,44,.13), rgba(132,18,12,.055) 46%, transparent 75%),
+      radial-gradient(ellipse 60% 48% at 100% 100%, rgba(205,31,23,.10), rgba(106,11,8,.04) 50%, transparent 78%),
+      radial-gradient(ellipse 105% 88% at 50% 48%, rgba(84,22,19,.06), rgba(44,12,10,.035) 52%, transparent 82%),
+      linear-gradient(128deg, #110908, #080504 56%, #0f0605);
+  }
+
   #terminal::before {
     content: "";
     position: absolute;
     inset: 0;
-    z-index: 20;
+    z-index: 32;
     pointer-events: none;
     opacity: .38;
     background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(255,255,255,.095) 3px 4px);
@@ -182,7 +272,7 @@
   #terminal::after {
     content: "";
     position: absolute;
-    z-index: 19;
+    z-index: 31;
     left: -2%;
     right: -2%;
     top: var(--sweep-top, -160px);
@@ -225,7 +315,7 @@
 
   .terminal-ui {
     position: relative;
-    z-index: 2;
+    z-index: 29;
     height: 100%;
     padding: 22px 24px 36px;
     display: grid;
@@ -253,15 +343,14 @@
 
   .sys-id::before { content: "// "; opacity: .65; }
 
-  .sys-status {
-    margin-top: 7px;
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: .1em;
+  .sys-errors {
     display: flex;
     align-items: center;
-    gap: 9px;
+    gap: 0;
   }
+
+  .sys-errors::before { content: none; }
+  .sys-errors .errors { margin-left: 9px; }
 
   .timer {
     min-width: 142px;
@@ -317,7 +406,7 @@
     flex-wrap: wrap;
     align-content: center;
     justify-content: center;
-    column-gap: 15px;
+    column-gap: 18px;
     row-gap: 20px;
   }
 
@@ -392,7 +481,7 @@
     width: 100%;
     text-align: center;
     color: var(--code);
-    font-size: 10px;
+    font-size: 11px;
     line-height: 1;
     letter-spacing: 0;
     text-shadow: 0 0 6px color-mix(in srgb, var(--code) 16%, transparent);
@@ -442,6 +531,20 @@
       0 0 16px color-mix(in srgb, var(--signal) 10%, transparent);
   }
 
+  .round-entering .round-reveal-cell {
+    animation: phrase-cell-enter .01ms step-end both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  .round-entering .control-zone {
+    opacity: 0;
+  }
+
+  @keyframes phrase-cell-enter {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
   .packet-preview {
     width: min(470px, 100%);
     display: flex;
@@ -452,7 +555,7 @@
 
   .packet-meta {
     color: var(--muted);
-    font-size: 9px;
+    font-size: 13px;
     letter-spacing: .14em;
     text-align: center;
   }
@@ -475,7 +578,7 @@
   .packet-symbol {
     width: 12px;
     color: var(--signal-dim);
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1;
     text-align: center;
     text-shadow: 0 0 8px color-mix(in srgb, var(--signal-dim) 20%, transparent);
@@ -570,11 +673,83 @@
   .start-overlay {
     position: absolute;
     inset: 0;
-    z-index: 8;
+    z-index: 29;
     padding: 22px 24px 20px;
     display: flex;
     flex-direction: column;
     background: linear-gradient(rgba(13,11,9,.07), rgba(13,11,9,.2));
+  }
+
+  .connecting-screen {
+    position: absolute;
+    inset: 0;
+    z-index: 29;
+    padding: 22px 24px 20px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    pointer-events: none;
+  }
+
+  .connecting-center {
+    display: grid;
+    place-items: center;
+    padding-bottom: 40px;
+  }
+
+  .connecting-text {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    color: var(--signal);
+    font-size: 13px;
+    letter-spacing: .15em;
+    text-shadow:
+      0 0 3px color-mix(in srgb, var(--signal) 55%, transparent),
+      0 0 13px color-mix(in srgb, var(--signal) 24%, transparent);
+  }
+
+  .connecting-char {
+    display: inline-block;
+    opacity: 0;
+    animation: connecting-char-in .01ms step-end both;
+    animation-delay: var(--connect-delay, 0ms);
+  }
+
+  .connecting-dots {
+    display: inline-flex;
+  }
+
+  .connecting-dot {
+    display: inline-block;
+    opacity: 0;
+    animation-duration: var(--dot-cycle, 2400ms);
+    animation-timing-function: step-end;
+    animation-iteration-count: infinite;
+    animation-delay: var(--dots-start, 0ms);
+  }
+
+  .connecting-dot:nth-child(1) { animation-name: connecting-dot-one; }
+  .connecting-dot:nth-child(2) { animation-name: connecting-dot-two; }
+  .connecting-dot:nth-child(3) { animation-name: connecting-dot-three; }
+
+  @keyframes connecting-char-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes connecting-dot-one {
+    0%, 24.99%, 100% { opacity: 0; }
+    25%, 99.99% { opacity: 1; }
+  }
+
+  @keyframes connecting-dot-two {
+    0%, 49.99%, 100% { opacity: 0; }
+    50%, 99.99% { opacity: 1; }
+  }
+
+  @keyframes connecting-dot-three {
+    0%, 74.99%, 100% { opacity: 0; }
+    75%, 99.99% { opacity: 1; }
   }
 
   .overlay-spacer { flex: 1; }
@@ -625,7 +800,7 @@
 
   .final-screen {
     position: relative;
-    z-index: 2;
+    z-index: 29;
     width: 100%;
     height: 100%;
     padding: 22px 24px 20px;
@@ -789,7 +964,7 @@
     pointer-events: auto;
   }
 
-  #terminal.hit {
+  #terminal.hit > .terminal-ui {
     animation: hit var(--hit-speed, 280ms) linear both;
   }
 
@@ -804,7 +979,7 @@
   .error-screen-flash {
     position: absolute;
     inset: 0;
-    z-index: 24;
+    z-index: 33;
     pointer-events: none;
     opacity: 0;
     background: radial-gradient(circle at 50% 48%, rgb(255,72,48), rgb(190,12,8));
@@ -819,7 +994,7 @@
     76% { opacity: .008; }
   }
 
-  #terminal.fail { animation: fail .82s linear both; }
+  #terminal.fail > .terminal-ui { animation: fail .82s linear both; }
   @keyframes fail {
     0%, 100% { transform: none; filter: none; }
     9% { transform: translateX(-12px) skewX(-3deg); filter: brightness(2.2) contrast(1.7); }
@@ -896,7 +1071,7 @@
   .win-screen-flash {
     position: absolute;
     inset: 0;
-    z-index: 25;
+    z-index: 33;
     pointer-events: none;
     opacity: 0;
     background: color-mix(in srgb, var(--signal) 42%, #fff);
@@ -939,14 +1114,14 @@
     .post-header, .post-title, .reaction-bar { margin-left: 16px; margin-right: 16px; }
     .game-frame { border-left: 0; border-right: 0; border-radius: 0; }
     #terminal { width: 100%; height: 560px; }
-    .terminal-ui, .start-overlay, .final-screen { padding: 18px 14px 16px; }
+    .terminal-ui, .start-overlay, .final-screen, .connecting-screen { padding: 18px 14px 16px; }
     .transmission { padding-top: 8px; }
     .message { column-gap: 10px; row-gap: 13px; }
     .cipher-word { gap: 0; }
     .cipher-char { width: 23px; height: 42px; }
     .cipher-char .glyph { height: 25px; font-size: 20px; }
     .cipher-char.unresolved .glyph { font-size: 16px; }
-    .cipher-char .code { font-size: 9px; }
+    .cipher-char .code { font-size: 11px; }
     .cipher-char::after { top: 28px; }
     .cipher-char.selected::before { height: 33px; }
     .packet-preview { width: min(390px, 100%); gap: 16px; }
@@ -971,6 +1146,12 @@
       animation-iteration-count: 1 !important;
       scroll-behavior: auto !important;
     }
+
+    .game-frame.critical-state .crt-danger-layer {
+      opacity: .36;
+      animation: none !important;
+    }
+
   }
 </style>
 </head>
@@ -992,6 +1173,10 @@
 
     <div class="game-frame">
       <main id="terminal" aria-live="polite"></main>
+      <div class="crt-surface-layer crt-curvature-layer" aria-hidden="true"></div>
+      <div class="crt-surface-layer crt-vignette-layer" aria-hidden="true"></div>
+      <div class="crt-surface-layer crt-edge-glow-layer" aria-hidden="true"></div>
+      <div class="crt-surface-layer crt-danger-layer" aria-hidden="true"></div>
     </div>
 
     <div class="reaction-bar" aria-label="Реакции">
@@ -1017,6 +1202,16 @@
     '0JrQntCg0J7QktCY0Jkg0KPQoNCe0JLQldCd0Kwg0J3QlSDQodCj0KnQldCh0KLQktCj0JXQog==',
     '0K8g0JrQkNCf0JjQotCQ0J0g0KjQldCf0JDQoNCULCDQmCDQrdCi0J4g0JzQntCZINCb0K7QkdCY0JzQq9CZINCc0JDQk9CQ0JfQmNCdINCd0JAg0KbQmNCi0JDQlNCV0JvQmA==',
     '0K8g0J3QmNCa0J7Qk9CU0JAg0J3QlSDQn9Cg0J7QodCY0Jsg0J7QkSDQrdCi0J7QnA==',
+    '0J/QntCc0J3QmNCi0JUsINCd0Jgg0KHQm9Ce0JLQkCDQn9CeLdCg0KPQodCh0JrQmC4=',
+    '0KfQldCb0J7QktCV0Jog0JLQq9CR0JjQoNCQ0JXQoiwg0KDQkNCRINCf0J7QktCY0J3Qo9CV0KLQodCvLg==',
+    '0J3QmNCn0KLQniDQndCVINCY0KHQotCY0J3QndCeLCDQktCh0JUg0JTQntCX0JLQntCb0JXQndCeLg==',
+    '0JHQntCZ0KHQryDQodCi0JDQoNCe0Jkg0JrQoNCe0JLQmC4=',
+    '0KPQlNCQ0KfQndCe0Jkg0J7QpdCe0KLQqywg0KHQotCQ0JvQmtCV0KAu',
+    '0J/QoNCe0KLQntCa0J7QmyDQotCg0Jg6INCX0JDQqdCY0KLQmCDQn9CY0JvQntCi0JAu',
+    '0JPQldCg0J7QmCDQndCVINCj0JzQmNCg0JDQrtCiLg==',
+    '0KHQm9CQ0JLQkCDQodCe0JvQndCm0KMh',
+    '0JTQntCR0KDQniDQn9Ce0JbQkNCb0J7QktCQ0KLQrCDQndCQINCR0J7QoNCiLCDQmtCQ0J/QmNCi0JDQnS4=',
+    '0JzQntCvINCW0JjQl9Cd0Kwg0JfQkCDQkNCZ0KPQoCE=',
   ].map(encoded => {
     const phrase = decodePhrase(encoded);
     return { phrase, timer: phrase.length > 55 ? 180 : 150 };
@@ -1031,6 +1226,7 @@
   const NOISE = '@#$%&!?~^*/<>[]{}';
   const PACKET_NOISE = '@#$%!?~^*/[]{}·';
   const MAX_ERRORS = 5;
+  const CRITICAL_TIME_SECONDS = 15;
   const MAX_PROGRESS_SCORE = 30;
   const COMPLETION_SCORE = 10;
   const SPEED_SCORE_BANK = 150;
@@ -1048,12 +1244,14 @@
   ];
   const DEMO_RANKS = { season: 379, allTime: 494 };
   const terminal = document.getElementById('terminal');
+  const gameFrame = terminal.closest('.game-frame');
 
   let phraseIndex = 0;
   let active = null;
   let puzzle = [];
   let revealedPositions = new Set();
   let knownCodeLetters = new Map();
+  let rejectedCodeLetters = new Map();
   let selectedIndex = null;
   let errors = 0;
   let timeLeft = 0;
@@ -1069,6 +1267,15 @@
   let sweepTimer = null;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const AMBIENT_FLICKER = { min: .97, max: 1.03, interval: 90 };
+  const CONNECTING_WORD = 'ПОДКЛЮЧЕНИЕ';
+  const CONNECT_CHAR_STAGGER = 36;
+  const CONNECT_DOT_STAGGER = 600;
+  const CONNECT_CHAR_DURATION = 1;
+  const CONNECT_DURATION = { min: 1000, max: 4200 };
+  const FINAL_SCREEN_PAUSE = 1000;
+  const FAIL_ANIMATION_DURATION = 820;
+  const WIN_GLITCH_DELAY = 300;
+  const WIN_GLITCH_DURATION = 780;
   const SWEEP_EASINGS = [
     'cubic-bezier(.28,.22,.72,.78)',
     'cubic-bezier(.34,.27,.66,.73)',
@@ -1105,6 +1312,7 @@
 
     revealedPositions = new Set();
     knownCodeLetters = new Map();
+    rejectedCodeLetters = new Map();
     puzzle.forEach(item => {
       if (item.type !== 'letter' || !openLetters.has(item.letter)) return;
       revealedPositions.add(item.index);
@@ -1197,7 +1405,7 @@
 
     return `
       <div class="packet-preview" aria-label="Перехваченный пакет, ${symbolCount} символов">
-        <div class="packet-meta">ПАКЕТ ПЕРЕХВАЧЕН · ${symbolCount} СИМВОЛОВ</div>
+        <div class="packet-meta">ПЕРЕХВАЧЕННОЕ СООБЩЕНИЕ</div>
         <div class="packet-noise" aria-hidden="true">${groups.join('')}</div>
       </div>`;
   }
@@ -1228,8 +1436,23 @@
     return selected ? knownCodeLetters.get(selected.code) ?? null : null;
   }
 
+  function rejectedLetter(letter) {
+    const selected = puzzle.find(item => item.type === 'letter' && item.index === selectedIndex);
+    return selected ? rejectedCodeLetters.get(selected.code)?.has(letter) === true : false;
+  }
+
   function keyState(letter) {
-    return letter === suggestedLetter() ? 'suggested' : 'active';
+    if (letter === suggestedLetter()) return 'suggested';
+    return rejectedLetter(letter) ? 'rejected' : 'active';
+  }
+
+  function syncKeyboardState() {
+    terminal.querySelectorAll('.key[data-key]').forEach(button => {
+      const key = keyState(button.dataset.key);
+      button.classList.remove('active', 'suggested', 'rejected');
+      button.classList.add(key);
+      button.disabled = state !== 'playing' || key === 'rejected';
+    });
   }
 
   function keyboardMarkup() {
@@ -1237,7 +1460,8 @@
       <div class="keyboard" aria-label="Клавиатура">
         ${ROWS.map(row => `<div class="key-row">${row.map(letter => {
           const key = keyState(letter);
-          return `<button class="key ${key}" type="button" data-key="${letter}" ${state !== 'playing' ? 'disabled' : ''}>${letter}</button>`;
+          const disabled = state !== 'playing' || key === 'rejected';
+          return `<button class="key ${key}" type="button" data-key="${letter}" ${disabled ? 'disabled' : ''}>${letter}</button>`;
         }).join('')}</div>`).join('')}
       </div>`;
   }
@@ -1247,8 +1471,7 @@
       <div class="terminal-ui">
         <header class="sysbar">
           <div>
-            <div class="sys-id">ТЕРМИНАЛ</div>
-            ${start ? '' : `<div class="sys-status">
+            ${start ? `<div class="sys-id">ТЕРМИНАЛ</div>` : `<div class="sys-id sys-errors">
               <span>ОШИБКИ</span>
               <span class="errors" id="errors" aria-label="Ошибки">${errorsMarkup()}</span>
             </div>`}
@@ -1281,20 +1504,68 @@
 
   function renderStart() {
     state = 'start';
+    updateCriticalState();
     timeLeft = active.timer;
     terminal.dataset.theme = theme;
     terminal.innerHTML = `
       ${shellMarkup({ start: true })}
       <div class="start-overlay">
         <div class="overlay-spacer"></div>
-        <div class="start-note">ОДИНАКОВЫЙ КОД = ОДИНАКОВАЯ БУКВА<br>ВЫБЕРИТЕ СИМВОЛ → НАЗНАЧЬТЕ БУКВУ</div>
+        <div class="start-note">ОДИНАКОВЫЙ КОД = ОДИНАКОВАЯ БУКВА</div>
         <button class="action" id="start-button" type="button">[ НАЧАТЬ ДЕШИФРОВКУ ]</button>
       </div>`;
     document.getElementById('start-button').addEventListener('click', startGame);
   }
 
+  function renderConnecting() {
+    state = 'connecting';
+    updateCriticalState();
+    terminal.dataset.theme = theme;
+    const characters = [...CONNECTING_WORD];
+    const characterDelays = characters.map((_, index) => index * CONNECT_CHAR_STAGGER);
+    const wordEnterDuration = (characterDelays.at(-1) ?? 0) + CONNECT_CHAR_DURATION;
+    const connectionDuration = Math.round(
+      CONNECT_DURATION.min + Math.random() * (CONNECT_DURATION.max - CONNECT_DURATION.min)
+    );
+    terminal.innerHTML = `
+      <div class="connecting-screen">
+        <div class="sys-id">ТЕРМИНАЛ</div>
+        <div class="connecting-center">
+          <div class="connecting-text" role="status" aria-label="${CONNECTING_WORD}"
+            style="--dots-start:${wordEnterDuration}ms;--dot-cycle:${CONNECT_DOT_STAGGER * 4}ms">
+            ${characters.map((character, index) =>
+              `<span class="connecting-char" style="--connect-delay:${characterDelays[index]}ms" aria-hidden="true">${character}</span>`
+            ).join('')}
+            <span class="connecting-dots" aria-hidden="true">
+              <span class="connecting-dot">.</span>
+              <span class="connecting-dot">.</span>
+              <span class="connecting-dot">.</span>
+            </span>
+          </div>
+        </div>
+      </div>`;
+
+    return connectionDuration;
+  }
+
+  function renderPlayingEntrance() {
+    terminal.dataset.theme = theme;
+    terminal.classList.add('round-entering');
+    terminal.innerHTML = shellMarkup();
+    const cells = [...terminal.querySelectorAll('.cipher-char, .cipher-punct')];
+    const revealStagger = cells.length > 1
+      ? Math.min(26, Math.max(11, 620 / (cells.length - 1)))
+      : 0;
+    cells.forEach((cell, index) => {
+      cell.classList.add('round-reveal-cell');
+      cell.style.setProperty('--reveal-delay', `${Math.round(index * revealStagger)}ms`);
+    });
+    return Math.max(0, cells.length - 1) * revealStagger + 1;
+  }
+
   function renderPlaying(newIndex = null, { aftershock = true } = {}) {
     terminal.dataset.theme = theme;
+    terminal.classList.remove('round-entering');
     terminal.innerHTML = shellMarkup();
     bindInteractions();
     return newIndex !== null ? animateDecodedPosition(newIndex, { aftershock }) : 0;
@@ -1308,16 +1579,21 @@
       fill.style.width = `${Math.max(0, timeLeft / active.timer * 100)}%`;
       fill.classList.toggle('urgent', timeLeft <= active.timer * .2);
     }
+    updateCriticalState();
   }
 
-  function startGame() {
-    state = 'playing';
-    errors = 0;
-    score = 0;
-    timeLeft = active.timer;
-    selectNextPosition();
-    renderPlaying();
+  function updateCriticalState() {
+    const isCritical = state === 'failed' || (
+      state === 'playing' && (
+        errors >= MAX_ERRORS - 1 || timeLeft <= CRITICAL_TIME_SECONDS
+      )
+    );
+    gameFrame.classList.toggle('critical-state', isCritical);
+  }
+
+  function startRoundTimer() {
     clearInterval(timerId);
+    updateTimer();
     timerId = setInterval(() => {
       if (state !== 'playing') return clearInterval(timerId);
       timeLeft -= 1;
@@ -1326,10 +1602,50 @@
     }, 1000);
   }
 
+  function activateRound() {
+    if (state !== 'connecting') return;
+    state = 'playing';
+    terminal.classList.remove('round-entering');
+    terminal.querySelectorAll('.round-reveal-cell').forEach(cell => {
+      cell.classList.remove('round-reveal-cell');
+      cell.style.removeProperty('--reveal-delay');
+    });
+    terminal.querySelectorAll('.cipher-char.unresolved').forEach(button => {
+      button.disabled = false;
+    });
+    syncKeyboardState();
+    bindInteractions();
+    startRoundTimer();
+  }
+
+  function startGame() {
+    if (state !== 'start') return;
+    errors = 0;
+    score = 0;
+    timeLeft = active.timer;
+    selectNextPosition();
+    clearInterval(timerId);
+
+    if (reduceMotion) {
+      state = 'playing';
+      renderPlaying();
+      startRoundTimer();
+      return;
+    }
+
+    const connectingDuration = renderConnecting();
+    setTimeout(() => {
+      if (state !== 'connecting') return;
+      const revealDuration = renderPlayingEntrance();
+      setTimeout(activateRound, revealDuration + 20);
+    }, connectingDuration);
+  }
+
   function guess(letter) {
     if (state !== 'playing' || selectedIndex === null) return;
     const target = puzzle.find(item => item.type === 'letter' && item.index === selectedIndex);
     if (!target) return;
+    if (rejectedCodeLetters.get(target.code)?.has(letter)) return;
 
     if (target.letter === letter) {
       const decodedIndex = selectedIndex;
@@ -1345,11 +1661,15 @@
       const revealDuration = renderPlaying(decodedIndex, { aftershock: !completed });
       if (completed) completeGame(revealDuration);
     } else {
+      if (!rejectedCodeLetters.has(target.code)) rejectedCodeLetters.set(target.code, new Set());
+      rejectedCodeLetters.get(target.code).add(letter);
+      syncKeyboardState();
       errors += 1;
       triggerHit();
       glitchCodeGroup(target.code, 'error');
       const errorsEl = document.getElementById('errors');
       if (errorsEl) errorsEl.innerHTML = errorsMarkup(errors - 1);
+      updateCriticalState();
       if (errors >= MAX_ERRORS) setTimeout(() => failGame('ОБНАРУЖЕН'), 260);
     }
   }
@@ -1620,35 +1940,42 @@
     setTimeout(() => {
       terminal.classList.remove('glitch-win');
       flash.remove();
-    }, 780);
+    }, WIN_GLITCH_DURATION);
   }
 
   function completeGame(revealDuration = 0) {
     state = 'resolved';
+    updateCriticalState();
     clearInterval(timerId);
     score = calculateScore(true);
     terminal.classList.remove('hit');
     setTimeout(() => {
       if (state !== 'resolved') return;
       terminal.classList.add('phrase-complete');
-      triggerWinWave();
-      setTimeout(triggerWinGlitch, 300);
-      setTimeout(() => renderFinal(true), 2000);
+      const winWaveDuration = triggerWinWave();
+      if (!reduceMotion) setTimeout(triggerWinGlitch, WIN_GLITCH_DELAY);
+      const winEffectsDuration = reduceMotion
+        ? 0
+        : Math.max(winWaveDuration, WIN_GLITCH_DELAY + WIN_GLITCH_DURATION);
+      setTimeout(() => renderFinal(true), winEffectsDuration + FINAL_SCREEN_PAUSE);
     }, revealDuration);
   }
 
   function failGame(reason) {
     if (state === 'final' || state === 'failed') return;
     state = 'failed';
+    updateCriticalState();
     clearInterval(timerId);
     score = calculateScore(false);
     terminal.classList.remove('hit');
     terminal.classList.add('fail');
-    setTimeout(() => renderFinal(false, reason), 1150);
+    const failDuration = reduceMotion ? 0 : FAIL_ANIMATION_DURATION;
+    setTimeout(() => renderFinal(false, reason), failDuration + FINAL_SCREEN_PAUSE);
   }
 
   function renderFinal(won, reason = 'СОЕДИНЕНИЕ_ПРЕРВАНО') {
     state = 'final';
+    updateCriticalState();
     terminal.classList.remove('glitch-win', 'fail', 'hit', 'phrase-complete');
     const restoredPercent = Math.round(restoredPositionRatio() * 100);
     const minimumScore = earnedProgressUnits > 0 ? 1 : 0;
@@ -1753,6 +2080,7 @@
   document.getElementById('theme-toggle').addEventListener('click', () => {
     theme = theme ? '' : 'cyber';
     terminal.dataset.theme = theme;
+    gameFrame.dataset.theme = theme;
   });
 
   active = phraseOrder[phraseIndex];
