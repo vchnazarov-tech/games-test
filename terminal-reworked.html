@@ -635,6 +635,10 @@
     gap: 4px;
   }
 
+  .keyboard.hidden-after-failure {
+    visibility: hidden;
+  }
+
   .key-row { display: flex; gap: 4px; }
 
   .key {
@@ -1466,6 +1470,13 @@
       </div>`;
   }
 
+  function hideKeyboardAfterFailure() {
+    const keyboard = terminal.querySelector('.keyboard');
+    if (!keyboard) return;
+    keyboard.classList.add('hidden-after-failure');
+    keyboard.setAttribute('aria-hidden', 'true');
+  }
+
   function shellMarkup({ start = false } = {}) {
     return `
       <div class="terminal-ui">
@@ -1598,7 +1609,7 @@
       if (state !== 'playing') return clearInterval(timerId);
       timeLeft -= 1;
       updateTimer();
-      if (timeLeft <= 0) failGame('СОЕДИНЕНИЕ_ПРЕРВАНО');
+      if (timeLeft <= 0) failGame();
     }, 1000);
   }
 
@@ -1670,7 +1681,10 @@
       const errorsEl = document.getElementById('errors');
       if (errorsEl) errorsEl.innerHTML = errorsMarkup(errors - 1);
       updateCriticalState();
-      if (errors >= MAX_ERRORS) setTimeout(() => failGame('ОБНАРУЖЕН'), 260);
+      if (errors >= MAX_ERRORS) {
+        hideKeyboardAfterFailure();
+        setTimeout(failGame, 260);
+      }
     }
   }
 
@@ -1957,27 +1971,27 @@
       const winEffectsDuration = reduceMotion
         ? 0
         : Math.max(winWaveDuration, WIN_GLITCH_DELAY + WIN_GLITCH_DURATION);
-      setTimeout(() => renderFinal(true), winEffectsDuration + FINAL_SCREEN_PAUSE);
+      setTimeout(renderFinal, winEffectsDuration + FINAL_SCREEN_PAUSE);
     }, revealDuration);
   }
 
-  function failGame(reason) {
+  function failGame() {
     if (state === 'final' || state === 'failed') return;
     state = 'failed';
+    hideKeyboardAfterFailure();
     updateCriticalState();
     clearInterval(timerId);
     score = calculateScore(false);
     terminal.classList.remove('hit');
     terminal.classList.add('fail');
     const failDuration = reduceMotion ? 0 : FAIL_ANIMATION_DURATION;
-    setTimeout(() => renderFinal(false, reason), failDuration + FINAL_SCREEN_PAUSE);
+    setTimeout(renderFinal, failDuration + FINAL_SCREEN_PAUSE);
   }
 
-  function renderFinal(won, reason = 'СОЕДИНЕНИЕ_ПРЕРВАНО') {
+  function renderFinal() {
     state = 'final';
     updateCriticalState();
     terminal.classList.remove('glitch-win', 'fail', 'hit', 'phrase-complete');
-    const restoredPercent = Math.round(restoredPositionRatio() * 100);
     const minimumScore = earnedProgressUnits > 0 ? 1 : 0;
     const totalScore = Math.min(
       MAX_TOTAL_SCORE,
@@ -1990,15 +2004,12 @@
       </div>`).join('');
     terminal.innerHTML = `
       <div class="final-screen">
-        ${won ? '' : `<div class="final-status">${reason}</div>`}
         <div class="final-summary">
           <div class="final-total">ВЫ НАБРАЛИ <span class="final-score-value" id="final-score">0</span> БАЛЛОВ</div>
           <div class="final-breakdown">
             ИЗ НИХ ${scoreBreakdown.speed} ЗА СКОРОСТЬ И ${STREAK_BONUS} ЗА СТРИК
-            ${scoreBreakdown.errorPenalty > 0 ? `<br>ШТРАФ ЗА ОШИБКИ −${scoreBreakdown.errorPenalty}` : ''}
           </div>
           <div class="final-details" id="final-details">
-            ${won ? '' : `<div class="final-progress">СИГНАЛ ВОССТАНОВЛЕН · ${restoredPercent}%</div>`}
             <div class="streak-week" aria-label="Недельный стрик">${streakMarkup}</div>
             <div class="final-ranks">
               <div class="final-rank">${DEMO_RANKS.season} МЕСТО В СЕЗОНЕ</div>
