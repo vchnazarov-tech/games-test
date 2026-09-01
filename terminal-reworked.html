@@ -13,6 +13,36 @@
     font-display: swap;
   }
 
+  @property --signal {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #ff9a3d;
+  }
+
+  @property --signal-hot {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #ffc06e;
+  }
+
+  @property --signal-dim {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #b97435;
+  }
+
+  @property --code {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #d4904d;
+  }
+
+  @property --line {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #5b4027;
+  }
+
   * { box-sizing: border-box; }
 
   :root {
@@ -144,6 +174,20 @@
       );
   }
 
+  .crt-critical-background-layer {
+    z-index: 24;
+    opacity: 0;
+    background:
+      radial-gradient(ellipse 72% 56% at 0% 0%, rgba(255,61,44,.13), rgba(132,18,12,.055) 46%, transparent 75%),
+      radial-gradient(ellipse 60% 48% at 100% 100%, rgba(205,31,23,.10), rgba(106,11,8,.04) 50%, transparent 78%),
+      radial-gradient(ellipse 105% 88% at 50% 48%, rgba(84,22,19,.06), rgba(44,12,10,.035) 52%, transparent 82%),
+      linear-gradient(128deg, #110908, #080504 56%, #0f0605);
+  }
+
+  .game-frame.critical-state .crt-critical-background-layer {
+    opacity: 1;
+  }
+
   .crt-vignette-layer {
     z-index: 27;
     background: radial-gradient(
@@ -175,6 +219,25 @@
 
   .game-frame.critical-state .crt-danger-layer {
     animation: critical-glass-pulse 1.6s ease-in-out infinite;
+  }
+
+  .game-frame.critical-releasing .crt-critical-background-layer,
+  .game-frame.critical-releasing .crt-danger-layer,
+  .game-frame.critical-releasing::after {
+    transition: opacity 800ms ease-out;
+  }
+
+  .game-frame.critical-releasing .crt-edge-glow-layer {
+    transition: box-shadow 800ms ease-out;
+  }
+
+  .game-frame.critical-releasing #terminal {
+    transition:
+      --signal 800ms ease-out,
+      --signal-hot 800ms ease-out,
+      --signal-dim 800ms ease-out,
+      --code 800ms ease-out,
+      --line 800ms ease-out;
   }
 
   @keyframes critical-glass-pulse {
@@ -251,11 +314,6 @@
     --signal-dim: #b8453c;
     --code: #ec6656;
     --line: #6d3029;
-    background:
-      radial-gradient(ellipse 72% 56% at 0% 0%, rgba(255,61,44,.13), rgba(132,18,12,.055) 46%, transparent 75%),
-      radial-gradient(ellipse 60% 48% at 100% 100%, rgba(205,31,23,.10), rgba(106,11,8,.04) 50%, transparent 78%),
-      radial-gradient(ellipse 105% 88% at 50% 48%, rgba(84,22,19,.06), rgba(44,12,10,.035) 52%, transparent 82%),
-      linear-gradient(128deg, #110908, #080504 56%, #0f0605);
   }
 
   #terminal::before {
@@ -284,11 +342,11 @@
     background: linear-gradient(
       to bottom,
       transparent 0%,
-      rgba(0,0,0,var(--sweep-dark-alpha, .04)) calc(var(--sweep-core-pos, 50%) - 28%),
+      rgba(0,0,0,var(--sweep-dark-alpha, .028)) calc(var(--sweep-core-pos, 50%) - 28%),
       transparent calc(var(--sweep-core-pos, 50%) - 18%),
-      color-mix(in srgb, var(--signal) var(--sweep-soft-alpha, 6%), transparent) calc(var(--sweep-core-pos, 50%) - 10%),
-      color-mix(in srgb, var(--signal) var(--sweep-core-alpha, 18%), transparent) var(--sweep-core-pos, 50%),
-      color-mix(in srgb, var(--signal) var(--sweep-tail-alpha, 7%), transparent) calc(var(--sweep-core-pos, 50%) + 14%),
+      color-mix(in srgb, var(--signal) var(--sweep-soft-alpha, 4.2%), transparent) calc(var(--sweep-core-pos, 50%) - 10%),
+      color-mix(in srgb, var(--signal) var(--sweep-core-alpha, 12.6%), transparent) var(--sweep-core-pos, 50%),
+      color-mix(in srgb, var(--signal) var(--sweep-tail-alpha, 4.9%), transparent) calc(var(--sweep-core-pos, 50%) + 14%),
       transparent 100%
     );
   }
@@ -531,57 +589,26 @@
       0 0 16px color-mix(in srgb, var(--signal) 10%, transparent);
   }
 
-  .round-entering .round-reveal-cell {
-    animation: phrase-cell-enter .01ms step-end both;
-    animation-delay: var(--reveal-delay, 0ms);
+  .onboarding-char {
+    display: inline-block;
+    cursor: default;
   }
 
-  .round-entering .control-zone {
-    opacity: 0;
-  }
-
-  @keyframes phrase-cell-enter {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-
-  .packet-preview {
-    width: min(470px, 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-  }
-
-  .packet-meta {
-    color: var(--muted);
-    font-size: 13px;
-    letter-spacing: .14em;
-    text-align: center;
-  }
-
-  .packet-noise {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    column-gap: 14px;
-    row-gap: 12px;
-  }
-
-  .packet-group {
-    display: inline-flex;
-    gap: 3px;
-    white-space: nowrap;
-  }
-
-  .packet-symbol {
-    width: 12px;
+  .onboarding-char:not(.onboarding-clue) .code {
     color: var(--signal-dim);
-    font-size: 20px;
-    line-height: 1;
-    text-align: center;
-    text-shadow: 0 0 8px color-mix(in srgb, var(--signal-dim) 20%, transparent);
+    opacity: .62;
+  }
+
+  .onboarding-char.onboarding-code-active .code {
+    color: var(--signal);
+    text-shadow: 0 0 9px color-mix(in srgb, var(--signal) 48%, transparent);
+  }
+
+  .onboarding-char.onboarding-code-active::after {
+    left: 0;
+    right: 0;
+    background: var(--signal);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--signal) 42%, transparent);
   }
 
   @keyframes cursor-blink { 50% { opacity: .18; } }
@@ -589,6 +616,10 @@
   .decode-burst .glyph {
     animation: decode-burst .62s ease-out both;
     animation-delay: calc(var(--burst-index, 0) * 34ms);
+  }
+
+  .decode-burst-out .glyph {
+    animation: decode-burst .62s ease-in reverse both;
   }
 
   @keyframes decode-burst {
@@ -635,7 +666,7 @@
     gap: 4px;
   }
 
-  .keyboard.hidden-after-failure {
+  .keyboard.hidden-after-round {
     visibility: hidden;
   }
 
@@ -663,17 +694,6 @@
 
   .key:active:not(:disabled) { transform: translateY(1px); }
   .key:disabled { opacity: .23; cursor: default; }
-  .key.suggested {
-    border-color: color-mix(in srgb, var(--signal) 68%, var(--line));
-    color: var(--signal);
-    background: color-mix(in srgb, var(--signal) 14%, transparent);
-    box-shadow:
-      inset 0 0 8px color-mix(in srgb, var(--signal) 8%, transparent),
-      0 0 10px color-mix(in srgb, var(--signal) 18%, transparent);
-    text-shadow: 0 0 7px color-mix(in srgb, var(--signal) 24%, transparent);
-    opacity: 1;
-  }
-
   .start-overlay {
     position: absolute;
     inset: 0;
@@ -681,35 +701,6 @@
     padding: 22px 24px 20px;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(rgba(13,11,9,.07), rgba(13,11,9,.2));
-  }
-
-  .connecting-screen {
-    position: absolute;
-    inset: 0;
-    z-index: 29;
-    padding: 22px 24px 20px;
-    display: grid;
-    grid-template-rows: auto 1fr;
-    pointer-events: none;
-  }
-
-  .connecting-center {
-    display: grid;
-    place-items: center;
-    padding-bottom: 40px;
-  }
-
-  .connecting-text {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    color: var(--signal);
-    font-size: 13px;
-    letter-spacing: .15em;
-    text-shadow:
-      0 0 3px color-mix(in srgb, var(--signal) 55%, transparent),
-      0 0 13px color-mix(in srgb, var(--signal) 24%, transparent);
   }
 
   .connecting-char {
@@ -758,8 +749,17 @@
 
   .overlay-spacer { flex: 1; }
 
+  .transmission-label {
+    margin-bottom: 36px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: .14em;
+    text-align: center;
+  }
+
   .start-note {
-    margin-bottom: 11px;
+    margin-top: 36px;
     color: var(--paper);
     font-size: 10px;
     line-height: 1.55;
@@ -768,38 +768,78 @@
     opacity: .76;
   }
 
+  .start-copy-placeholder {
+    visibility: hidden;
+  }
+
   .action {
-    min-width: 210px;
+    width: 250px;
+    max-width: 100%;
     height: 42px;
     margin: 0 auto;
     padding: 0 18px;
     border: 1px solid var(--signal);
-    color: var(--signal);
-    background: color-mix(in srgb, var(--signal) 5%, transparent);
+    color: var(--dark);
+    background: var(--signal);
     font-family: inherit;
     font-size: 13px;
     letter-spacing: .08em;
-    text-shadow:
-      0 0 2px color-mix(in srgb, var(--signal) 52%, transparent),
-      0 0 8px color-mix(in srgb, var(--signal) 28%, transparent),
-      0 0 16px color-mix(in srgb, var(--signal) 10%, transparent);
-    box-shadow:
-      inset 0 0 10px color-mix(in srgb, var(--signal) 5%, transparent),
-      0 0 8px color-mix(in srgb, var(--signal) 12%, transparent),
-      0 0 20px color-mix(in srgb, var(--signal) 5%, transparent);
-    cursor: pointer;
-  }
-
-  .action:hover,
-  .action:focus-visible {
-    outline: 0;
-    color: var(--dark);
-    background: var(--signal);
     text-shadow: none;
     box-shadow:
       inset 0 0 11px rgba(255,255,255,.14),
       0 0 9px color-mix(in srgb, var(--signal) 30%, transparent),
       0 0 25px color-mix(in srgb, var(--signal) 24%, transparent);
+    cursor: pointer;
+  }
+
+  .action:hover:not(:disabled),
+  .action:focus-visible {
+    outline: 0;
+    filter: brightness(1.15);
+    box-shadow:
+      inset 0 0 12px rgba(255,255,255,.2),
+      0 0 12px color-mix(in srgb, var(--signal) 40%, transparent),
+      0 0 32px color-mix(in srgb, var(--signal) 30%, transparent);
+  }
+
+  .action:active:not(:disabled) {
+    filter: brightness(.96);
+    box-shadow:
+      inset 0 0 9px rgba(0,0,0,.16),
+      0 0 7px color-mix(in srgb, var(--signal) 25%, transparent),
+      0 0 18px color-mix(in srgb, var(--signal) 18%, transparent);
+  }
+
+  .action:disabled {
+    cursor: default;
+  }
+
+  .action.action-connecting {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+    filter: none;
+  }
+
+  .action-connecting-text {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    color: var(--signal);
+    text-shadow:
+      0 0 2px color-mix(in srgb, var(--signal) 52%, transparent),
+      0 0 8px color-mix(in srgb, var(--signal) 28%, transparent),
+      0 0 16px color-mix(in srgb, var(--signal) 10%, transparent);
+  }
+
+  .action-connecting-text .connecting-dots {
+    position: absolute;
+    left: 100%;
+    top: 0;
   }
 
   .final-screen {
@@ -1118,7 +1158,7 @@
     .post-header, .post-title, .reaction-bar { margin-left: 16px; margin-right: 16px; }
     .game-frame { border-left: 0; border-right: 0; border-radius: 0; }
     #terminal { width: 100%; height: 560px; }
-    .terminal-ui, .start-overlay, .final-screen, .connecting-screen { padding: 18px 14px 16px; }
+    .terminal-ui, .start-overlay, .final-screen { padding: 18px 14px 16px; }
     .transmission { padding-top: 8px; }
     .message { column-gap: 10px; row-gap: 13px; }
     .cipher-word { gap: 0; }
@@ -1128,10 +1168,6 @@
     .cipher-char .code { font-size: 11px; }
     .cipher-char::after { top: 28px; }
     .cipher-char.selected::before { height: 33px; }
-    .packet-preview { width: min(390px, 100%); gap: 16px; }
-    .packet-noise { column-gap: 10px; row-gap: 10px; }
-    .packet-group { gap: 2px; }
-    .packet-symbol { width: 10px; font-size: 14px; }
     .final-total { font-size: 18px; }
     .final-breakdown { font-size: 13px; }
     .streak-week { gap: 4px; }
@@ -1177,6 +1213,7 @@
 
     <div class="game-frame">
       <main id="terminal" aria-live="polite"></main>
+      <div class="crt-surface-layer crt-critical-background-layer" aria-hidden="true"></div>
       <div class="crt-surface-layer crt-curvature-layer" aria-hidden="true"></div>
       <div class="crt-surface-layer crt-vignette-layer" aria-hidden="true"></div>
       <div class="crt-surface-layer crt-edge-glow-layer" aria-hidden="true"></div>
@@ -1206,15 +1243,15 @@
     '0JrQntCg0J7QktCY0Jkg0KPQoNCe0JLQldCd0Kwg0J3QlSDQodCj0KnQldCh0KLQktCj0JXQog==',
     '0K8g0JrQkNCf0JjQotCQ0J0g0KjQldCf0JDQoNCULCDQmCDQrdCi0J4g0JzQntCZINCb0K7QkdCY0JzQq9CZINCc0JDQk9CQ0JfQmNCdINCd0JAg0KbQmNCi0JDQlNCV0JvQmA==',
     '0K8g0J3QmNCa0J7Qk9CU0JAg0J3QlSDQn9Cg0J7QodCY0Jsg0J7QkSDQrdCi0J7QnA==',
-    '0J/QntCc0J3QmNCi0JUsINCd0Jgg0KHQm9Ce0JLQkCDQn9CeLdCg0KPQodCh0JrQmC4=',
-    '0KfQldCb0J7QktCV0Jog0JLQq9CR0JjQoNCQ0JXQoiwg0KDQkNCRINCf0J7QktCY0J3Qo9CV0KLQodCvLg==',
-    '0J3QmNCn0KLQniDQndCVINCY0KHQotCY0J3QndCeLCDQktCh0JUg0JTQntCX0JLQntCb0JXQndCeLg==',
-    '0JHQntCZ0KHQryDQodCi0JDQoNCe0Jkg0JrQoNCe0JLQmC4=',
-    '0KPQlNCQ0KfQndCe0Jkg0J7QpdCe0KLQqywg0KHQotCQ0JvQmtCV0KAu',
-    '0J/QoNCe0KLQntCa0J7QmyDQotCg0Jg6INCX0JDQqdCY0KLQmCDQn9CY0JvQntCi0JAu',
-    '0JPQldCg0J7QmCDQndCVINCj0JzQmNCg0JDQrtCiLg==',
+    '0J/QntCc0J3QmNCi0JUsINCd0Jgg0KHQm9Ce0JLQkCDQn9CeLdCg0KPQodCh0JrQmA==',
+    '0KfQldCb0J7QktCV0Jog0JLQq9CR0JjQoNCQ0JXQoiwg0KDQkNCRINCf0J7QktCY0J3Qo9CV0KLQodCv',
+    '0J3QmNCn0KLQniDQndCVINCY0KHQotCY0J3QndCeLCDQktCh0JUg0JTQntCX0JLQntCb0JXQndCe',
+    '0JHQntCZ0KHQryDQodCi0JDQoNCe0Jkg0JrQoNCe0JLQmA==',
+    '0KPQlNCQ0KfQndCe0Jkg0J7QpdCe0KLQqywg0KHQotCQ0JvQmtCV0KA=',
+    '0J/QoNCe0KLQntCa0J7QmyDQotCg0Jg6INCX0JDQqdCY0KLQmCDQn9CY0JvQntCi0JA=',
+    '0JPQldCg0J7QmCDQndCVINCj0JzQmNCg0JDQrtCi',
     '0KHQm9CQ0JLQkCDQodCe0JvQndCm0KMh',
-    '0JTQntCR0KDQniDQn9Ce0JbQkNCb0J7QktCQ0KLQrCDQndCQINCR0J7QoNCiLCDQmtCQ0J/QmNCi0JDQnS4=',
+    '0JTQntCR0KDQniDQn9Ce0JbQkNCb0J7QktCQ0KLQrCDQndCQINCR0J7QoNCiLCDQmtCQ0J/QmNCi0JDQnQ==',
     '0JzQntCvINCW0JjQl9Cd0Kwg0JfQkCDQkNCZ0KPQoCE=',
   ].map(encoded => {
     const phrase = decodePhrase(encoded);
@@ -1228,7 +1265,6 @@
   ];
   const PUNCT = new Set([',', '—', '–', '-', '!', '?', '.', ':', ';']);
   const NOISE = '@#$%&!?~^*/<>[]{}';
-  const PACKET_NOISE = '@#$%!?~^*/[]{}·';
   const MAX_ERRORS = 5;
   const CRITICAL_TIME_SECONDS = 15;
   const MAX_PROGRESS_SCORE = 30;
@@ -1254,7 +1290,6 @@
   let active = null;
   let puzzle = [];
   let revealedPositions = new Set();
-  let knownCodeLetters = new Map();
   let rejectedCodeLetters = new Map();
   let selectedIndex = null;
   let errors = 0;
@@ -1266,20 +1301,29 @@
   let earnedProgressUnits = 0;
   let totalProgressUnits = 0;
   let scoreablePositionCount = 0;
-  let playerDiscoveredCodes = new Set();
   let theme = '';
   let sweepTimer = null;
+  let onboardingTimer = null;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const AMBIENT_FLICKER = { min: .97, max: 1.03, interval: 90 };
   const CONNECTING_WORD = 'ПОДКЛЮЧЕНИЕ';
   const CONNECT_CHAR_STAGGER = 36;
-  const CONNECT_DOT_STAGGER = 600;
+  const CONNECT_DOT_STAGGER = 350;
   const CONNECT_CHAR_DURATION = 1;
-  const CONNECT_DURATION = { min: 1000, max: 4200 };
+  const CONNECT_DURATION = 1800;
   const FINAL_SCREEN_PAUSE = 1000;
+  const CRITICAL_RELEASE_DURATION = 800;
+  const FINAL_ANSWER_STAGGER = 100;
+  const FINAL_ANSWER_LEAD_IN = CRITICAL_RELEASE_DURATION;
+  const FINAL_ANSWER_HOLD = 1000;
   const FAIL_ANIMATION_DURATION = 820;
   const WIN_GLITCH_DELAY = 300;
   const WIN_GLITCH_DURATION = 780;
+  const ONBOARDING_INITIAL_PAUSE = 500;
+  const ONBOARDING_GROUP_GAP = 120;
+  const ONBOARDING_HOLD = 1200;
+  const ONBOARDING_HIDE_DURATION = 650;
+  const ONBOARDING_LOOP_PAUSE = 650;
   const SWEEP_EASINGS = [
     'cubic-bezier(.28,.22,.72,.78)',
     'cubic-bezier(.34,.27,.66,.73)',
@@ -1315,19 +1359,16 @@
     });
 
     revealedPositions = new Set();
-    knownCodeLetters = new Map();
     rejectedCodeLetters = new Map();
     puzzle.forEach(item => {
       if (item.type !== 'letter' || !openLetters.has(item.letter)) return;
       revealedPositions.add(item.index);
-      knownCodeLetters.set(item.code, item.letter);
     });
 
     const hiddenItems = puzzle.filter(item => item.type === 'letter' && !revealedPositions.has(item.index));
     scoreablePositionCount = hiddenItems.length;
     totalProgressUnits = hiddenItems.length + new Set(hiddenItems.map(item => item.code)).size;
     earnedProgressUnits = 0;
-    playerDiscoveredCodes = new Set();
     scoreBreakdown = { progress: 0, completion: 0, speed: 0, errorPenalty: 0 };
   }
 
@@ -1367,12 +1408,27 @@
     return groups;
   }
 
-  function transmissionMarkup() {
-    const selectedItem = puzzle.find(item => item.type === 'letter' && item.index === selectedIndex);
+  function phraseMarkup({ onboarding = false } = {}) {
+    const selectedItem = onboarding
+      ? null
+      : puzzle.find(item => item.type === 'letter' && item.index === selectedIndex);
     const selectedCode = selectedItem?.code ?? null;
     return groupPuzzle().map(group => {
       const chars = group.items.map(item => {
         if (item.type === 'punct') return `<span class="cipher-punct">${item.char}</span>`;
+        if (onboarding) {
+          const clue = revealedPositions.has(item.index);
+          const classes = ['cipher-char', 'onboarding-char'];
+          if (clue) classes.push('onboarding-clue');
+          return `
+            <span class="${classes.join(' ')}"
+              data-index="${item.index}" data-code="${item.code}" data-letter="${item.letter}"
+              aria-hidden="true">
+              <span class="glyph"></span>
+              <span class="code">${clue ? codeLabel(item.code) : '??'}</span>
+            </span>`;
+        }
+
         const resolved = revealedPositions.has(item.index);
         const selected = !resolved && item.index === selectedIndex;
         const sameCode = !resolved && selectedCode !== null && item.code === selectedCode;
@@ -1392,26 +1448,133 @@
     }).join('');
   }
 
-  function packetPreviewMarkup() {
-    const symbolCount = puzzle.filter(item => item.type === 'letter').length;
-    const groups = [];
-    let remaining = symbolCount;
+  function onboardingCodeGroups() {
+    const groups = new Map();
+    puzzle.forEach(item => {
+      if (item.type !== 'letter' || !revealedPositions.has(item.index)) return;
+      if (!groups.has(item.code)) groups.set(item.code, []);
+      groups.get(item.code).push(item.index);
+    });
+    return [...groups].map(([code, indexes]) => ({ code, indexes }));
+  }
 
-    while (remaining > 0) {
-      let size = remaining <= 8 ? remaining : 4 + Math.floor(Math.random() * 5);
-      if (remaining - size > 0 && remaining - size < 4) size = remaining;
-      const symbols = Array.from({ length: size }, () =>
-        `<span class="packet-symbol">${randomItem([...PACKET_NOISE])}</span>`
-      ).join('');
-      groups.push(`<span class="packet-group">${symbols}</span>`);
-      remaining -= size;
+  function stopOnboardingLoop() {
+    clearTimeout(onboardingTimer);
+    onboardingTimer = null;
+  }
+
+  function scheduleOnboarding(callback, delay) {
+    clearTimeout(onboardingTimer);
+    onboardingTimer = setTimeout(() => {
+      onboardingTimer = null;
+      if (state === 'start') callback();
+    }, delay);
+  }
+
+  function resetOnboardingLetters() {
+    terminal.querySelectorAll('.onboarding-char').forEach(element => {
+      element.classList.remove('decode-burst', 'decode-burst-out', 'onboarding-code-active');
+      element.style.removeProperty('--burst-index');
+      const glyph = element.querySelector('.glyph');
+      if (glyph) {
+        delete glyph.dataset.decodeToken;
+        glyph.textContent = '';
+      }
+    });
+  }
+
+  function showOnboardingClues() {
+    resetOnboardingLetters();
+    onboardingCodeGroups().flatMap(group => group.indexes).forEach(index => {
+      const element = terminal.querySelector(`.onboarding-char[data-index="${index}"]`);
+      const glyph = element?.querySelector('.glyph');
+      if (glyph) glyph.textContent = element.dataset.letter;
+    });
+  }
+
+  function revealOnboardingGroup(group) {
+    let revealDuration = 0;
+    group.indexes.forEach(index => {
+      const element = terminal.querySelector(`.onboarding-char[data-index="${index}"]`);
+      if (element) element.classList.add('onboarding-code-active');
+      revealDuration = Math.max(
+        revealDuration,
+        animateDecodedPosition(index, { aftershock: false })
+      );
+    });
+    return revealDuration;
+  }
+
+  function hideOnboardingLetters() {
+    terminal.querySelectorAll('.onboarding-char').forEach(element => {
+      element.classList.remove('onboarding-code-active');
+      const glyph = element.querySelector('.glyph');
+      if (!glyph?.textContent) return;
+      const decodeToken = `${performance.now()}-${Math.random()}`;
+      glyph.dataset.decodeToken = decodeToken;
+      element.classList.add('decode-burst-out');
+      const noiseFrames = 6;
+      const noiseFrameDuration = 34;
+      const noiseStartDelay = ONBOARDING_HIDE_DURATION - noiseFrames * noiseFrameDuration;
+      setTimeout(() => {
+        if (!glyph.isConnected || glyph.dataset.decodeToken !== decodeToken) return;
+        let frame = 0;
+        const animation = setInterval(() => {
+          if (!glyph.isConnected || glyph.dataset.decodeToken !== decodeToken) {
+            clearInterval(animation);
+            return;
+          }
+          glyph.textContent = NOISE[Math.floor(Math.random() * NOISE.length)];
+          frame += 1;
+          if (frame >= noiseFrames) {
+            clearInterval(animation);
+            glyph.textContent = '';
+            delete glyph.dataset.decodeToken;
+          }
+        }, noiseFrameDuration);
+      }, noiseStartDelay);
+      setTimeout(() => element.classList.remove('decode-burst-out'), ONBOARDING_HIDE_DURATION);
+    });
+  }
+
+  function startOnboardingLoop() {
+    stopOnboardingLoop();
+    const groups = onboardingCodeGroups();
+    resetOnboardingLetters();
+    if (!groups.length) return;
+
+    if (reduceMotion) {
+      showOnboardingClues();
+      return;
     }
 
-    return `
-      <div class="packet-preview" aria-label="Перехваченный пакет, ${symbolCount} символов">
-        <div class="packet-meta">ПЕРЕХВАЧЕННОЕ СООБЩЕНИЕ</div>
-        <div class="packet-noise" aria-hidden="true">${groups.join('')}</div>
-      </div>`;
+    const runCycle = () => {
+      if (state !== 'start') return;
+      resetOnboardingLetters();
+      let groupIndex = 0;
+
+      const revealNextGroup = () => {
+        terminal.querySelectorAll('.onboarding-code-active').forEach(element => {
+          element.classList.remove('onboarding-code-active');
+        });
+
+        if (groupIndex >= groups.length) {
+          scheduleOnboarding(() => {
+            hideOnboardingLetters();
+            scheduleOnboarding(runCycle, ONBOARDING_HIDE_DURATION + ONBOARDING_LOOP_PAUSE);
+          }, ONBOARDING_HOLD);
+          return;
+        }
+
+        const revealDuration = revealOnboardingGroup(groups[groupIndex]);
+        groupIndex += 1;
+        scheduleOnboarding(revealNextGroup, revealDuration + ONBOARDING_GROUP_GAP);
+      };
+
+      scheduleOnboarding(revealNextGroup, ONBOARDING_INITIAL_PAUSE);
+    };
+
+    runCycle();
   }
 
   function timerMarkup(hidden = false) {
@@ -1435,25 +1598,19 @@
     }).join('');
   }
 
-  function suggestedLetter() {
-    const selected = puzzle.find(item => item.type === 'letter' && item.index === selectedIndex);
-    return selected ? knownCodeLetters.get(selected.code) ?? null : null;
-  }
-
   function rejectedLetter(letter) {
     const selected = puzzle.find(item => item.type === 'letter' && item.index === selectedIndex);
     return selected ? rejectedCodeLetters.get(selected.code)?.has(letter) === true : false;
   }
 
   function keyState(letter) {
-    if (letter === suggestedLetter()) return 'suggested';
     return rejectedLetter(letter) ? 'rejected' : 'active';
   }
 
   function syncKeyboardState() {
     terminal.querySelectorAll('.key[data-key]').forEach(button => {
       const key = keyState(button.dataset.key);
-      button.classList.remove('active', 'suggested', 'rejected');
+      button.classList.remove('active', 'rejected');
       button.classList.add(key);
       button.disabled = state !== 'playing' || key === 'rejected';
     });
@@ -1470,11 +1627,18 @@
       </div>`;
   }
 
-  function hideKeyboardAfterFailure() {
+  function hideKeyboardAfterRound() {
     const keyboard = terminal.querySelector('.keyboard');
-    if (!keyboard) return;
-    keyboard.classList.add('hidden-after-failure');
-    keyboard.setAttribute('aria-hidden', 'true');
+    if (keyboard) {
+      keyboard.classList.add('hidden-after-round');
+      keyboard.setAttribute('aria-hidden', 'true');
+    }
+    terminal.querySelectorAll('.cipher-char, .key').forEach(button => {
+      button.disabled = true;
+    });
+    terminal.querySelectorAll('.cipher-char').forEach(button => {
+      button.classList.remove('selected', 'same-code');
+    });
   }
 
   function shellMarkup({ start = false } = {}) {
@@ -1491,7 +1655,14 @@
         </header>
 
         <section class="transmission">
-          <div class="message" id="message">${start ? packetPreviewMarkup() : transmissionMarkup()}</div>
+          <div class="transmission-label start-only-copy ${start ? '' : 'start-copy-placeholder'}"
+            ${start ? '' : 'aria-hidden="true"'}>ПЕРЕХВАЧЕННОЕ СООБЩЕНИЕ</div>
+          <div class="message" id="message"
+            ${start ? 'role="img" aria-label="Структура зашифрованной фразы со стартовыми кодами"' : ''}>
+            ${phraseMarkup({ onboarding: start })}
+          </div>
+          <div class="start-note start-only-copy ${start ? '' : 'start-copy-placeholder'}"
+            ${start ? '' : 'aria-hidden="true"'}>КАЖДОМУ ЧИСЛУ СООТВЕТСТВУЕТ ОДНА БУКВА</div>
         </section>
 
         <section class="control-zone" style="${start ? 'visibility:hidden' : ''}">
@@ -1514,6 +1685,7 @@
   }
 
   function renderStart() {
+    stopOnboardingLoop();
     state = 'start';
     updateCriticalState();
     timeLeft = active.timer;
@@ -1522,64 +1694,57 @@
       ${shellMarkup({ start: true })}
       <div class="start-overlay">
         <div class="overlay-spacer"></div>
-        <div class="start-note">ОДИНАКОВЫЙ КОД = ОДИНАКОВАЯ БУКВА</div>
         <button class="action" id="start-button" type="button">[ НАЧАТЬ ДЕШИФРОВКУ ]</button>
       </div>`;
     document.getElementById('start-button').addEventListener('click', startGame);
+    startOnboardingLoop();
   }
 
-  function renderConnecting() {
+  function showConnectingButton() {
     state = 'connecting';
     updateCriticalState();
     terminal.dataset.theme = theme;
+    showOnboardingClues();
+    terminal.querySelectorAll('.start-only-copy').forEach(element => {
+      element.classList.add('start-copy-placeholder');
+      element.setAttribute('aria-hidden', 'true');
+    });
     const characters = [...CONNECTING_WORD];
     const characterDelays = characters.map((_, index) => index * CONNECT_CHAR_STAGGER);
     const wordEnterDuration = (characterDelays.at(-1) ?? 0) + CONNECT_CHAR_DURATION;
-    const connectionDuration = Math.round(
-      CONNECT_DURATION.min + Math.random() * (CONNECT_DURATION.max - CONNECT_DURATION.min)
-    );
-    terminal.innerHTML = `
-      <div class="connecting-screen">
-        <div class="sys-id">ТЕРМИНАЛ</div>
-        <div class="connecting-center">
-          <div class="connecting-text" role="status" aria-label="${CONNECTING_WORD}"
-            style="--dots-start:${wordEnterDuration}ms;--dot-cycle:${CONNECT_DOT_STAGGER * 4}ms">
-            ${characters.map((character, index) =>
-              `<span class="connecting-char" style="--connect-delay:${characterDelays[index]}ms" aria-hidden="true">${character}</span>`
-            ).join('')}
-            <span class="connecting-dots" aria-hidden="true">
-              <span class="connecting-dot">.</span>
-              <span class="connecting-dot">.</span>
-              <span class="connecting-dot">.</span>
-            </span>
-          </div>
-        </div>
-      </div>`;
+    const connectionDuration = CONNECT_DURATION;
+    const button = document.getElementById('start-button');
+    if (button) {
+      button.disabled = true;
+      button.classList.add('action-connecting');
+      button.setAttribute('aria-label', CONNECTING_WORD);
+      button.innerHTML = `
+        <span class="action-connecting-text"
+          style="--dots-start:${wordEnterDuration}ms;--dot-cycle:${CONNECT_DOT_STAGGER * 4}ms">
+          ${characters.map((character, index) =>
+            `<span class="connecting-char" style="--connect-delay:${characterDelays[index]}ms" aria-hidden="true">${character}</span>`
+          ).join('')}
+          <span class="connecting-dots" aria-hidden="true">
+            <span class="connecting-dot">.</span>
+            <span class="connecting-dot">.</span>
+            <span class="connecting-dot">.</span>
+          </span>
+        </span>`;
+    }
 
     return connectionDuration;
   }
 
-  function renderPlayingEntrance() {
+  function renderPlaying(newIndexes = [], { aftershock = true } = {}) {
     terminal.dataset.theme = theme;
-    terminal.classList.add('round-entering');
-    terminal.innerHTML = shellMarkup();
-    const cells = [...terminal.querySelectorAll('.cipher-char, .cipher-punct')];
-    const revealStagger = cells.length > 1
-      ? Math.min(26, Math.max(11, 620 / (cells.length - 1)))
-      : 0;
-    cells.forEach((cell, index) => {
-      cell.classList.add('round-reveal-cell');
-      cell.style.setProperty('--reveal-delay', `${Math.round(index * revealStagger)}ms`);
-    });
-    return Math.max(0, cells.length - 1) * revealStagger + 1;
-  }
-
-  function renderPlaying(newIndex = null, { aftershock = true } = {}) {
-    terminal.dataset.theme = theme;
-    terminal.classList.remove('round-entering');
     terminal.innerHTML = shellMarkup();
     bindInteractions();
-    return newIndex !== null ? animateDecodedPosition(newIndex, { aftershock }) : 0;
+    const decodedIndexes = Array.isArray(newIndexes)
+      ? newIndexes
+      : newIndexes === null
+        ? []
+        : [newIndexes];
+    return animateDecodedPositions(decodedIndexes, { aftershock });
   }
 
   function updateTimer() {
@@ -1616,21 +1781,13 @@
   function activateRound() {
     if (state !== 'connecting') return;
     state = 'playing';
-    terminal.classList.remove('round-entering');
-    terminal.querySelectorAll('.round-reveal-cell').forEach(cell => {
-      cell.classList.remove('round-reveal-cell');
-      cell.style.removeProperty('--reveal-delay');
-    });
-    terminal.querySelectorAll('.cipher-char.unresolved').forEach(button => {
-      button.disabled = false;
-    });
-    syncKeyboardState();
-    bindInteractions();
+    renderPlaying();
     startRoundTimer();
   }
 
   function startGame() {
     if (state !== 'start') return;
+    stopOnboardingLoop();
     errors = 0;
     score = 0;
     timeLeft = active.timer;
@@ -1644,11 +1801,9 @@
       return;
     }
 
-    const connectingDuration = renderConnecting();
+    const connectingDuration = showConnectingButton();
     setTimeout(() => {
-      if (state !== 'connecting') return;
-      const revealDuration = renderPlayingEntrance();
-      setTimeout(activateRound, revealDuration + 20);
+      activateRound();
     }, connectingDuration);
   }
 
@@ -1660,17 +1815,23 @@
 
     if (target.letter === letter) {
       const decodedIndex = selectedIndex;
-      const discoveredCode = !playerDiscoveredCodes.has(target.code);
-      revealedPositions.add(decodedIndex);
-      playerDiscoveredCodes.add(target.code);
-      earnedProgressUnits += discoveredCode ? 2 : 1;
-      knownCodeLetters.set(target.code, target.letter);
+      const decodedItems = puzzle.filter(item =>
+        item.type === 'letter'
+        && item.code === target.code
+        && !revealedPositions.has(item.index)
+      );
+      const decodedIndexes = decodedItems.map(item => item.index);
+      decodedIndexes.forEach(index => revealedPositions.add(index));
+      earnedProgressUnits += decodedIndexes.length + 1;
       score = calculateScore(false);
       const completed = unresolvedPositions().length === 0;
       selectNextPosition(decodedIndex);
       if (completed) state = 'resolved';
-      const revealDuration = renderPlaying(decodedIndex, { aftershock: !completed });
-      if (completed) completeGame(revealDuration);
+      const revealDuration = renderPlaying(decodedIndexes, { aftershock: !completed });
+      if (completed) {
+        hideKeyboardAfterRound();
+        completeGame(revealDuration);
+      }
     } else {
       if (!rejectedCodeLetters.has(target.code)) rejectedCodeLetters.set(target.code, new Set());
       rejectedCodeLetters.get(target.code).add(letter);
@@ -1682,13 +1843,29 @@
       if (errorsEl) errorsEl.innerHTML = errorsMarkup(errors - 1);
       updateCriticalState();
       if (errors >= MAX_ERRORS) {
-        hideKeyboardAfterFailure();
+        hideKeyboardAfterRound();
         setTimeout(failGame, 260);
       }
     }
   }
 
-  function animateDecodedPosition(index, { aftershock = true } = {}) {
+  function animateDecodedPositions(indexes, { aftershock = true } = {}) {
+    if (!indexes.length) return 0;
+    const revealDuration = indexes.reduce((duration, index, burstIndex) => Math.max(
+      duration,
+      animateDecodedPosition(index, { aftershock: false, burstIndex })
+    ), 0);
+    if (aftershock) {
+      setTimeout(() => {
+        indexes.forEach((index, order) => {
+          setTimeout(() => successAftershock(index), order * 18);
+        });
+      }, revealDuration + 50);
+    }
+    return revealDuration;
+  }
+
+  function animateDecodedPosition(index, { aftershock = true, burstIndex = 0 } = {}) {
     const element = terminal.querySelector(`[data-index="${index}"]`);
     if (!element) return 0;
     const glyph = element.querySelector('.glyph');
@@ -1699,18 +1876,25 @@
     }
 
     element.classList.add('decode-burst');
-    element.style.setProperty('--burst-index', 0);
+    element.style.setProperty('--burst-index', burstIndex);
+    const decodeToken = `${performance.now()}-${Math.random()}`;
+    glyph.dataset.decodeToken = decodeToken;
     let frame = 0;
     const animation = setInterval(() => {
+      if (!glyph.isConnected || glyph.dataset.decodeToken !== decodeToken) {
+        clearInterval(animation);
+        return;
+      }
       glyph.textContent = NOISE[Math.floor(Math.random() * NOISE.length)];
       frame += 1;
       if (frame >= 6) {
         clearInterval(animation);
         glyph.textContent = finalLetter;
+        delete glyph.dataset.decodeToken;
       }
     }, 34);
-    setTimeout(() => element.classList.remove('decode-burst'), 650);
-    const revealDuration = 650;
+    const revealDuration = 650 + burstIndex * 34;
+    setTimeout(() => element.classList.remove('decode-burst'), revealDuration);
     if (aftershock) setTimeout(() => successAftershock(index), revealDuration + 50);
     return revealDuration;
   }
@@ -1787,7 +1971,7 @@
     setTimeout(() => {
       if (state === 'start' || state === 'playing') {
         const selector = state === 'start'
-          ? '.packet-symbol'
+          ? '.onboarding-char:not(.decode-burst) .glyph:not(:empty)'
           : '.cipher-char.unresolved .glyph';
         const glyphs = [...terminal.querySelectorAll(selector)]
           .filter(glyph => glyph.dataset.ghosting !== '1');
@@ -1840,10 +2024,10 @@
     terminal.style.setProperty('--sweep-y3', `${travel.toFixed(1)}px`);
     terminal.style.setProperty('--sweep-tilt', `${(-.5 + Math.random()).toFixed(2)}deg`);
     terminal.style.setProperty('--sweep-core-pos', `${corePosition.toFixed(1)}%`);
-    terminal.style.setProperty('--sweep-soft-alpha', `${(4 + Math.random() * 4).toFixed(1)}%`);
-    terminal.style.setProperty('--sweep-core-alpha', `${(13 + Math.random() * 9).toFixed(1)}%`);
-    terminal.style.setProperty('--sweep-tail-alpha', `${(4 + Math.random() * 5).toFixed(1)}%`);
-    terminal.style.setProperty('--sweep-dark-alpha', `${(.025 + Math.random() * .035).toFixed(3)}`);
+    terminal.style.setProperty('--sweep-soft-alpha', `${(2.8 + Math.random() * 2.8).toFixed(1)}%`);
+    terminal.style.setProperty('--sweep-core-alpha', `${(9.1 + Math.random() * 6.3).toFixed(1)}%`);
+    terminal.style.setProperty('--sweep-tail-alpha', `${(2.8 + Math.random() * 3.5).toFixed(1)}%`);
+    terminal.style.setProperty('--sweep-dark-alpha', `${(.0175 + Math.random() * .0245).toFixed(3)}`);
     terminal.style.setProperty('--sweep-ease', easing);
 
     terminal.classList.remove('sweep-active');
@@ -1975,22 +2159,61 @@
     }, revealDuration);
   }
 
+  function revealFailedPhrase() {
+    const hiddenPositions = unresolvedPositions();
+    hiddenPositions.forEach((item, order) => {
+      const reveal = () => {
+        const element = terminal.querySelector(`[data-index="${item.index}"]`);
+        if (!element) return;
+        revealedPositions.add(item.index);
+        element.disabled = true;
+        element.classList.remove('unresolved', 'selected', 'same-code');
+        element.classList.add('resolved');
+        element.setAttribute('aria-label', `Код ${codeLabel(item.code)}, буква ${item.letter}`);
+        animateDecodedPosition(item.index, { aftershock: false });
+      };
+      if (reduceMotion) reveal();
+      else setTimeout(reveal, order * FINAL_ANSWER_STAGGER);
+    });
+
+    if (reduceMotion || !hiddenPositions.length) return 0;
+    return (hiddenPositions.length - 1) * FINAL_ANSWER_STAGGER + 650;
+  }
+
   function failGame() {
     if (state === 'final' || state === 'failed') return;
     state = 'failed';
-    hideKeyboardAfterFailure();
+    hideKeyboardAfterRound();
     updateCriticalState();
     clearInterval(timerId);
     score = calculateScore(false);
     terminal.classList.remove('hit');
     terminal.classList.add('fail');
     const failDuration = reduceMotion ? 0 : FAIL_ANIMATION_DURATION;
-    setTimeout(renderFinal, failDuration + FINAL_SCREEN_PAUSE);
+    setTimeout(() => {
+      terminal.classList.remove('fail');
+      if (!reduceMotion) {
+        gameFrame.classList.add('critical-releasing');
+        void gameFrame.offsetWidth;
+      }
+      state = 'revealing-answer';
+      updateCriticalState();
+      if (!reduceMotion) {
+        setTimeout(() => gameFrame.classList.remove('critical-releasing'), CRITICAL_RELEASE_DURATION);
+      }
+      const leadIn = reduceMotion ? 0 : FINAL_ANSWER_LEAD_IN;
+      setTimeout(() => {
+        const answerDuration = revealFailedPhrase();
+        const hold = reduceMotion ? 0 : FINAL_ANSWER_HOLD;
+        setTimeout(renderFinal, answerDuration + hold);
+      }, leadIn);
+    }, failDuration);
   }
 
   function renderFinal() {
     state = 'final';
     updateCriticalState();
+    gameFrame.classList.remove('critical-releasing');
     terminal.classList.remove('glitch-win', 'fail', 'hit', 'phrase-complete');
     const minimumScore = earnedProgressUnits > 0 ? 1 : 0;
     const totalScore = Math.min(
@@ -2039,20 +2262,22 @@
       scoreNode.textContent = totalScore;
       revealRest();
     } else {
-      const scoreDuration = 2500;
       const scoreStep = 2;
+      const scoreStepDuration = 35;
+      const totalScoreSteps = Math.ceil(totalScore / scoreStep);
       const scoreStartedAt = performance.now();
       let shown = 0;
       const animateScore = now => {
-        const progress = Math.min(1, (now - scoreStartedAt) / scoreDuration);
-        const nextValue = progress < 1
-          ? Math.floor(totalScore * progress / scoreStep) * scoreStep
-          : totalScore;
+        const completedSteps = Math.min(
+          totalScoreSteps,
+          Math.floor((now - scoreStartedAt) / scoreStepDuration)
+        );
+        const nextValue = Math.min(totalScore, completedSteps * scoreStep);
         if (nextValue !== shown) {
           shown = nextValue;
           scoreNode.textContent = shown;
         }
-        if (progress < 1) {
+        if (completedSteps < totalScoreSteps) {
           requestAnimationFrame(animateScore);
         } else {
           scoreNode.textContent = totalScore;
@@ -2075,17 +2300,21 @@
     renderStart();
   }
 
-  const QWERTY = {
-    q:'Й',w:'Ц',e:'У',r:'К',t:'Е',y:'Н',u:'Г',i:'Ш',o:'Щ',p:'З','[':'Х',']':'Ъ',
-    a:'Ф',s:'Ы',d:'В',f:'А',g:'П',h:'Р',j:'О',k:'Л',l:'Д',';':'Ж',"'":'Э',
-    z:'Я',x:'Ч',c:'С',v:'М',b:'И',n:'Т',m:'Ь',',':'Б','.':'Ю'
+  const KEY_CODE_TO_LETTER = {
+    KeyQ:'Й',KeyW:'Ц',KeyE:'У',KeyR:'К',KeyT:'Е',KeyY:'Н',KeyU:'Г',KeyI:'Ш',KeyO:'Щ',KeyP:'З',BracketLeft:'Х',BracketRight:'Ъ',
+    KeyA:'Ф',KeyS:'Ы',KeyD:'В',KeyF:'А',KeyG:'П',KeyH:'Р',KeyJ:'О',KeyK:'Л',KeyL:'Д',Semicolon:'Ж',Quote:'Э',
+    KeyZ:'Я',KeyX:'Ч',KeyC:'С',KeyV:'М',KeyB:'И',KeyN:'Т',KeyM:'Ь',Comma:'Б',Period:'Ю'
   };
 
   document.addEventListener('keydown', event => {
-    if (event.ctrlKey || event.altKey || event.metaKey || state !== 'playing') return;
+    if (event.ctrlKey || event.altKey || event.metaKey || event.repeat || state !== 'playing') return;
     const upper = event.key.toUpperCase();
-    const letter = ROWS.flat().includes(upper) ? upper : QWERTY[event.key.toLowerCase()];
-    if (letter) guess(letter);
+    const letter = KEY_CODE_TO_LETTER[event.code]
+      ?? (ROWS.flat().includes(upper) ? upper : null);
+    if (letter) {
+      event.preventDefault();
+      guess(letter);
+    }
   });
 
   document.getElementById('theme-toggle').addEventListener('click', () => {
