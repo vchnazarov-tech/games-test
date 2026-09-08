@@ -5,14 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Terminal Breach — Intercepted Transmission</title>
 <style>
-  @font-face {
-    font-family: "Departure Mono";
-    src: url("DepartureMono-Regular.woff2") format("woff2"),
-         url("DepartureMono-Regular.woff") format("woff"),
-         url("DepartureMono-Regular.otf") format("opentype");
-    font-display: swap;
-  }
-
   @property --signal {
     syntax: "<color>";
     inherits: true;
@@ -47,7 +39,7 @@
 
   :root {
     color-scheme: light;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
   }
 
   body {
@@ -288,7 +280,7 @@
       radial-gradient(ellipse 60% 48% at 100% 100%, rgba(216,82,18,.24), rgba(142,50,8,.10) 50%, transparent 78%),
       radial-gradient(ellipse 105% 88% at 50% 48%, rgba(104,54,23,.12), rgba(55,27,13,.07) 52%, transparent 82%),
       linear-gradient(128deg, #17100b, #0c0906 56%, #150d08);
-    font-family: "Departure Mono", Consolas, monospace;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
   }
 
   #terminal[data-theme="cyber"] {
@@ -425,7 +417,6 @@
   .timer-label {
     color: var(--muted);
     font-size: 9px;
-    letter-spacing: .13em;
   }
 
   .timer-value {
@@ -783,6 +774,7 @@
     background: var(--signal);
     font-family: inherit;
     font-size: 13px;
+    font-weight: 500;
     letter-spacing: .08em;
     text-shadow: none;
     box-shadow:
@@ -790,6 +782,7 @@
       0 0 9px color-mix(in srgb, var(--signal) 30%, transparent),
       0 0 25px color-mix(in srgb, var(--signal) 24%, transparent);
     cursor: pointer;
+    text-transform: uppercase;
   }
 
   .action:hover:not(:disabled),
@@ -885,6 +878,7 @@
   .final-total {
     color: var(--paper);
     font-size: 22px;
+    font-weight: 500;
     line-height: 1.3;
     letter-spacing: .015em;
   }
@@ -900,9 +894,8 @@
   .final-breakdown {
     margin-top: 8px;
     color: var(--muted);
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.45;
-    letter-spacing: .07em;
   }
 
   .final-progress {
@@ -927,28 +920,30 @@
   }
 
   .streak-node {
-    width: 42px;
-    height: 42px;
+    width: 46px;
+    height: 46px;
     border: 1px solid var(--signal-dim);
     border-radius: 0;
     display: grid;
     place-items: center;
-    color: var(--signal);
-    background: color-mix(in srgb, var(--signal) 8%, transparent);
-    font-size: 13px;
-    box-shadow:
-      inset 0 0 11px color-mix(in srgb, var(--signal) 6%, transparent),
-      0 0 10px color-mix(in srgb, var(--signal) 10%, transparent);
+    color: var(--signal-dim);
+    background: transparent;
+    font-size: 17px;
+    box-shadow: none;
   }
 
   .streak-node.completed {
     border-color: var(--signal);
-    color: var(--dark);
-    background: var(--signal);
-    text-shadow: none;
-    box-shadow:
-      0 0 9px color-mix(in srgb, var(--signal) 34%, transparent),
-      0 0 22px color-mix(in srgb, var(--signal) 18%, transparent);
+    color: var(--signal);
+    background: color-mix(in srgb, var(--signal) 18%, transparent);
+    box-shadow: inset 0 0 11px color-mix(in srgb, var(--signal) 12%, transparent);
+  }
+
+  .streak-node.missed {
+    border-color: var(--muted);
+    color: var(--muted);
+    background: transparent;
+    box-shadow: none;
   }
 
   .streak-day.today.streak-awarded .streak-node {
@@ -958,21 +953,21 @@
   @keyframes streak-award-blink {
     0%, 20%, 40%, 60% {
       border-color: var(--signal-dim);
-      color: var(--signal);
-      background: color-mix(in srgb, var(--signal) 8%, transparent);
-      text-shadow: inherit;
-      box-shadow:
-        inset 0 0 11px color-mix(in srgb, var(--signal) 6%, transparent),
-        0 0 10px color-mix(in srgb, var(--signal) 10%, transparent);
+      color: var(--signal-dim);
+      background: transparent;
+      box-shadow: none;
     }
-    10%, 30%, 50%, 70%, 100% {
+    10%, 30%, 50%, 70% {
       border-color: var(--signal);
-      color: var(--dark);
-      background: var(--signal);
-      text-shadow: none;
-      box-shadow:
-        0 0 9px color-mix(in srgb, var(--signal) 34%, transparent),
-        0 0 22px color-mix(in srgb, var(--signal) 18%, transparent);
+      color: var(--signal);
+      background: color-mix(in srgb, var(--signal) 24%, transparent);
+      box-shadow: inset 0 0 13px color-mix(in srgb, var(--signal) 16%, transparent);
+    }
+    100% {
+      border-color: var(--signal);
+      color: var(--signal);
+      background: color-mix(in srgb, var(--signal) 18%, transparent);
+      box-shadow: inset 0 0 11px color-mix(in srgb, var(--signal) 12%, transparent);
     }
   }
 
@@ -980,7 +975,6 @@
     margin-top: 7px;
     color: var(--muted);
     font-size: 9px;
-    letter-spacing: .08em;
   }
 
   .final-ranks {
@@ -992,9 +986,8 @@
 
   .final-rank {
     color: var(--paper);
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.35;
-    letter-spacing: .04em;
   }
 
   .final-action {
@@ -1233,6 +1226,9 @@
     Uint8Array.from(atob(encoded), char => char.charCodeAt(0))
   );
   const PHRASES = [
+    '0KXQrNCu0KHQotCe0J0sINCjINCd0JDQoSDQn9Cg0J7QkdCb0JXQnNCQ',
+    '0J7QkdCe0JbQkNCuINCX0JDQn9CQ0KUg0J3QkNCf0JDQm9Cc0JAg0J/QniDQo9Ci0KDQkNCc',
+    '0J/QntCX0JTQntCg0J7QktCQ0JnQodCvINChINCc0J7QmNCcINCc0JDQm9CV0J3QrNCa0JjQnCDQlNCg0KPQk9Ce0Jwh',
     '0KLQntCg0KIg4oCUINCt0KLQniDQm9Ce0JbQrA==',
     '0JLQntCZ0J3QkC4g0JLQntCZ0J3QkCDQndCY0JrQntCT0JTQkCDQndCVINCc0JXQndCv0JXQotCh0K8=',
     '0J/QoNCe0KHQndCY0KLQldCh0Kwg0Jgg0J/QntCZ0KLQlSwg0JzQmNCh0KLQldCgINCk0KDQmNCc0JXQnQ==',
@@ -1276,7 +1272,7 @@
   const DEMO_STREAK = [
     { day: 'ПН', value: '+', completed: true },
     { day: 'ВТ', value: '+4', completed: true },
-    { day: 'СР', value: '+6', completed: true },
+    { day: 'СР', value: '+6', missed: true },
     { day: 'ЧТ', value: '+8', completed: true },
     { day: 'ПТ', value: '+10', current: true },
     { day: 'СБ', value: '+12' },
@@ -1290,6 +1286,7 @@
   let active = null;
   let puzzle = [];
   let revealedPositions = new Set();
+  let onboardingPositions = new Set();
   let rejectedCodeLetters = new Map();
   let selectedIndex = null;
   let errors = 0;
@@ -1339,18 +1336,89 @@
     return result;
   }
 
-  const phraseOrder = shuffle(PHRASES);
+  const phraseOrder = PHRASES.slice(0, 3);
+
+  function phraseSeed(value) {
+    return [...value].reduce((seed, char) => ((seed * 31) + char.charCodeAt(0)) >>> 0, 2166136261);
+  }
+
+  function seededShuffle(values, seed) {
+    const result = [...values];
+    let currentSeed = seed || 1;
+    const random = () => {
+      currentSeed = (currentSeed * 1664525 + 1013904223) >>> 0;
+      return currentSeed / 4294967296;
+    };
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(random() * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+  }
+
+  function chooseStarterLetters(chars, letters, frequency, phrase) {
+    const letterCount = chars.filter(char => char !== ' ' && !PUNCT.has(char)).length;
+    const target = Math.max(3, Math.round(letterCount * .25));
+    const oneLetterWords = new Set(
+      phrase.split(/\s+/)
+        .map(word => [...word].filter(char => !PUNCT.has(char)))
+        .filter(word => word.length === 1)
+        .map(word => word[0])
+    );
+    const wordLetterSets = phrase.split(/\s+/)
+      .map(word => [...word].filter(char => !PUNCT.has(char)))
+      .filter(word => word.length > 1 && word.length <= 3)
+      .map(word => new Set(word));
+    const seed = phraseSeed(phrase);
+    const tieOrder = seededShuffle(letters, seed);
+    const tieIndex = new Map(tieOrder.map((letter, index) => [letter, index]));
+    const candidates = letters.filter(letter => !oneLetterWords.has(letter));
+    const repeated = candidates
+      .filter(letter => frequency.get(letter) > 1)
+      .sort((a, b) => frequency.get(a) - frequency.get(b) || tieIndex.get(a) - tieIndex.get(b));
+    const singletons = candidates
+      .filter(letter => frequency.get(letter) === 1)
+      .sort((a, b) => tieIndex.get(a) - tieIndex.get(b));
+    const pairLetter = repeated.find(letter => frequency.get(letter) === 2) ?? repeated[0] ?? null;
+    const singletonLetter = singletons[0] ?? null;
+    const selected = new Set([pairLetter, singletonLetter].filter(Boolean));
+    let selectedCount = [...selected].reduce((total, letter) => total + frequency.get(letter), 0);
+
+    const completesShortWord = letter => wordLetterSets.some(wordLetters =>
+      wordLetters.has(letter) && [...wordLetters].every(wordLetter => selected.has(wordLetter) || wordLetter === letter)
+    );
+    const remaining = candidates
+      .filter(letter => !selected.has(letter))
+      .sort((a, b) => frequency.get(a) - frequency.get(b) || tieIndex.get(a) - tieIndex.get(b));
+
+    while (selectedCount < target && remaining.length) {
+      let nextIndex = remaining.findIndex(letter =>
+        selectedCount + frequency.get(letter) <= target && !completesShortWord(letter)
+      );
+      if (nextIndex < 0) {
+        nextIndex = remaining.findIndex(letter => selectedCount + frequency.get(letter) <= target);
+      }
+      if (nextIndex < 0) nextIndex = 0;
+      const [letter] = remaining.splice(nextIndex, 1);
+      selected.add(letter);
+      selectedCount += frequency.get(letter);
+    }
+
+    return { selected, pairLetter, singletonLetter };
+  }
 
   function buildPuzzle(config) {
     const chars = [...config.phrase];
     const letters = [...new Set(chars.filter(ch => ch !== ' ' && !PUNCT.has(ch)))];
     const codes = shuffle(letters.map((_, index) => index + 1));
     const codeByLetter = Object.fromEntries(letters.map((letter, index) => [letter, codes[index]]));
-    const configuredOpen = (config.open || [])
-      .map(index => chars[index])
-      .filter(ch => ch && ch !== ' ' && !PUNCT.has(ch));
-    const fallbackOpen = [letters[1], letters[Math.floor(letters.length / 2)], letters[letters.length - 2]].filter(Boolean);
-    const openLetters = new Set(configuredOpen.length ? configuredOpen : fallbackOpen);
+    const frequency = new Map(letters.map(letter => [letter, chars.filter(char => char === letter).length]));
+    const { selected: openLetters, pairLetter, singletonLetter } = chooseStarterLetters(
+      chars,
+      letters,
+      frequency,
+      config.phrase
+    );
 
     puzzle = chars.map((char, index) => {
       if (char === ' ') return { type: 'space', index };
@@ -1359,11 +1427,17 @@
     });
 
     revealedPositions = new Set();
+    onboardingPositions = new Set();
     rejectedCodeLetters = new Map();
     puzzle.forEach(item => {
       if (item.type !== 'letter' || !openLetters.has(item.letter)) return;
       revealedPositions.add(item.index);
     });
+
+    const pairItems = puzzle.filter(item => item.type === 'letter' && item.letter === pairLetter).slice(0, 2);
+    const singletonItem = puzzle.find(item => item.type === 'letter' && item.letter === singletonLetter);
+    const clueItems = [...pairItems, singletonItem].filter(Boolean);
+    clueItems.forEach(item => onboardingPositions.add(item.index));
 
     const hiddenItems = puzzle.filter(item => item.type === 'letter' && !revealedPositions.has(item.index));
     scoreablePositionCount = hiddenItems.length;
@@ -1409,6 +1483,24 @@
   }
 
   function phraseMarkup({ onboarding = false } = {}) {
+    if (onboarding) {
+      return groupPuzzle().map(group => {
+        const chars = group.items.map(item => {
+          if (item.type === 'punct') return `<span class="cipher-punct">${item.char}</span>`;
+          const clue = onboardingPositions.has(item.index);
+          const classes = ['cipher-char', 'onboarding-char'];
+          if (clue) classes.push('onboarding-clue');
+          return `<span class="${classes.join(' ')}"
+            data-index="${item.index}" data-code="${item.code}" data-letter="${item.letter}"
+            aria-hidden="true">
+            <span class="glyph"></span>
+            <span class="code">${clue ? codeLabel(item.code) : '░░'}</span>
+          </span>`;
+        }).join('');
+        return `<span class="cipher-word">${chars}</span>`;
+      }).join('');
+    }
+
     const selectedItem = onboarding
       ? null
       : puzzle.find(item => item.type === 'letter' && item.index === selectedIndex);
@@ -1416,19 +1508,6 @@
     return groupPuzzle().map(group => {
       const chars = group.items.map(item => {
         if (item.type === 'punct') return `<span class="cipher-punct">${item.char}</span>`;
-        if (onboarding) {
-          const clue = revealedPositions.has(item.index);
-          const classes = ['cipher-char', 'onboarding-char'];
-          if (clue) classes.push('onboarding-clue');
-          return `
-            <span class="${classes.join(' ')}"
-              data-index="${item.index}" data-code="${item.code}" data-letter="${item.letter}"
-              aria-hidden="true">
-              <span class="glyph"></span>
-              <span class="code">${clue ? codeLabel(item.code) : '??'}</span>
-            </span>`;
-        }
-
         const resolved = revealedPositions.has(item.index);
         const selected = !resolved && item.index === selectedIndex;
         const sameCode = !resolved && selectedCode !== null && item.code === selectedCode;
@@ -1451,11 +1530,13 @@
   function onboardingCodeGroups() {
     const groups = new Map();
     puzzle.forEach(item => {
-      if (item.type !== 'letter' || !revealedPositions.has(item.index)) return;
+      if (item.type !== 'letter' || !onboardingPositions.has(item.index)) return;
       if (!groups.has(item.code)) groups.set(item.code, []);
       groups.get(item.code).push(item.index);
     });
-    return [...groups].map(([code, indexes]) => ({ code, indexes }));
+    return [...groups]
+      .map(([code, indexes]) => ({ code, indexes }))
+      .sort((a, b) => a.indexes.length - b.indexes.length);
   }
 
   function stopOnboardingLoop() {
@@ -2222,25 +2303,26 @@
     );
     const streakMarkup = DEMO_STREAK.map(item => `
       <div class="streak-day ${item.current ? 'today' : ''}">
-        <div class="streak-node ${item.completed ? 'completed' : ''}">${item.value}</div>
+        <div class="streak-node ${item.missed ? 'missed' : item.completed ? 'completed' : 'future'}"
+          aria-label="${item.missed ? 'Пропущен' : item.completed ? 'Получен' : item.current ? 'Сегодня' : 'Будущий'}">${item.value}</div>
         <div class="streak-label">${item.day}</div>
       </div>`).join('');
     terminal.innerHTML = `
       <div class="final-screen">
         <div class="final-summary">
-          <div class="final-total">ВЫ НАБРАЛИ <span class="final-score-value" id="final-score">0</span> БАЛЛОВ</div>
+          <div class="final-total">Вы набрали <span class="final-score-value" id="final-score">0</span> баллов</div>
           <div class="final-breakdown">
-            ИЗ НИХ ${scoreBreakdown.speed} ЗА СКОРОСТЬ И ${STREAK_BONUS} ЗА СТРИК
+            из них ${scoreBreakdown.speed} за скорость и ${STREAK_BONUS} за стрик
           </div>
           <div class="final-details" id="final-details">
             <div class="streak-week" aria-label="Недельный стрик">${streakMarkup}</div>
             <div class="final-ranks">
-              <div class="final-rank">${DEMO_RANKS.season} МЕСТО В СЕЗОНЕ</div>
-              <div class="final-rank">${DEMO_RANKS.allTime} МЕСТО ЗА ВСЁ ВРЕМЯ</div>
+              <div class="final-rank">${DEMO_RANKS.season} место в сезоне</div>
+              <div class="final-rank">${DEMO_RANKS.allTime} место за всё время</div>
             </div>
           </div>
         </div>
-        <button class="action final-action" id="restart-button" type="button" disabled>[ ИГРАТЬ ЕЩЁ ]</button>
+        <button class="action final-action" id="restart-button" type="button" disabled>[ Играть Ещё ]</button>
       </div>`;
 
     const scoreNode = document.getElementById('final-score');
