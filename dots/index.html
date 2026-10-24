@@ -369,14 +369,16 @@
     color: #595959; font-size: 14px; text-align: center; flex-shrink: 0; }
   .slv-success-msg.won { color: #0f766e; font-weight: 500; }
   .dots-board { position: relative; touch-action: none; user-select: none;
-    border-radius: calc(18px - var(--slv-pad)); overflow: hidden; }
+    border-radius: calc(18px - var(--slv-pad)); overflow: hidden; background: #fff; }
+  .dots-board .slv-grid { background: #fff; }
   .dots-board svg { position: absolute; inset: 0; width: 100%; height: 100%;
     z-index: 2; touch-action: none; cursor: pointer; }
+  .dots-board .dots-grid-surface { z-index: 1; pointer-events: none; cursor: inherit; }
   .dots-emoji-layer { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
   .dots-emoji-container { position: absolute; box-sizing: border-box; padding: 3px;
     background: rgba(255, 255, 255, .5); border-radius: 4px; pointer-events: none; }
   .dots-emoji { display: block; width: 100%; height: 100%; object-fit: contain;
-    border-radius: 4px; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+    border-radius: 4px; transform-origin: center; pointer-events: none; user-select: none; -webkit-user-drag: none; }
   .dots-board .slv-cell { transition: none; }
   .slv-grid-wrap { overflow: hidden; }
   .dots-actions { margin-top: 36px; }
@@ -507,6 +509,12 @@
       <div class="slv-grid-wrap">
         <div class="dots-board">
           <div class="slv-grid" id="tiles" aria-hidden="true"></div>
+          <svg class="dots-grid-surface" id="grid-surface" viewBox="0 0 359 359" aria-hidden="true">
+            <g id="grid-lines">
+              <path id="grid-strokes" fill="none" stroke="#e6e2dd" stroke-width="1" vector-effect="non-scaling-stroke"/>
+              <path id="grid-strokes-next" fill="none" stroke="#e6e2dd" stroke-width="1" vector-effect="non-scaling-stroke" opacity="0"/>
+            </g>
+          </svg>
           <svg id="board" viewBox="0 0 359 359" role="img" aria-label="Поле 5 на 5. Соедините одинаковые эмодзи, перетаскивая линию мышью или пальцем."></svg>
           <div class="dots-emoji-layer" id="emoji-layer" aria-hidden="true"></div>
         </div>
@@ -692,6 +700,10 @@
 
     const board = document.getElementById('board');
     const tiles = document.getElementById('tiles');
+    const gridSurface = document.getElementById('grid-surface');
+    const gridLines = document.getElementById('grid-lines');
+    const gridStrokes = document.getElementById('grid-strokes');
+    const gridStrokesNext = document.getElementById('grid-strokes-next');
     const emojiLayer = document.getElementById('emoji-layer');
     const status = document.getElementById('status');
     const startHint = document.getElementById('start-hint');
@@ -718,6 +730,25 @@
     let outcome = null;
     let loading = true;
     let preparationId = 0;
+    const GRID_SIZE = Math.max(...LEVEL_GROUPS.map(group => group.size));
+    let gridScale = GRID_SIZE / SIZE;
+    let gridBlend = 0;
+    const FEEDBACK = { pair: 200, level: 380, cellStep: 40, cellFlash: 300, levelCellFlash: 360, levelDuration: 1200, levelPause: 40, levelPauseJitter: 20, levelOverlap: 120 };
+    // Keep the completed board visible until the full cell wave has finished.
+    const LEVEL_TRANSITION = { hold: 500, fadeOut: 80, zoom: 200, fadeIn: 80 };
+    let levelTransition = null;
+    let transitionFrame = null;
+    let lineFrame = null;
+    let lineFrameTime = null;
+    const LINE_SPRING = { stiffness: 900, damping: 42, maxLag: .8, maxOvershoot: .12 };
+    const pairFeedback = new Map();
+    const cellWaves = new Map();
+    let levelCellWave = null;
+    let levelFeedbackAt = null;
+    let feedbackFrame = null;
+    let victoryAt = null;
+    let victoryHold = LEVEL_TRANSITION.hold;
+    let victoryFrame = null;
 
     function updateTimer() {
       if (timerDeadline !== null) remainingSeconds = Math.max(0, Math.ceil((timerDeadline - Date.now()) / 1000));
@@ -738,7 +769,7 @@
     }
 
     function canPlay() {
-      if (loading || outcome !== null) return false;
+      if (loading || levelTransition !== null || victoryAt !== null || outcome !== null) return false;
       // Проверяем дедлайн и при вводе: задержка таймера не даёт лишнего времени.
       if (timerDeadline !== null) updateTimer();
       return outcome === null;
@@ -755,6 +786,10 @@
     function finishRound(result) {
       if (outcome !== null) return;
       outcome = result;
+      cancelVictory();
+      clearFeedback();
+      cancelLevelTransition();
+      stopLineMotion();
       stopTimer();
       game.end();
       releasePointer();
@@ -802,6 +837,27 @@
       return sets;
     }
 
+    function celebrationOrder(size) {
+      const remaining = shuffledCopy(Array.from({ length: size * size }, (_, cell) => cell));
+      const ordered = [];
+      // Spread cells that can appear within the same display frame across the board.
+      const recentCount = Math.max(3, Math.ceil(size * size / 8));
+      while (remaining.length) {
+        const recent = ordered.slice(-recentCount);
+        const last = ordered[ordered.length - 1];
+        const separated = cell => last === undefined ||
+          (cell % size !== last % size && Math.floor(cell / size) !== Math.floor(last / size));
+        let choices = remaining.filter(cell => separated(cell) && recent.every(previous =>
+          Math.abs(cell % size - previous % size) + Math.abs(Math.floor(cell / size) - Math.floor(previous / size)) > 1));
+        if (!choices.length) choices = remaining.filter(separated);
+        if (!choices.length) choices = remaining;
+        const selected = choices[Math.floor(Math.random() * choices.length)];
+        ordered.push(selected);
+        remaining.splice(remaining.indexOf(selected), 1);
+      }
+      return ordered;
+    }
+
     function prepareLevelEmojis(level) {
       const pending = [];
       level.emojiViews = [];
@@ -827,15 +883,18 @@
         });
         pending.push(ready);
         container.appendChild(emoji);
-        level.emojiViews.push({ element: container, cell, color });
+        level.emojiViews.push({ element: container, image: emoji, cell, color });
       }));
       return Promise.all(pending);
     }
 
     function loadLevel(index) {
+      clearFeedback();
+      stopLineMotion();
       levelIndex = index;
       const level = runLevels[index];
       SIZE = level.size;
+      gridScale = GRID_SIZE / SIZE;
       PAIRS = level.pairs;
       runEmojis = level.emojis;
       game.reset();
@@ -856,7 +915,7 @@
         element.setAttribute('stroke-linecap', 'round');
         element.setAttribute('stroke-linejoin', 'round');
         lines.appendChild(element);
-        return { element };
+        return { element, distance: 0, velocity: 0, target: 0, points: [], start: -1, active: false };
       });
       emojis.length = 0;
       emojiLayer.replaceChildren();
@@ -871,6 +930,10 @@
 
     async function startNewGame() {
       const currentPreparation = ++preparationId;
+      cancelVictory();
+      clearFeedback();
+      cancelLevelTransition();
+      stopLineMotion();
       stopTimer();
       releasePointer();
       loading = true;
@@ -904,8 +967,236 @@
     function completeLevel() {
       if (!canPlay()) return;
       completedLevels++;
-      if (levelIndex + 1 < runLevels.length) loadLevel(levelIndex + 1);
-      else finishRound('won');
+      // Start the celebration during the pair wave's fade, avoiding a dark handoff.
+      levelFeedbackAt = Date.now();
+      for (const wave of cellWaves.values()) {
+        levelFeedbackAt = Math.max(levelFeedbackAt, wave.startedAt + wave.duration - FEEDBACK.levelOverlap);
+      }
+      // Spread first starts beyond a full flash + pause, so both cycles interleave.
+      // A short shared start window would make all per-cell pauses coincide.
+      const colorsByCell = new Map();
+      game.paths.forEach((path, color) => path.forEach(cell => colorsByCell.set(cell, color)));
+      const firstSpread = FEEDBACK.levelDuration - 2 * FEEDBACK.levelCellFlash - FEEDBACK.levelPause - FEEDBACK.levelPauseJitter;
+      const order = celebrationOrder(SIZE);
+      const cells = order.map((cell, index) => {
+        const first = (index + Math.random() * .6) * firstSpread / Math.max(1, order.length - .4);
+        const pause = FEEDBACK.levelPause + Math.random() * FEEDBACK.levelPauseJitter;
+        const second = first + FEEDBACK.levelCellFlash + pause;
+        return { cell, rgb: colorRGB(colorsByCell.get(cell)), starts: [first, second] };
+      });
+      levelCellWave = { startedAt: levelFeedbackAt,
+        duration: FEEDBACK.levelDuration, cells };
+      scheduleFeedback();
+      if (levelIndex + 1 < runLevels.length) beginLevelTransition();
+      else {
+        // The run is complete now; show its reward before opening the results.
+        stopTimer();
+        victoryAt = Date.now();
+        victoryHold = feedbackHold();
+        draw();
+        victoryFrame = requestAnimationFrame(animateVictory);
+      }
+    }
+
+    function cancelVictory() {
+      if (victoryFrame !== null) cancelAnimationFrame(victoryFrame);
+      victoryFrame = null;
+      victoryAt = null;
+    }
+
+    function animateVictory() {
+      victoryFrame = null;
+      if (victoryAt === null) return;
+      if (Date.now() - victoryAt >= victoryHold) finishRound('won');
+      else victoryFrame = requestAnimationFrame(animateVictory);
+    }
+
+    function pulseScale(progress, peak) {
+      if (progress <= 0 || progress >= 1) return 1;
+      if (progress < .28) return 1 + (peak - 1) * (1 - (1 - progress / .28) ** 3);
+      if (progress < .7) {
+        const eased = (1 - Math.cos(Math.PI * (progress - .28) / .42)) / 2;
+        return peak + (.985 - peak) * eased;
+      }
+      return .985 + .015 * (1 - (1 - (progress - .7) / .3) ** 3);
+    }
+
+    function colorRGB(color) {
+      const hex = parseInt(COLORS[color].slice(1), 16);
+      return `${hex >> 16}, ${(hex >> 8) & 255}, ${hex & 255}`;
+    }
+
+    function flashCell(paints, cell, rgb, age, duration = FEEDBACK.cellFlash) {
+      if (age <= 0 || age >= duration) return;
+      const alpha = .1 * Math.sin(Math.PI * age / duration) ** 2;
+      const previous = paints.get(cell);
+      paints.set(cell, { rgb, alpha: Math.min(.1, (previous ? previous.alpha : 0) + alpha) });
+    }
+
+    function renderFeedback() {
+      const now = Date.now();
+      const paints = new Map();
+      for (const [color, wave] of cellWaves) {
+        const elapsed = now - wave.startedAt;
+        if (elapsed >= wave.duration) {
+          cellWaves.delete(color);
+          continue;
+        }
+        wave.path.forEach((cell, index) => {
+          const age = elapsed - index * FEEDBACK.cellStep;
+          // Smooth attack and release, with no abrupt brightness jump between cells.
+          flashCell(paints, cell, wave.rgb, age);
+        });
+      }
+      if (levelCellWave !== null) {
+        const elapsed = now - levelCellWave.startedAt;
+        if (elapsed >= levelCellWave.duration) levelCellWave = null;
+        else {
+          levelCellWave.cells.forEach(({ cell, rgb, starts }) => starts.forEach(delay =>
+            flashCell(paints, cell, rgb, elapsed - delay, FEEDBACK.levelCellFlash)));
+        }
+      }
+      Array.from(tiles.children).forEach((tile, cell) => {
+        const paint = paints.get(cell);
+        tile.style.backgroundColor = paint ? `rgba(${paint.rgb}, ${paint.alpha})` : '';
+      });
+      for (const [color, startedAt] of pairFeedback) {
+        if (now - startedAt >= FEEDBACK.pair) pairFeedback.delete(color);
+      }
+      if (levelFeedbackAt !== null && now - levelFeedbackAt >= FEEDBACK.level) levelFeedbackAt = null;
+      const levelProgress = levelFeedbackAt === null ? 1 : Math.max(0, (now - levelFeedbackAt) / FEEDBACK.level);
+      const levelScale = pulseScale(levelProgress, 1.09);
+      emojis.forEach(({ image, color }) => {
+        const startedAt = pairFeedback.get(color);
+        const pairProgress = startedAt === undefined ? 1 : Math.max(0, (now - startedAt) / FEEDBACK.pair);
+        const scale = startedAt === undefined ? levelScale : Math.max(levelScale, pulseScale(pairProgress, 1.25));
+        image.style.transform = `scale(${scale})`;
+      });
+      lineViews.forEach(({ element }, color) => {
+        const startedAt = pairFeedback.get(color);
+        const progress = startedAt === undefined ? 1 : Math.max(0, (now - startedAt) / FEEDBACK.pair);
+        element.setAttribute('stroke-width', LINE_WIDTH * (1 + .18 * Math.sin(Math.PI * progress)));
+      });
+    }
+
+    function scheduleFeedback() {
+      renderFeedback();
+      if (feedbackFrame === null) feedbackFrame = requestAnimationFrame(animateFeedback);
+    }
+
+    function animateFeedback() {
+      feedbackFrame = null;
+      renderFeedback();
+      if (pairFeedback.size || cellWaves.size || levelCellWave !== null || levelFeedbackAt !== null) feedbackFrame = requestAnimationFrame(animateFeedback);
+    }
+
+    function clearFeedback() {
+      if (feedbackFrame !== null) cancelAnimationFrame(feedbackFrame);
+      feedbackFrame = null;
+      pairFeedback.clear();
+      cellWaves.clear();
+      levelCellWave = null;
+      levelFeedbackAt = null;
+      renderFeedback();
+    }
+
+    function setPiecesOpacity(opacity) {
+      board.style.opacity = String(opacity);
+      emojiLayer.style.opacity = String(opacity);
+    }
+
+    function cancelLevelTransition() {
+      if (transitionFrame !== null) cancelAnimationFrame(transitionFrame);
+      transitionFrame = null;
+      levelTransition = null;
+      gridBlend = 0;
+      setPiecesOpacity(1);
+    }
+
+    function drawGrid() {
+      const baseStep = (BOARD_SIZE + GAP) / GRID_SIZE;
+      const extent = BOARD_SIZE + GAP;
+      function gridPath(size) {
+        // Odd grids have a cell at the center; even grids have an intersection.
+        const phase = (GRID_SIZE - size) % 2 ? baseStep / 2 : 0;
+        const segments = [];
+        for (let i = 1; i < GRID_SIZE; i++) {
+          const position = i * baseStep + phase;
+          segments.push(`M${position} 0V${extent}`, `M0 ${position}H${extent}`);
+        }
+        return segments.join(' ');
+      }
+      gridSurface.setAttribute('viewBox', `0 0 ${BOARD_SIZE} ${BOARD_SIZE}`);
+      gridStrokes.setAttribute('d', gridPath(SIZE));
+      gridStrokes.setAttribute('opacity', 1 - gridBlend);
+      const nextSize = levelTransition ? runLevels[levelTransition.nextIndex].size : SIZE;
+      gridStrokesNext.setAttribute('d', gridPath(nextSize));
+      gridStrokesNext.setAttribute('opacity', gridBlend);
+      // All 9×9 lines exist from the start. The fixed viewport clips the zoomed grid.
+      // Zoom around the viewport center, keeping separators 1 px wide.
+      const center = BOARD_SIZE / 2;
+      gridLines.setAttribute('transform', `translate(${center} ${center}) scale(${gridScale}) translate(${-extent / 2} ${-extent / 2})`);
+    }
+
+    function feedbackHold() {
+      const now = Date.now();
+      let hold = LEVEL_TRANSITION.hold;
+      for (const wave of cellWaves.values()) hold = Math.max(hold, wave.startedAt + wave.duration - now);
+      if (levelCellWave !== null) hold = Math.max(hold, levelCellWave.startedAt + levelCellWave.duration - now);
+      return hold;
+    }
+
+    function beginLevelTransition() {
+      const nextIndex = levelIndex + 1;
+      levelTransition = { startedAt: Date.now(), nextIndex, fromScale: gridScale,
+        toScale: GRID_SIZE / runLevels[nextIndex].size, hold: feedbackHold(), switched: false };
+      draw();
+      transitionFrame = requestAnimationFrame(animateLevelTransition);
+    }
+
+    function animateLevelTransition() {
+      transitionFrame = null;
+      const transition = levelTransition;
+      if (!transition) return;
+      updateTimer();
+      if (levelTransition !== transition || outcome !== null) return;
+      const elapsed = Math.max(0, Date.now() - transition.startedAt);
+      const fadeStart = transition.hold;
+      const zoomStart = fadeStart + LEVEL_TRANSITION.fadeOut;
+      const revealStart = zoomStart + LEVEL_TRANSITION.zoom;
+      const end = revealStart + LEVEL_TRANSITION.fadeIn;
+      if (elapsed < fadeStart) {
+        setPiecesOpacity(1);
+      } else if (elapsed < zoomStart) {
+        setPiecesOpacity(1 - (elapsed - fadeStart) / LEVEL_TRANSITION.fadeOut);
+      } else if (elapsed < revealStart) {
+        setPiecesOpacity(0);
+        const progress = (elapsed - zoomStart) / LEVEL_TRANSITION.zoom;
+        // Ease-out-back: a quick zoom with a small overshoot and soft settle.
+        const tension = 1.2;
+        const tail = progress - 1;
+        const eased = 1 + (tension + 1) * tail ** 3 + tension * tail ** 2;
+        gridScale = transition.fromScale + (transition.toScale - transition.fromScale) * eased;
+        // Grid opacity stays smooth and bounded while the camera springs past its target.
+        gridBlend = (1 - Math.cos(Math.PI * progress)) / 2;
+        drawGrid();
+      } else {
+        if (!transition.switched) {
+          // Install decoded emoji nodes only after the grid has reached its new scale.
+          setPiecesOpacity(0);
+          gridBlend = 0;
+          loadLevel(transition.nextIndex);
+          transition.switched = true;
+        }
+        setPiecesOpacity(Math.min(1, (elapsed - revealStart) / LEVEL_TRANSITION.fadeIn));
+      }
+      if (elapsed >= end) {
+        levelTransition = null;
+        setPiecesOpacity(1);
+        draw();
+      } else {
+        transitionFrame = requestAnimationFrame(animateLevelTransition);
+      }
     }
 
     function center(cell) {
@@ -916,9 +1207,15 @@
     function resizeBoard() {
       const width = tiles.getBoundingClientRect().width;
       if (!width) return;
+      const previousStep = STEP;
       BOARD_SIZE = width;
       TILE_SIZE = (width - (SIZE - 1) * GAP) / SIZE;
       STEP = TILE_SIZE + GAP;
+      lineViews.forEach(view => {
+        view.distance *= STEP / previousStep;
+        view.velocity *= STEP / previousStep;
+      });
+      drawGrid();
       LINE_WIDTH = Math.min(12, TILE_SIZE * .22);
       board.setAttribute('viewBox', `0 0 ${width} ${width}`);
       lineViews.forEach(view => view.element.setAttribute('stroke-width', LINE_WIDTH));
@@ -930,6 +1227,7 @@
         element.style.left = `${x - emojiSize / 2}px`;
         element.style.top = `${y - emojiSize / 2}px`;
       });
+      renderFeedback();
       draw();
     }
 
@@ -957,18 +1255,112 @@
       return points;
     }
 
+    function pathLength(points) {
+      return points.reduce((length, point, i) => i
+        ? length + Math.hypot(point[0] - points[i - 1][0], point[1] - points[i - 1][1]) : 0, 0);
+    }
+
+    function springPoints(view, color) {
+      const points = view.points;
+      if (points.length < 2) return points;
+      const visible = Math.max(0, view.distance);
+      if (visible < view.target) {
+        const prefix = [points[0]];
+        let remaining = visible;
+        for (let i = 1; i < points.length; i++) {
+          const from = points[i - 1], to = points[i];
+          const length = Math.hypot(to[0] - from[0], to[1] - from[1]);
+          if (remaining < length) {
+            const fraction = length ? remaining / length : 0;
+            prefix.push([from[0] + (to[0] - from[0]) * fraction,
+              from[1] + (to[1] - from[1]) * fraction]);
+            break;
+          }
+          prefix.push(to);
+          remaining -= length;
+        }
+        return prefix;
+      }
+      // The small spring overshoot stays on the last segment, inside its legal cell.
+      const path = game.paths[color];
+      if (!path.length || visible <= view.target) return points;
+      const last = points[points.length - 1];
+      let previous = points.length - 2;
+      while (previous >= 0 && points[previous][0] === last[0] && points[previous][1] === last[1]) previous--;
+      if (previous < 0) return points;
+      const from = points[previous];
+      const extra = Math.min(visible - view.target, STEP * LINE_SPRING.maxOvershoot);
+      const cell = path[path.length - 1];
+      const left = cell % SIZE * STEP, top = Math.floor(cell / SIZE) * STEP;
+      const inset = LINE_WIDTH / 2;
+      const tip = [Math.max(left + inset, Math.min(left + TILE_SIZE - inset,
+        last[0] + Math.sign(last[0] - from[0]) * extra)),
+        Math.max(top + inset, Math.min(top + TILE_SIZE - inset,
+          last[1] + Math.sign(last[1] - from[1]) * extra))];
+      return [...points.slice(0, -1), tip];
+    }
+
+    function stopLineMotion() {
+      if (lineFrame !== null) cancelAnimationFrame(lineFrame);
+      lineFrame = null;
+      lineFrameTime = null;
+    }
+
     function drawLines() {
+      let pending = false;
       lineViews.forEach((view, color) => {
-        const points = linePoints(game.paths[color], color);
+        const path = game.paths[color];
+        view.points = linePoints(path, color);
+        view.target = pathLength(view.points);
+        const active = game.active === color && pointerId !== null;
+        if (!path.length || loading || outcome !== null || view.start !== path[0] || (active && !view.active)) {
+          view.distance = active && path.length === 1 ? 0 : view.target;
+          view.velocity = 0;
+        }
+        view.start = path.length ? path[0] : -1;
+        view.active = active;
+        // Limit visual lag to less than a cell even on a fast swipe.
+        view.distance = Math.max(Math.max(0, view.target - STEP * LINE_SPRING.maxLag),
+          Math.min(view.distance, view.target + STEP * LINE_SPRING.maxOvershoot));
+        if (Math.abs(view.distance - view.target) < .12 && Math.abs(view.velocity) < 2) {
+          view.distance = view.target;
+          view.velocity = 0;
+        } else if (path.length && !loading && outcome === null) {
+          pending = true;
+        }
+        const points = springPoints(view, color);
         view.element.setAttribute('d', points.length < 2 ? '' :
           points.map(([x, y], i) => `${i ? 'L' : 'M'}${x} ${y}`).join(' '));
       });
+      if (pending && lineFrame === null) lineFrame = requestAnimationFrame(animateLines);
+      else if (!pending) stopLineMotion();
+    }
+
+    function animateLines(timestamp) {
+      lineFrame = null;
+      if (timerDeadline !== null) updateTimer();
+      if (loading || outcome !== null) return;
+      const elapsed = lineFrameTime === null ? 1 / 60 : Math.max(0, (timestamp - lineFrameTime) / 1000);
+      lineFrameTime = timestamp;
+      // Small integration steps keep the spring stable at different refresh rates.
+      const duration = Math.min(.064, elapsed);
+      const steps = Math.max(1, Math.ceil(duration / .008));
+      const dt = duration / steps;
+      lineViews.forEach(view => {
+        for (let i = 0; i < steps; i++) {
+          const acceleration = (view.target - view.distance) * LINE_SPRING.stiffness - view.velocity * LINE_SPRING.damping;
+          view.velocity += acceleration * dt;
+          view.distance += view.velocity * dt;
+        }
+      });
+      drawLines();
     }
 
     function draw() {
       drawLines();
       const progress = game.progress();
       document.getElementById('reset').style.visibility = roundStarted ? 'visible' : 'hidden';
+      document.getElementById('reset').disabled = levelTransition !== null || victoryAt !== null;
       startHint.hidden = roundStarted;
       timer.hidden = !roundStarted;
       const message = `Уровень ${levelIndex + 1} из ${LEVEL_GROUPS.length} · ${SIZE}×${SIZE}`;
@@ -1022,6 +1414,9 @@
       lastPoint = point(event);
       pointerPosition = lastPoint;
       game.begin(cellAt(lastPoint));
+      const cancelledPair = pairFeedback.delete(game.active);
+      const cancelledWave = cellWaves.delete(game.active);
+      if (cancelledPair || cancelledWave) renderFeedback();
       board.setPointerCapture(pointerId);
       draw();
     });
@@ -1031,8 +1426,19 @@
     function finish(event) {
       if (event.pointerId !== pointerId || !canPlay()) return;
       if (event.type === 'pointerup' && !move(event)) return;
+      const color = game.active;
+      const path = color < 0 ? [] : game.paths[color];
+      const paired = event.type === 'pointerup' && path.length > 1 && game.endpoint(path[path.length - 1]) === color;
       game.end();
       releasePointer();
+      if (paired) {
+        const startedAt = Date.now();
+        pairFeedback.set(color, startedAt);
+        cellWaves.set(color, { startedAt, path: [...path],
+          duration: (path.length - 1) * FEEDBACK.cellStep + FEEDBACK.cellFlash,
+          rgb: colorRGB(color) });
+        scheduleFeedback();
+      }
       if (!roundStarted && event.type === 'pointerup' && game.progress().connected > 0) {
         roundStarted = true;
         startTimer();
@@ -1045,6 +1451,7 @@
     board.addEventListener('lostpointercapture', finish);
     function resetGame() {
       if (!canPlay()) return;
+      clearFeedback();
       releasePointer();
       game.reset();
       draw();
