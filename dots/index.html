@@ -500,7 +500,7 @@
       <div class="slv-header">
         <div class="slv-word-preview" id="instructions">
           <span class="slv-hint-inline" id="start-hint">Соедините пары</span>
-          <span class="slv-timer-num dots-timer" id="timer" aria-label="Осталось времени" hidden>03:00</span>
+          <span class="slv-timer-num dots-timer" id="timer" aria-label="Осталось времени" hidden>05:00</span>
         </div>
       </div>
       <p class="slv-success-msg" id="status" role="status" aria-live="polite"></p>
@@ -711,7 +711,7 @@
     let lastPoint = null;
     let pointerPosition = null;
     let roundStarted = false;
-    const ROUND_SECONDS = 180;
+    const ROUND_SECONDS = 300;
     let timerDeadline = null;
     let timerInterval = null;
     let remainingSeconds = ROUND_SECONDS;
@@ -760,7 +760,7 @@
       releasePointer();
       document.getElementById('final-title').textContent = result === 'won' ? 'Все уровни пройдены' : 'Время вышло';
       document.getElementById('final-text').innerHTML = result === 'won'
-        ? `Вы решили все ${LEVEL_GROUPS.length} головоломок за три минуты.<br>Можно сыграть ещё раз.`
+        ? `Вы решили все ${LEVEL_GROUPS.length} головоломок за пять минут.<br>Можно сыграть ещё раз.`
         : `Пройдено уровней: ${completedLevels} из ${LEVEL_GROUPS.length}.<br>Попробуйте ещё раз.`;
       draw();
       document.getElementById('final-title').focus({ preventScroll: true });
