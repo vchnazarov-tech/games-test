@@ -375,6 +375,7 @@
     z-index: 2; touch-action: none; cursor: pointer; }
   .dots-board .dots-grid-surface { z-index: 1; pointer-events: none; cursor: inherit; }
   .dots-emoji-layer { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+  .dots-board #board, .dots-emoji-layer { transform-origin: 50% 50%; transform-box: border-box; }
   .dots-emoji-container { position: absolute; box-sizing: border-box; padding: 3px;
     background: rgba(255, 255, 255, .5); border-radius: 4px; pointer-events: none; }
   .dots-emoji { display: block; width: 100%; height: 100%; object-fit: contain;
@@ -732,10 +733,9 @@
     let preparationId = 0;
     const GRID_SIZE = Math.max(...LEVEL_GROUPS.map(group => group.size));
     let gridScale = GRID_SIZE / SIZE;
-    let gridBlend = 0;
     const FEEDBACK = { pair: 200, level: 380, cellStep: 40, cellFlash: 300, levelCellFlash: 360, levelDuration: 1200, levelPause: 40, levelPauseJitter: 20, levelOverlap: 120 };
     // Keep the completed board visible until the full cell wave has finished.
-    const LEVEL_TRANSITION = { hold: 500, fadeOut: 80, zoom: 200, fadeIn: 80 };
+    const LEVEL_TRANSITION = { hold: 500, fadeOut: 150, zoom: 200, fadeIn: 150, fadeDelay: 50 };
     let levelTransition = null;
     let transitionFrame = null;
     let lineFrame = null;
@@ -1060,21 +1060,22 @@
         const paint = paints.get(cell);
         tile.style.backgroundColor = paint ? `rgba(${paint.rgb}, ${paint.alpha})` : '';
       });
-      for (const [color, startedAt] of pairFeedback) {
-        if (now - startedAt >= FEEDBACK.pair) pairFeedback.delete(color);
+      for (const [color, feedback] of pairFeedback) {
+        if (now - feedback.startedAt >= feedback.arrival + FEEDBACK.pair) pairFeedback.delete(color);
       }
       if (levelFeedbackAt !== null && now - levelFeedbackAt >= FEEDBACK.level) levelFeedbackAt = null;
       const levelProgress = levelFeedbackAt === null ? 1 : Math.max(0, (now - levelFeedbackAt) / FEEDBACK.level);
       const levelScale = pulseScale(levelProgress, 1.09);
-      emojis.forEach(({ image, color }) => {
-        const startedAt = pairFeedback.get(color);
-        const pairProgress = startedAt === undefined ? 1 : Math.max(0, (now - startedAt) / FEEDBACK.pair);
-        const scale = startedAt === undefined ? levelScale : Math.max(levelScale, pulseScale(pairProgress, 1.25));
+      emojis.forEach(({ image, color, cell }) => {
+        const feedback = pairFeedback.get(color);
+        const delay = feedback && cell !== feedback.from ? feedback.arrival : 0;
+        const pairProgress = feedback === undefined ? 1 : Math.max(0, (now - feedback.startedAt - delay) / FEEDBACK.pair);
+        const scale = feedback === undefined ? levelScale : Math.max(levelScale, pulseScale(pairProgress, 1.25));
         image.style.transform = `scale(${scale})`;
       });
       lineViews.forEach(({ element }, color) => {
-        const startedAt = pairFeedback.get(color);
-        const progress = startedAt === undefined ? 1 : Math.max(0, (now - startedAt) / FEEDBACK.pair);
+        const feedback = pairFeedback.get(color);
+        const progress = feedback === undefined ? 1 : Math.max(0, Math.min(1, (now - feedback.startedAt) / FEEDBACK.pair));
         element.setAttribute('stroke-width', LINE_WIDTH * (1 + .18 * Math.sin(Math.PI * progress)));
       });
     }
@@ -1103,22 +1104,27 @@
     function setPiecesOpacity(opacity) {
       board.style.opacity = String(opacity);
       emojiLayer.style.opacity = String(opacity);
+      gridSurface.style.opacity = String(opacity);
+    }
+
+    function setPiecesScale(scale) {
+      const transform = `scale(${scale})`;
+      board.style.transform = transform;
+      emojiLayer.style.transform = transform;
     }
 
     function cancelLevelTransition() {
       if (transitionFrame !== null) cancelAnimationFrame(transitionFrame);
       transitionFrame = null;
       levelTransition = null;
-      gridBlend = 0;
       setPiecesOpacity(1);
+      setPiecesScale(1);
     }
 
     function drawGrid() {
       const baseStep = (BOARD_SIZE + GAP) / GRID_SIZE;
       const extent = BOARD_SIZE + GAP;
-      function gridPath(size) {
-        // Odd grids have a cell at the center; even grids have an intersection.
-        const phase = (GRID_SIZE - size) % 2 ? baseStep / 2 : 0;
+      function gridPath(phase) {
         const segments = [];
         for (let i = 1; i < GRID_SIZE; i++) {
           const position = i * baseStep + phase;
@@ -1126,16 +1132,27 @@
         }
         return segments.join(' ');
       }
-      gridSurface.setAttribute('viewBox', `0 0 ${BOARD_SIZE} ${BOARD_SIZE}`);
-      gridStrokes.setAttribute('d', gridPath(SIZE));
-      gridStrokes.setAttribute('opacity', 1 - gridBlend);
+      // Keep the old lattice phase while its contents are visible. The odd/even
+      // phase changes only when the whole old board has faded out.
+      const phaseFor = size => (GRID_SIZE - size) % 2 ? baseStep / 2 : 0;
       const nextSize = levelTransition ? runLevels[levelTransition.nextIndex].size : SIZE;
-      gridStrokesNext.setAttribute('d', gridPath(nextSize));
-      gridStrokesNext.setAttribute('opacity', gridBlend);
+      const phase = phaseFor(SIZE);
+      const nextPhase = phaseFor(nextSize);
+      gridSurface.setAttribute('viewBox', `0 0 ${BOARD_SIZE} ${BOARD_SIZE}`);
+      gridStrokes.setAttribute('d', gridPath(phase));
+      gridStrokes.setAttribute('opacity', 1);
+      gridStrokesNext.setAttribute('d', gridPath(nextPhase));
+      gridStrokesNext.setAttribute('opacity', 0);
       // All 9×9 lines exist from the start. The fixed viewport clips the zoomed grid.
       // Zoom around the viewport center, keeping separators 1 px wide.
       const center = BOARD_SIZE / 2;
       gridLines.setAttribute('transform', `translate(${center} ${center}) scale(${gridScale}) translate(${-extent / 2} ${-extent / 2})`);
+      // Old emojis and paths share the grid's centered scale and spring easing.
+      // New level pieces already have their final coordinates, so their scale is 1.
+      const oldPieces = levelTransition && levelIndex !== levelTransition.nextIndex;
+      const piecesScale = oldPieces
+        ? gridScale / levelTransition.fromScale : 1;
+      setPiecesScale(piecesScale);
     }
 
     function feedbackHold() {
@@ -1161,30 +1178,27 @@
       updateTimer();
       if (levelTransition !== transition || outcome !== null) return;
       const elapsed = Math.max(0, Date.now() - transition.startedAt);
-      const fadeStart = transition.hold;
-      const zoomStart = fadeStart + LEVEL_TRANSITION.fadeOut;
-      const revealStart = zoomStart + LEVEL_TRANSITION.zoom;
+      const zoomStart = transition.hold;
+      const fadeStart = zoomStart + LEVEL_TRANSITION.fadeDelay;
+      const revealStart = Math.max(zoomStart + LEVEL_TRANSITION.zoom, fadeStart + LEVEL_TRANSITION.fadeOut);
       const end = revealStart + LEVEL_TRANSITION.fadeIn;
-      if (elapsed < fadeStart) {
+      if (elapsed < zoomStart) {
         setPiecesOpacity(1);
-      } else if (elapsed < zoomStart) {
-        setPiecesOpacity(1 - (elapsed - fadeStart) / LEVEL_TRANSITION.fadeOut);
       } else if (elapsed < revealStart) {
-        setPiecesOpacity(0);
-        const progress = (elapsed - zoomStart) / LEVEL_TRANSITION.zoom;
+        const progress = Math.min(1, (elapsed - zoomStart) / LEVEL_TRANSITION.zoom);
         // Ease-out-back: a quick zoom with a small overshoot and soft settle.
         const tension = 1.2;
         const tail = progress - 1;
         const eased = 1 + (tension + 1) * tail ** 3 + tension * tail ** 2;
         gridScale = transition.fromScale + (transition.toScale - transition.fromScale) * eased;
-        // Grid opacity stays smooth and bounded while the camera springs past its target.
-        gridBlend = (1 - Math.cos(Math.PI * progress)) / 2;
         drawGrid();
+        // Fade independently of zoom; finish the full zoom before loading new pieces.
+        const fade = Math.max(0, Math.min(1, (elapsed - fadeStart) / LEVEL_TRANSITION.fadeOut));
+        setPiecesOpacity(1 - fade);
       } else {
         if (!transition.switched) {
           // Install decoded emoji nodes only after the grid has reached its new scale.
           setPiecesOpacity(0);
-          gridBlend = 0;
           loadLevel(transition.nextIndex);
           transition.switched = true;
         }
@@ -1433,7 +1447,8 @@
       releasePointer();
       if (paired) {
         const startedAt = Date.now();
-        pairFeedback.set(color, startedAt);
+        pairFeedback.set(color, { startedAt, from: path[0],
+          arrival: (path.length - 1) * FEEDBACK.cellStep });
         cellWaves.set(color, { startedAt, path: [...path],
           duration: (path.length - 1) * FEEDBACK.cellStep + FEEDBACK.cellFlash,
           rgb: colorRGB(color) });
