@@ -1245,6 +1245,12 @@
       draw();
     }
 
+    function limitLineTip(x, y) {
+      const min = TILE_SIZE / 2;
+      const max = BOARD_SIZE - min;
+      return [Math.max(min, Math.min(max, x)), Math.max(min, Math.min(max, y))];
+    }
+
     function linePoints(path, color) {
       if (!path.length) return [];
       const last = path[path.length - 1];
@@ -1255,8 +1261,10 @@
       const left = last % SIZE * STEP;
       const top = Math.floor(last / SIZE) * STEP;
       const inset = LINE_WIDTH / 2;
-      const x = Math.max(left + inset, Math.min(left + TILE_SIZE - inset, pointerPosition.x));
-      const y = Math.max(top + inset, Math.min(top + TILE_SIZE - inset, pointerPosition.y));
+      // Keep the free tip inside the rectangle joining the outermost cell centers.
+      const [x, y] = limitLineTip(
+        Math.max(left + inset, Math.min(left + TILE_SIZE - inset, pointerPosition.x)),
+        Math.max(top + inset, Math.min(top + TILE_SIZE - inset, pointerPosition.y)));
       const head = center(last);
       const horizontal = Math.abs(x - head[0]) >= Math.abs(y - head[1]);
       const tip = horizontal ? [x, head[1]] : [head[0], y];
@@ -1307,10 +1315,10 @@
       const cell = path[path.length - 1];
       const left = cell % SIZE * STEP, top = Math.floor(cell / SIZE) * STEP;
       const inset = LINE_WIDTH / 2;
-      const tip = [Math.max(left + inset, Math.min(left + TILE_SIZE - inset,
+      const tip = limitLineTip(Math.max(left + inset, Math.min(left + TILE_SIZE - inset,
         last[0] + Math.sign(last[0] - from[0]) * extra)),
         Math.max(top + inset, Math.min(top + TILE_SIZE - inset,
-          last[1] + Math.sign(last[1] - from[1]) * extra))];
+          last[1] + Math.sign(last[1] - from[1]) * extra)));
       return [...points.slice(0, -1), tip];
     }
 
@@ -1399,15 +1407,21 @@
       const row = Math.min(SIZE - 1, Math.floor((p.y + GAP / 2) / STEP));
       return row * SIZE + col;
     }
+    function projectToBoard(p) {
+      const max = BOARD_SIZE - .001;
+      return { x: Math.max(0, Math.min(max, p.x)),
+        y: Math.max(0, Math.min(max, p.y)) };
+    }
     function move(event) {
       if (!canPlay()) return false;
       const current = point(event);
-      pointerPosition = current;
+      pointerPosition = projectToBoard(current);
       const start = lastPoint || current;
       const steps = Math.max(1, Math.ceil(Math.hypot(current.x - start.x, current.y - start.y) / 4));
       for (let i = 1; i <= steps; i++) {
-        const cell = cellAt({ x: start.x + (current.x - start.x) * i / steps,
-          y: start.y + (current.y - start.y) * i / steps });
+        // Project every sample, keeping edge/corner motion continuous outside.
+        const cell = cellAt(projectToBoard({ x: start.x + (current.x - start.x) * i / steps,
+          y: start.y + (current.y - start.y) * i / steps }));
         if (cell === -1 || game.active === -1) continue;
         const path = game.paths[game.active];
         const last = path[path.length - 1];
@@ -1417,7 +1431,7 @@
         }
         game.extend(cell);
       }
-      lastPoint = cellAt(current) === -1 ? null : current;
+      lastPoint = current;
       draw();
       return true;
     }
