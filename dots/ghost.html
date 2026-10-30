@@ -770,6 +770,7 @@
     let victoryFrame = null;
     // Prototype opponent: replay each board relative to the player's entry into it.
     let ghostStartedAt = null;
+    let ghostVisible = false;
     let ghostTimeline = [];
     let ghostAnimations = [];
     let ghostCompleted = false;
@@ -798,6 +799,7 @@
 
     function prepareGhost() {
       ghostStartedAt = null;
+      ghostVisible = false;
       clearGhostRow();
       ghostTimeline = runLevels.map((level, index) => {
         let elapsed = 0;
@@ -867,9 +869,8 @@
 
     function startTimer() {
       timerDeadline = Date.now() + ROUND_SECONDS * 1000;
-      ghostStartedAt = Date.now();
       updateTimer();
-      timerInterval = setInterval(updateTimer, 100);
+      if (timerInterval === null) timerInterval = setInterval(updateTimer, 100);
     }
 
     function stopTimer() {
@@ -1504,9 +1505,9 @@
     function draw() {
       drawLines();
       const progress = game.progress();
-      ghostPanel.style.opacity = roundStarted ? '1' : '0';
-      ghostPanel.style.visibility = roundStarted ? 'visible' : 'hidden';
-      ghostPanel.setAttribute('aria-hidden', String(!roundStarted));
+      ghostPanel.style.opacity = ghostVisible ? '1' : '0';
+      ghostPanel.style.visibility = ghostVisible ? 'visible' : 'hidden';
+      ghostPanel.setAttribute('aria-hidden', String(!ghostVisible));
       startHint.hidden = roundStarted;
       timer.hidden = !roundStarted;
       const message = `Уровень ${levelIndex + 1} из ${LEVEL_GROUPS.length} · ${SIZE}×${SIZE}`;
@@ -1566,6 +1567,12 @@
       lastPoint = point(event);
       pointerPosition = lastPoint;
       game.begin(cellAt(lastPoint));
+      if (!ghostVisible && game.active !== -1) {
+        ghostVisible = true;
+        ghostStartedAt = Date.now();
+        // Advance the ghost before the first pair, without starting the countdown.
+        if (timerInterval === null) timerInterval = setInterval(updateTimer, 100);
+      }
       const cancelledPair = pairFeedback.delete(game.active);
       const cancelledWave = cellWaves.delete(game.active);
       if (cancelledPair || cancelledWave) renderFeedback();
